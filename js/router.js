@@ -36,6 +36,7 @@ function loadView(viewName) {
 
 function updateNavbarActiveLink(view) {
   // Update the active class on the navbar links
+  // necessary for hoverbutton functionality
   document.querySelectorAll(".view-link").forEach(link => {
     if (link.getAttribute("href") === view) {
       link.classList.add("active");

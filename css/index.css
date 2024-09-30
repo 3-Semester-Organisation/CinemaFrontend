@@ -1,26 +1,26 @@
 
 body {
     background-color: rgb(28, 39, 58);
-    font-family: 'Inter', 'Times New Roman', sans-serif !important;
+    font-family: 'Inter', sans-serif;
     color: white;
     margin: 0;
     padding: 0;
 }
 
+/* puts all content in pages in a box with shadow */
 #home, #book, #movies  {
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Add a subtle shadow */
-  transition: 0.3s; /* Add transition on hover */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
+
 .nav-font {
-  font-family: 'Inter', sans-serif;
     font-size: 20px;
     font-weight: bold;
     font-style: italic;
 }
 
 .hoverbutton {
-  font-size: 18px;
+  font-size: 20px;
   color: white !important;
   font-family: inherit;
   cursor: pointer;
