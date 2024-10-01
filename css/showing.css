@@ -1,0 +1,29 @@
+.showings-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr); /* 7 columns for the week */
+    gap: 5px; /* Space between columns */
+    padding: 10px;
+}
+
+.cards-column {
+    display: flex;
+    flex-direction: column; /* Align cards vertically */
+    gap: 10px; /* Space between cards */
+    padding: 20px;
+    max-width: 300px;
+    margin: 0 auto; /* Center the column */
+}
+
+.showing-card {
+    border: 1px solid #ccc;
+    padding: 10px;
+    text-align: center;
+    background-color: #32CD32; /* Lime green color */
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.showing-card:hover {
+    background-color: #4eb27f; /* Darker green on hover */
+}
