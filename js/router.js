@@ -1,3 +1,6 @@
+import { initAddMovieView } from "./omdb.js";
+import { initTicketsView } from "./tickets.js";
+
 function initializeViewNavigation() {
   window.addEventListener("hashchange", handleViewChange);
   handleViewChange(); // Set initial view
@@ -26,12 +29,23 @@ function loadView(viewName) {
       return response.text();
     })
     .then(html => {
-      app.innerHTML = html;
+      app.innerHTML = html; // sets the innerHTML of the app div to the fetched html
+      initView(viewName); // inits js for the view
     })
     .catch(error => {
       console.error(error);
       app.innerHTML = `<p>Error loading view.</p>`;
     });
+}
+
+// helper function for loadView, initializes js for given view
+function initView(viewName) {
+  if (viewName === 'addMovie') {
+    initAddMovieView();
+  } else if (viewName === 'tickets') {
+    initTicketsView();
+  }
+  // Initialize other views as needed
 }
 
 function updateNavbarActiveLink(view) {
