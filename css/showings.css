@@ -1,0 +1,19 @@
+.showing-card {
+    background-color: #32CD32; /* Lime green color */
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin: 5px;
+}
+
+.showing-card:hover {
+    background-color: #2E8B57; /* Darker green on hover */
+}
+
+.card-body {
+    text-align: center;
+}
+
+.grid-container {
+    margin: 20px;
+}
