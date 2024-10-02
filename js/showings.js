@@ -30,13 +30,15 @@ async function displayShowings(movieTitle) {
                 showingCard.classList.add("text-decoration-none");
 
                 const showingDate = parseJsonLocalDateTimeToDate(showing.startTime.match(/(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2})/));
-                const showingTime = showingDate.toLocaleTimeString();
+
+                const timeOptions = { hour: '2-digit', minute: '2-digit', hour12: false };
+                const showingTime = showingDate.toLocaleTimeString('default', timeOptions);
 
                 showingCard.innerHTML += `
                     <div class="card showing-card">
                         <div class="card-body">
-                            <h5 class="card-title">${showing.theatre.name}</h5>
-                            <p class="card-text">${showingTime}</p>
+                            <h7 class="card-title">${showing.theatre.name}</h7>
+                            <h5 class="card-text">${showingTime}</h5>
                         </div>
                     </div>
                 `;
