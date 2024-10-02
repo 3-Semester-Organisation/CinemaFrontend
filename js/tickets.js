@@ -5,7 +5,10 @@ async function initTicketsView() {
         document.getElementById('selectBody').innerHTML = html;
         document.getElementById('selectBody').onchange = async () => {
             let showingId = document.getElementById('selectBody').value;
-            fillTable(showingId);
+            let bookings = await getBookings(showingId);
+            let bookingId = bookings[0].id;
+            let seatBookings = await getSeatBookings(bookingId);
+            fillTable(bookings, seatBookings);
         }
     
     console.log('Tickets view initialized');
@@ -20,7 +23,6 @@ const getShowings = async () => {
             throw new Error('Network response was not ok');
         }
         const showings = await res.json();
-        console.log(showings);
         return showings;
     } catch (error) {
         console.error('Problem with fetch operation on getShowings: ', error);
@@ -52,7 +54,7 @@ const htmlFormatter = json => {
     }
 
     // convert to html for use in form control
-    let html = "";
+    let html = `<option value="" selected disabled>Select a showing</option>`; // sets initial value to disabled
     for (let showing of showingList) {
         html += `<option value="${showing.id}">${showing.theatre} | ${showing.movie} - ${showing.time}</option>`
     }
@@ -63,28 +65,58 @@ const htmlFormatter = json => {
 
 const getBookings = async showingId => {
     try {
-        const res = await fetch(`http://localhost/api/v1/bookings?showingId=${showingId}`);
+        const res = await fetch(`http://localhost:8080/api/v1/bookings?showingId=${showingId}`);
         if (!res.ok) {
             throw new Error('Network response was not ok');
         }
         const bookings = await res.json();
-        console.log(bookings);
         return bookings;
     } catch (error) {
         console.error('Problem with fetch operation on getbookings: ', error);
     }
 }
 
-const fillTable = async showingId => {
-    let bookings = await getBookings(showingId);
+const getSeatBookings = async bookingId => {
+    try {
+        const res = await fetch(`http://localhost:8080/api/v1/seatbookings?bookingId=${bookingId}`);
+        if (!res.ok) {
+            throw new Error('Network response was not ok');
+        }
+        const seatBookings = await res.json();
+        return seatBookings;
+    } catch (error) {
+        console.error('Problem with fetch operation on getSeatBookings: ', error);
+    }
+}
+
+// gonna have to look this over again.. it works tho
+const fillTable = async (bookingList, seatBookingList) => {
+    const bookings = bookingList;
+    const seatBookings = seatBookingList;
+    console.log('Bookings: ', bookings);
+    console.log('Seat bookings: ', seatBookings);
+
+    // Create a map of seat bookings by booking ID
+    const seatBookingMap = new Map();
+    for (let seatBooking of seatBookings) {
+        if (!seatBookingMap.has(seatBooking.booking.id)) {
+            seatBookingMap.set(seatBooking.booking.id, []);
+        }
+        seatBookingMap.get(seatBooking.booking.id).push(seatBooking);
+        console.log(seatBookingMap);
+    }
+
     let html = "";
     for (let booking of bookings) {
-        html += `<tr>
-        <td>${booking.customerName}</td>
-        <td>${booking.customerEmail}</td>
-        <td>${booking.seatBooking.rowNumber}</td>
-        <td>${booking.seatBooking.seatNumber}</td>
-        </tr>`
+        const seatBookingList = seatBookingMap.get(booking.id) || [];
+        for (let seatBooking of seatBookingList) {
+            html += `<tr>
+            <td>${booking.customer.name}</td>
+            <td>${booking.customer.email}</td>
+            <td>${seatBooking.seatRowNumber}</td>
+            <td>${seatBooking.seatNumber}</td>
+            </tr>`;
+        }
     }
     document.getElementById('tableBody').innerHTML = html;
 }
