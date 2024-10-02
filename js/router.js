@@ -1,3 +1,5 @@
+import { initAddMovieView } from "./omdb.js";
+
 function initializeViewNavigation() {
   window.addEventListener("hashchange", handleViewChange);
   handleViewChange(); // Set initial view
@@ -27,11 +29,19 @@ function loadView(viewName) {
     })
     .then(html => {
       app.innerHTML = html;
+      initView(viewName);
     })
     .catch(error => {
       console.error(error);
       app.innerHTML = `<p>Error loading view.</p>`;
     });
+}
+
+function initView(viewName) {
+  if (viewName === 'addMovie') {
+    initAddMovieView();
+  }
+  // Initialize other views as needed
 }
 
 function updateNavbarActiveLink(view) {
