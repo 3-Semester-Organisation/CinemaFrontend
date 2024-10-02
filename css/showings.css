@@ -17,3 +17,9 @@
 .grid-container {
     margin: 20px;
 }
+
+.column-header {
+    font-size: 1.2rem;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
