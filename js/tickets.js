@@ -1,5 +1,5 @@
-function initTicketsView() {
-    addEventListener('DOMContentLoaded', async () => {
+async function initTicketsView() {
+    
         let showings = await getShowings();
         let html = htmlFormatter(showings);
         document.getElementById('selectBody').innerHTML = html;
@@ -7,7 +7,7 @@ function initTicketsView() {
             let showingId = document.getElementById('selectBody').value;
             fillTable(showingId);
         }
-    })
+    
     console.log('Tickets view initialized');
 }
 
@@ -34,21 +34,27 @@ const htmlFormatter = json => {
 
     for (let showing of json) {
         let id = showing.id;
-        let theatre = showing.theatre;
+        let theatre = showing.theatre.name;
         let movie = showing.movie.title;
-        let time = showing.startTime;    
+        let time = new Date(showing.startTime);
+        
+        // Extract hours and minutes in 24-hour format
+        let hours = time.getHours().toString().padStart(2, '0');
+        let minutes = time.getMinutes().toString().padStart(2, '0');
+        let formattedTime = `${hours}:${minutes}`;
+
         showingList.push({
             id: id,
             theatre: theatre,
             movie: movie,
-            time: time
+            time: formattedTime
         })
     }
 
     // convert to html for use in form control
     let html = "";
     for (let showing of showingList) {
-        html += `<option value="${showing.id}">Sal: ${showing.theatre} | ${showing.movie} - ${showing.time}</option>`
+        html += `<option value="${showing.id}">${showing.theatre} | ${showing.movie} - ${showing.time}</option>`
     }
 
     return html;
