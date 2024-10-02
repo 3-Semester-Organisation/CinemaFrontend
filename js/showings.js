@@ -10,6 +10,18 @@ async function displayShowings(movieTitle) {
         checkForErrors(response);
         const showingList = await response.json();
 
+        const movieTitleElement = document.getElementById("movie-title");
+        movieTitleElement.innerText = movieTitle.toString();
+
+        const thumbnail = document.getElementById("movie-thumbnail");
+        thumbnail.setAttribute("src", showingList[0].movie.thumbnail);
+        thumbnail.setAttribute("alt", "poster of the movie: " + movieTitle.toString())
+
+        const descriptionHeader = document.getElementById("movie-description-header");
+        descriptionHeader.innerText = "Description";
+        const movieDescription = document.getElementById("movie-description")
+        movieDescription.innerText = showingList[0].movie.description;
+
         const showingsGrid = document.getElementById("showings-grid");
         const nextSevenDaysFromCurrentDate = getNextSevenDays();
 
