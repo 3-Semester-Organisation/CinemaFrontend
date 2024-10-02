@@ -1,3 +1,16 @@
+function initTicketsView() {
+    addEventListener('DOMContentLoaded', async () => {
+        let showings = await getShowings();
+        let html = htmlFormatter(showings);
+        document.getElementById('selectBody').innerHTML = html;
+        document.getElementById('selectBody').onchange = async () => {
+            let showingId = document.getElementById('selectBody').value;
+            fillTable(showingId);
+        }
+    })
+    console.log('Tickets view initialized');
+}
+
 
 // fetches all showings from the database
 const getShowings = async () => {
@@ -41,12 +54,6 @@ const htmlFormatter = json => {
     return html;
 }
 
-addEventListener('DOMContentLoaded', async () => {
-    let showings = await getShowings();
-    let html = htmlFormatter(showings);
-    document.getElementById('selectBody').innerHTML = html;
-})
-
 
 const getBookings = async showingId => {
     try {
@@ -75,3 +82,5 @@ const fillTable = async showingId => {
     }
     document.getElementById('tableBody').innerHTML = html;
 }
+    
+export { initTicketsView };

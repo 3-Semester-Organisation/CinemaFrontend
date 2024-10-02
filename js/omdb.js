@@ -10,6 +10,7 @@ function initAddMovieView() {
     } else {
       console.error('Add button not found');
     }
+    console.log('Add movie view initialized');
   }
 
 const getMovie = async movieTitle => {
@@ -19,7 +20,6 @@ const getMovie = async movieTitle => {
             throw new Error('Network response was not ok');
         }
         const movie = await res.json();
-        console.log(movie);
         return movie;
     } catch (error) {
         console.error('Problem with fetch operation on getMovie: ', error);
