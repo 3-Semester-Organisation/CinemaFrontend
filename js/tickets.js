@@ -63,7 +63,7 @@ const htmlFormatter = json => {
 
 const getBookings = async showingId => {
     try {
-        const res = await fetch(`http://localhost/api/v1/bookings?showingId=${showingId}`);
+        const res = await fetch(`http://localhost:8080/api/v1/bookings?showingId=${showingId}`);
         if (!res.ok) {
             throw new Error('Network response was not ok');
         }
@@ -80,10 +80,8 @@ const fillTable = async showingId => {
     let html = "";
     for (let booking of bookings) {
         html += `<tr>
-        <td>${booking.customerName}</td>
-        <td>${booking.customerEmail}</td>
-        <td>${booking.seatBooking.rowNumber}</td>
-        <td>${booking.seatBooking.seatNumber}</td>
+        <td>${booking.customer.name}</td>
+        <td>${booking.customer.email}</td>
         </tr>`
     }
     document.getElementById('tableBody').innerHTML = html;
