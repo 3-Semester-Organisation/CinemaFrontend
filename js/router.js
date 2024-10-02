@@ -29,8 +29,8 @@ function loadView(viewName) {
       return response.text();
     })
     .then(html => {
-      app.innerHTML = html;
-      initView(viewName);
+      app.innerHTML = html; // sets the innerHTML of the app div to the fetched html
+      initView(viewName); // inits js for the view
     })
     .catch(error => {
       console.error(error);
@@ -38,6 +38,7 @@ function loadView(viewName) {
     });
 }
 
+// helper function for loadView, initializes js for given view
 function initView(viewName) {
   if (viewName === 'addMovie') {
     initAddMovieView();
