@@ -1,9 +1,6 @@
 const SHOWINGS_URL = "http://127.0.0.1:8080/api/v1/showings"
 
 
-
-
-
 async function displayShowings(movieTitle) {
     try {
         const response = await fetch(SHOWINGS_URL + "?title=" + movieTitle);
@@ -11,7 +8,7 @@ async function displayShowings(movieTitle) {
         const showingList = await response.json();
 
         const movieTitleElement = document.getElementById("movie-title");
-        movieTitleElement.innerText = movieTitle.toString();
+        movieTitleElement.innerText = movieTitle;
 
         const thumbnail = document.getElementById("movie-thumbnail");
         thumbnail.setAttribute("src", showingList[0].movie.thumbnail);
@@ -34,10 +31,6 @@ async function displayShowings(movieTitle) {
         console.error(error.message);
     }
 }
-
-
-
-
 
 
 function buildColumn(showingDay, showingList) {
@@ -65,10 +58,6 @@ function buildColumn(showingDay, showingList) {
 }
 
 
-
-
-
-
 function buildCard(showing) {
     const showingCard = document.createElement("a");
     showingCard.classList.add("text-decoration-none");
@@ -92,10 +81,6 @@ function buildCard(showing) {
 }
 
 
-
-
-
-
 function checkForErrors(response) {
     if (!response.ok) {
         let errorResponse = response.json();
@@ -104,10 +89,6 @@ function checkForErrors(response) {
         throw error;
     }
 }
-
-
-
-
 
 
 function getNextSevenDays() {
@@ -122,10 +103,6 @@ function getNextSevenDays() {
 
     return daysArray;
 }
-
-
-
-
 
 
 function parseJsonLocalDateTimeToDate(jsonLocalDateTime) {
@@ -145,12 +122,10 @@ function parseJsonLocalDateTimeToDate(jsonLocalDateTime) {
 }
 
 
-
-
-
-
 function displaySeatBooking() {
     alert("redirect to seatbooking")
 }
 
-displayShowings("Alien");
+document.addEventListener("DOMContentLoaded", () => {
+    displayShowings("Alien");
+});
