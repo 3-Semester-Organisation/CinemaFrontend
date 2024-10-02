@@ -75,7 +75,7 @@ function buildCard(showing) {
                     </div>
                 `;
 
-    showingCard.addEventListener("click", displaySeatBooking
+    showingCard.addEventListener("click", displaySeatBooking)
     return showingCard;
 }
 
