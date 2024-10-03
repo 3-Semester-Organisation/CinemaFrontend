@@ -94,3 +94,7 @@ body {
 .navbar-nav.ml-auto {
   flex: 0;
 }
+
+.short-input {
+  width: 500px;
+}
