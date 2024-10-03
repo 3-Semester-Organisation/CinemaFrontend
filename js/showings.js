@@ -1,6 +1,13 @@
 const SHOWINGS_URL = "http://127.0.0.1:8080/api/v1/showings"
 
 
+async function initShowingsView() {
+    // runs this code when you access the showings view
+    displayShowings("Alien");
+    console.log("Showings view initialized");
+
+}
+
 async function displayShowings(movieTitle) {
     try {
         const response = await fetch(SHOWINGS_URL + "?title=" + movieTitle);
@@ -126,6 +133,11 @@ function displaySeatBooking() {
     alert("redirect to seatbooking")
 }
 
+// commented this out, runs in init function now
+/*
 document.addEventListener("DOMContentLoaded", () => {
     displayShowings("Alien");
 });
+*/
+
+export { initShowingsView };
