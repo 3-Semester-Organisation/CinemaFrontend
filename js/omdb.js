@@ -32,8 +32,36 @@ const getMovie = async movieTitle => {
 
 const postMovie = async movie => {
 
+  let firstGenre = movie.Genre.split(',')[0].trim().toUpperCase();
+
+  // create a new movie object from response
+  const newMovie = {
+    title: movie.Title,
+    description: movie.Plot,
+    genre: firstGenre,
+    rating: movie.Rated,
+    thumbnail: movie.Poster,
+  }
+
+  try {
+    const res = await fetch('http://localhost:8080/api/v1/movies/addmovie', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(newMovie),
+    });
+    if (!res.ok) {
+      console.log(JSON.stringify(newMovie));
+      throw new Error('Network response was not ok');
+      
+    }
+    console.log('Movie added');
+  } catch (error) {
+    console.error('Problem with fetch operation on postMovie: ', error);
+  }
+  
+
 }
-
-
 
 export { initAddMovieView };
