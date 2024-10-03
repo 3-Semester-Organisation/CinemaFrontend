@@ -41,6 +41,7 @@ const getGenres = async () => {
             throw new Error('Network response was not ok');
         }
         const genres = await resp.json();
+        console.log(genres);
         return genres;
     } catch (error) {
         console.error('Problem with fetch operation on getMovies: ', error);
@@ -54,7 +55,7 @@ const moviesHTMLFormatter = json => {
         let id = movie.id;
         let title = movie.title;
         let description = movie.description;
-        let genre = movie.genre;
+        let genres = movie.genreList.join(", "); 
         let ageLimit = movie.ageLimit;
         let thumbnail = movie.thumbnail;
 
@@ -62,7 +63,7 @@ const moviesHTMLFormatter = json => {
             id: id,
             title: title,
             description: description,
-            genre: genre,
+            genres: genres,
             ageLimit: ageLimit,
             thumbnail: thumbnail,
         });
@@ -80,7 +81,7 @@ const moviesHTMLFormatter = json => {
                         <h5 class="card-title text-white">${movie.title}</h5>
                         <p class="card-text text-white">${movie.description}</p>
                         <p class="card-text">
-                            <small class="card-text text-white">Genre: ${movie.genre}</small><br>
+                            <small class="card-text text-white">Genre: ${movie.genres}</small><br>
                             <small class="text-secondary">Recommended age: ${movie.ageLimit}</small>
                         </p>
                     </div>
