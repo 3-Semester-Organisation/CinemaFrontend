@@ -1,14 +1,30 @@
 const SHOWINGS_URL = "http://127.0.0.1:8080/api/v1/showings"
 
 
+async function initShowingsView() {
+    // runs this code when you access the showings view
+    displayShowings("Alien");
+    console.log("Showings view initialized");
 
-
+}
 
 async function displayShowings(movieTitle) {
     try {
         const response = await fetch(SHOWINGS_URL + "?title=" + movieTitle);
         checkForErrors(response);
         const showingList = await response.json();
+
+        const movieTitleElement = document.getElementById("movie-title");
+        movieTitleElement.innerText = movieTitle;
+
+        const thumbnail = document.getElementById("movie-thumbnail");
+        thumbnail.setAttribute("src", showingList[0].movie.thumbnail);
+        thumbnail.setAttribute("alt", "poster of the movie: " + movieTitle.toString())
+
+        const descriptionHeader = document.getElementById("movie-description-header");
+        descriptionHeader.innerText = "Description";
+        const movieDescription = document.getElementById("movie-description")
+        movieDescription.innerText = showingList[0].movie.description;
 
         const showingsGrid = document.getElementById("showings-grid");
         const nextSevenDaysFromCurrentDate = getNextSevenDays();
@@ -22,10 +38,6 @@ async function displayShowings(movieTitle) {
         console.error(error.message);
     }
 }
-
-
-
-
 
 
 function buildColumn(showingDay, showingList) {
@@ -53,10 +65,6 @@ function buildColumn(showingDay, showingList) {
 }
 
 
-
-
-
-
 function buildCard(showing) {
     const showingCard = document.createElement("a");
     showingCard.classList.add("text-decoration-none");
@@ -80,10 +88,6 @@ function buildCard(showing) {
 }
 
 
-
-
-
-
 function checkForErrors(response) {
     if (!response.ok) {
         let errorResponse = response.json();
@@ -92,10 +96,6 @@ function checkForErrors(response) {
         throw error;
     }
 }
-
-
-
-
 
 
 function getNextSevenDays() {
@@ -110,10 +110,6 @@ function getNextSevenDays() {
 
     return daysArray;
 }
-
-
-
-
 
 
 function parseJsonLocalDateTimeToDate(jsonLocalDateTime) {
@@ -133,12 +129,15 @@ function parseJsonLocalDateTimeToDate(jsonLocalDateTime) {
 }
 
 
-
-
-
-
 function displaySeatBooking() {
     alert("redirect to seatbooking")
 }
 
-displayShowings("Alien");
+// commented this out, runs in init function now
+/*
+document.addEventListener("DOMContentLoaded", () => {
+    displayShowings("Alien");
+});
+*/
+
+export { initShowingsView };
