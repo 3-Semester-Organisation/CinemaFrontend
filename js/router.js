@@ -1,6 +1,7 @@
 import { initAddMovieView } from "./omdb.js";
 import { initTicketsView } from "./tickets.js";
 import { initShowingsView } from "./showings.js";
+import { initMoviesView } from "./movies.js";
 
 function initializeViewNavigation() {
   window.addEventListener("hashchange", handleViewChange);
@@ -47,6 +48,8 @@ function initView(viewName) {
     initTicketsView();
   } else if (viewName === 'showings') {
     initShowingsView();
+  } else if (viewName === 'movies') {
+    initMoviesView();
   }
   // Initialize other views as needed
 }
