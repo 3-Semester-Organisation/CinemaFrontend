@@ -68,28 +68,28 @@ const moviesHTMLFormatter = json => {
         });
     }
 
-    // Start med en række for layoutet
     let html = `<div class="row row-cols-1 row-cols-md-3 g-4">`;
 
     for (let movie of movieList) {
         html += `
-            <div class="col">
-                <div class="card h-100">
-                    <img src="${movie.thumbnail}" class="card-img-top" alt="${movie.title}">
+        <div class="col mb-4">
+            <a href="${movie.showings}" style="text-decoration: none;"> <!-- TODO link til moviens showings her!! -->
+                <div class="card h-100" style="background-color: #343a40">
                     <div class="card-body">
-                        <h5 class="card-title">${movie.title}</h5>
-                        <p class="card-text">${movie.description}</p>
+                    <img src="${movie.thumbnail}" class="card-img-top" alt="${movie.title}">
+                        <h5 class="card-title text-white">${movie.title}</h5>
+                        <p class="card-text text-white">${movie.description}</p>
                         <p class="card-text">
-                            <small class="text-muted">Genre: ${movie.genre}</small><br>
-                            <small class="text-muted">Age requirement: ${movie.ageLimit}</small>
+                            <small class="card-text text-white">Genre: ${movie.genre}</small><br>
+                            <small class="text-secondary">Recommended age: ${movie.ageLimit}</small>
                         </p>
                     </div>
                 </div>
-            </div>
-        `;
+            </a>
+        </div>
+    `;
     }
 
-    // Afslut rækken
     html += `</div>`;
 
     return html;
