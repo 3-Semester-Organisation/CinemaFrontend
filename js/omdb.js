@@ -7,6 +7,8 @@ function initAddMovieView() {
         let movie = await getMovie(movieTitle);
         console.log(movie);
         postMovie(movie);
+        alert('Movie added!');
+        document.getElementById('input').value = ''; // reset input field
       };
     } else {
       console.error('Add button not found');
@@ -32,7 +34,17 @@ const getMovie = async movieTitle => {
 
 const postMovie = async movie => {
 
+  // takes only the first genre for now
   let firstGenre = movie.Genre.split(',')[0].trim().toUpperCase();
+
+  const ratingMap = {
+    'G': 0,
+    'PG': 0,
+    'PG-13': 13,
+    'R': 17,
+    'NC-17': 17
+  }
+
 
   // create a new movie object from response
   const newMovie = {
@@ -41,6 +53,7 @@ const postMovie = async movie => {
     genre: firstGenre,
     rating: movie.Rated,
     thumbnail: movie.Poster,
+    ageLimit: ratingMap[movie.Rated]
   }
 
   try {
@@ -52,10 +65,11 @@ const postMovie = async movie => {
       body: JSON.stringify(newMovie),
     });
     if (!res.ok) {
-      console.log(JSON.stringify(newMovie));
+    
       throw new Error('Network response was not ok');
       
     }
+    console.log(JSON.stringify(newMovie));
     console.log('Movie added');
   } catch (error) {
     console.error('Problem with fetch operation on postMovie: ', error);
