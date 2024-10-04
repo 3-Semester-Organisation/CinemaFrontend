@@ -1,9 +1,11 @@
+import {checkForErrors} from "./util.js";
+
 const SHOWINGS_URL = "http://127.0.0.1:8080/api/v1/showings"
 
 
 async function initShowingsView(movieId, movieTitle) {
     // runs this code when you access the showings view
-    displayShowingsBy(movieId, movieTitle);
+    await displayShowingsBy(movieId, movieTitle);
     console.log("Showings view initialized");
 }
 
@@ -90,16 +92,6 @@ function buildCard(showing) {
 
     showingCard.addEventListener("click", displaySeatBooking)
     return showingCard;
-}
-
-
-function checkForErrors(response) {
-    if (!response.ok) {
-        let errorResponse = response.json();
-        let error = new Error(errorResponse.message);
-        error.apiError = errorResponse;
-        throw error;
-    }
 }
 
 
