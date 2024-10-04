@@ -1,7 +1,34 @@
-<section id="home" class=" bg-grey-blue p-4 rounded">
+<section id="login" class=" bg-grey-blue p-4 rounded">
     <header>
-      <h2>Login</h2>
-    </header>
-    <p>login here</p>
-    <a class="btn btn-primary">Login</a>
+    <div class="container">
+      <div class="row justify-content-center">
+        <header class="mb-2">
+          <h2>Login</h2>
+        </header>
+        <div id="form-container" class="container"></div>
+        <form>
+          <!-- Email input -->
+          <div class="mb-4">
+            <input type="email" class="form-control"/>
+            <label class="form-label">Email address</label>
+          </div>
+        
+          <!-- Password input -->
+          <div class="mb-4">
+            <input type="password" class="form-control" />
+            <label class="form-label">Password</label>
+          </div>
+        
+          <!-- 2 column grid layout for inline styling -->
+          <div class="row mb-4">
+            <div class="col d-flex justify-content-center">
+              <a href="#login" onclick="function fuku(){alert('womp womp')};fuku()">Forgot password?</a>
+            </div>
+          </div>
+        
+          <!-- Submit button -->
+          <button  type="button" class="btn btn-primary btn-block mb-4">Sign in</button>
+        </form>
+      </div>
+    </div>
   </section>
