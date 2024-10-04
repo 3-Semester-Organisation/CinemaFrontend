@@ -1,3 +1,5 @@
+import { initShowingsView } from "./showings.js";
+import {initializeViewNavigation} from "./router.js";
 const MOVIES_URL = "http://127.0.0.1:8080/api/v1/movies"
 
 async function initMoviesView() {
@@ -10,12 +12,11 @@ async function initMoviesView() {
 const loadMovies = async () => {
     let movies = await getMovies();
     let movieHtml = moviesHTMLFormatter(movies);
-    document.getElementById('movies-div').innerHTML = movieHtml; // insert list
+    document.getElementById('movies-div').appendChild(movieHtml); // insert list
 }
 const loadGenres = async () => {
     let genres = await getGenres();
-    let movieHtml = genresHTMLFormatter(genres);
-    document.getElementById('genre-select').innerHTML = movieHtml; // insert list
+    document.getElementById('genre-select').innerHTML = genresHTMLFormatter(genres); // insert list
 }
 
 
@@ -41,9 +42,24 @@ const getGenres = async () => {
             throw new Error('Network response was not ok');
         }
         const genres = await resp.json();
+        console.log(genres);
         return genres;
     } catch (error) {
         console.error('Problem with fetch operation on getMovies: ', error);
+    }
+}
+
+function pgRatingSelector(ageLimit){
+    if(ageLimit == 0) {
+        return "images/MPA_G_RATING.svg.png";
+    }else if(ageLimit < 13){
+        return "images/MPA_PG_RATING.svg.png";
+    }else if(ageLimit < 17){
+        return "images/MPA_PG-13_RATING.svg.png";
+    }else if(ageLimit < 18){
+        return "images/MPA_R_RATING.svg.png";
+    }else{
+        return "images/MPA_NC-17_RATING.svg.png";
     }
 }
 
@@ -64,6 +80,7 @@ const moviesHTMLFormatter = json => {
         let genres = movie.genreList.join(", ");
         let ageLimit = movie.ageLimit;
         let thumbnail = movie.thumbnail;
+        let pgRating = pgRatingSelector(movie.ageLimit);
 
         movieList.push({
             id: id,
@@ -72,17 +89,49 @@ const moviesHTMLFormatter = json => {
             genres: genres,
             ageLimit: ageLimit,
             thumbnail: thumbnail,
+            pgRating: pgRating,
         });
     }
 
-    let html = `<div class="row row-cols-1 row-cols-md-5 g-4">`;
+    // leaving this here for now, in case i missed something 
+    // -mads
+
+    /*
+    let movieContainer = document.createElement("div");
+    movieContainer.classList.add("container-fluid", "row", "row-cols-1", "row-cols-md-5", "g-4");
 
     for (let movie of movieList) {
-        html += `
-        <div class="col mb-5">
+        movieContainer.innerHTML += `
+        <div class="col mb-4">
+            <a href="#showings" style="text-decoration: none;"> <!-- TODO link til moviens showings her!! -->
+                <div class="card h-100 no-border bg-grey-blue d-flex flex-column">
+                    <div class="card-body d-flex flex-column">
+                        <img data-movie-title="${movie.title}" src="${movie.thumbnail}" class="card-img-top mb-2 thumbnail card-shadow rounded img-fluid w-100" alt="${movie.title}">
+                            <h6 class="card-title text-white mb-4">${movie.title}</h6>
+                            <div class="mt-auto">
+                                <button class="btn btn-sm btn-primary">Buy ticket</button>
+                            <p class="card-text">
+                                <small class="text-secondary">Recommended age: ${movie.ageLimit}</small>
+                            </p>
+                            </div>
+                    </div>
+                </div>
+            </a>
+        </div>
+    `;
+    }
+    */
+
+    let movieContainer = document.createElement("div");
+    movieContainer.classList.add("row", "row-cols-1", "row-cols-md-5", "g-4");
+    
+
+    for (let movie of movieList) {
+        movieContainer.innerHTML += `
+        <div class="col mb-4">
         <a href="${movie.showings}" style="text-decoration: none;"> <!-- TODO link til moviens showings her!! -->
             <div class="card h-100 bg-grey-blue d-flex flex-column no-border">
-                <img src="${movie.thumbnail}" class="card-img-top mb-1 rounded thumbnail" style="box-shadow: 0 4px 8px rgba(0, 0, 0, 0.8);" alt="${movie.title}">
+                <img data-movie-title=${movie.title} src="${movie.thumbnail}" class="card-img-top mb-1 rounded thumbnail" alt="${movie.title}">
                 <div class="card-body d-flex flex-column">
                     <h6 class="card-title text-white mb-4">${movie.title}</h6>
                     <div class="mt-auto">
@@ -98,16 +147,21 @@ const moviesHTMLFormatter = json => {
     `;
     }
 
-    html += `</div>`;
+    movieContainer.addEventListener("click",  handleClick);
 
-    return html;
+    return movieContainer;
 }
 
 
+function handleClick(event) {
+    let target = event.target;
 
-
-
-
+    if (target.dataset.movieTitle) {
+        let movieTitle = target.dataset.movieTitle;
+        initializeViewNavigation()
+        initShowingsView(movieTitle);
+    }
+}
 
 const genresHTMLFormatter = json => {
     json.sort();
@@ -133,12 +187,5 @@ const updateTable = async () => {
         document.getElementById('movies-div').innerHTML = movieHtml;
     }
 }
-
-
-
-
-
-
-
 
 export { initMoviesView };

@@ -46,8 +46,6 @@ function initView(viewName) {
     initAddMovieView();
   } else if (viewName === 'tickets') {
     initTicketsView();
-  } else if (viewName === 'showings') {
-    initShowingsView();
   } else if (viewName === 'movies') {
     initMoviesView();
   }
