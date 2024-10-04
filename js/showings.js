@@ -3,11 +3,11 @@ const SHOWINGS_URL = "http://127.0.0.1:8080/api/v1/showings"
 
 async function initShowingsView(movieId, movieTitle) {
     // runs this code when you access the showings view
-    displayShowings(movieId, movieTitle);
+    displayShowingsBy(movieId, movieTitle);
     console.log("Showings view initialized");
 }
 
-async function displayShowings(movieId, movieTitle) {
+async function displayShowingsBy(movieId, movieTitle) {
 
     try {
         const response = await fetch(SHOWINGS_URL + "?movieId=" + movieId);
@@ -18,7 +18,7 @@ async function displayShowings(movieId, movieTitle) {
         const movieTitleElement = document.getElementById("movie-title");
         const thumbnail = document.getElementById("movie-thumbnail");
         if (!movieTitleElement || !thumbnail) {
-            setTimeout(() => displayShowings(movieTitle), 100); // Retry after 100ms
+            setTimeout(() => displayShowingsBy(movieId, movieTitle), 100); // Retry after 100ms
             return;
         }
 
@@ -141,7 +141,7 @@ function displaySeatBooking() {
 // commented this out, runs in init function now
 /*
 document.addEventListener("DOMContentLoaded", () => {
-    displayShowings("Alien");
+    displayShowingsBy("Alien");
 });
 */
 
