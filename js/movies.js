@@ -1,5 +1,6 @@
 import { initShowingsView } from "./showings.js";
 import {initializeViewNavigation} from "./router.js";
+import {checkForErrors} from "./util.js";
 const MOVIES_URL = "http://127.0.0.1:8080/api/v1/movies"
 
 async function initMoviesView() {
@@ -20,6 +21,17 @@ const loadMovies = async () => {
 const loadGenres = async () => {
     let genres = await getGenres();
     document.getElementById('genre-select').innerHTML = genresHTMLFormatter(genres); // insert list
+}
+
+
+async function getActiveMovies() {
+    try {
+        const response = await fetch(MOVIES_URL + "/active")
+        checkForErrors(response);
+        return await response.json();
+    } catch (error) {
+        alert("Something went wrong trying to fetch the active movies: " + error)
+    }
 }
 
 
@@ -82,6 +94,7 @@ function truncateTitle(title, maxLength) {
 const moviesHTMLFormatter = json => {
     let movieList = [];
 
+    //is this not redundant?
     for (let movie of json) {
         let id = movie.id;
         let title = truncateTitle(movie.title, 25);
@@ -173,3 +186,4 @@ const updateTable = async () => {
 }
 
 export { initMoviesView };
+export { getActiveMovies };
