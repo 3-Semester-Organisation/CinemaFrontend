@@ -22,7 +22,7 @@ const loadGenres = async () => {
 
 const getMovies = async () => { ///movies?genre=&age=
     let genreChoice = document.getElementById("genre-select").value;
-    let ageChoice = document.getElementById("age-input").value;
+    let ageChoice = document.getElementById("age-select").value;
     if (ageChoice === "0") {ageChoice = ""}
     try {
         const resp = await fetch(`${MOVIES_URL}?genre=${genreChoice}&age=${ageChoice}`);
@@ -47,6 +47,7 @@ const getGenres = async () => {
             throw new Error('Network response was not ok');
         }
         const genres = await resp.json();
+        console.log(genres);
         return genres;
     } catch (error) {
         console.error('Problem with fetch operation on getMovies: ', error);
@@ -67,14 +68,21 @@ function pgRatingSelector(ageLimit){
     }
 }
 
+function truncateTitle(title, maxLength) {
+    if (title.length > maxLength) {
+        return title.substring(0, maxLength - 3) + "...";
+    }
+    return title;
+}
+
 const moviesHTMLFormatter = json => {
     let movieList = [];
 
     for (let movie of json) {
         let id = movie.id;
-        let title = movie.title;
+        let title = truncateTitle(movie.title, 25);
         let description = movie.description;
-        let genre = movie.genre;
+        let genres = movie.genreList.join(", ");
         let ageLimit = movie.ageLimit;
         let thumbnail = movie.thumbnail;
         let pgRating = pgRatingSelector(movie.ageLimit);
@@ -83,33 +91,64 @@ const moviesHTMLFormatter = json => {
             id: id,
             title: title,
             description: description,
-            genre: genre,
+            genres: genres,
             ageLimit: ageLimit,
             thumbnail: thumbnail,
             pgRating: pgRating,
         });
     }
 
+    // leaving this here for now, in case i missed something 
+    // -mads
+
+    /*
     let movieContainer = document.createElement("div");
-    movieContainer.classList.add("row", "row-cols-1", "row-cols-md-3", "g-4");
+    movieContainer.classList.add("container-fluid", "row", "row-cols-1", "row-cols-md-5", "g-4");
 
     for (let movie of movieList) {
         movieContainer.innerHTML += `
         <div class="col mb-4">
             <a href="#showings" style="text-decoration: none;"> <!-- TODO link til moviens showings her!! -->
-                <div class="card h-100" style="background-color: #343a40">
-                    <div class="card-body">
-                        <img data-movie-title="${movie.title}" src="${movie.thumbnail}" class="card-img-top" alt="${movie.title}">
-                            <h5 class="card-title text-white">${movie.title}</h5>
-                            <p class="card-text text-white">${movie.description}</p>
+                <div class="card h-100 no-border bg-grey-blue d-flex flex-column">
+                    <div class="card-body d-flex flex-column">
+                        <img data-movie-title="${movie.title}" src="${movie.thumbnail}" class="card-img-top mb-2 thumbnail card-shadow rounded img-fluid w-100" alt="${movie.title}">
+                            <h6 class="card-title text-white mb-4">${movie.title}</h6>
+                            <div class="mt-auto">
+                                <button class="btn btn-sm btn-primary">Buy ticket</button>
                             <p class="card-text">
-                                <small class="card-text text-white">Genre: ${movie.genre}</small><br>
                                 <small class="text-secondary">Recommended age: ${movie.ageLimit}</small>
                             </p>
+                            </div>
                     </div>
                 </div>
             </a>
         </div>
+    `;
+    }
+    */
+
+    let movieContainer = document.createElement("div");
+    movieContainer.classList.add("row", "row-cols-1", "row-cols-md-5", "g-4");
+    
+
+    for (let movie of movieList) {
+        movieContainer.innerHTML += `
+        <div class="col mb-4">
+        <a href="${movie.showings}" style="text-decoration: none;"> <!-- TODO link til moviens showings her!! -->
+            <div class="card h-100 bg-grey-blue d-flex flex-column no-border">
+                <img data-movie-title=${movie.title} src="${movie.thumbnail}" class="card-img-top mb-1 rounded thumbnail" alt="${movie.title}">
+                <div class="card-body d-flex flex-column">
+                    <h6 class="card-title text-white mb-4">${movie.title}</h6>
+                    <div class="mt-auto">
+                    <button class="btn btn-sm btn-primary">Buy ticket</button>
+                        <p class="card-text">
+                            <small class="text-secondary">Recommended age: ${movie.ageLimit}</small>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </a>
+    </div>
     `;
     }
 
@@ -128,11 +167,6 @@ function handleClick(event) {
         initShowingsView(movieTitle);
     }
 }
-
-
-
-
-
 
 const genresHTMLFormatter = json => {
     json.sort();
