@@ -1,9 +1,9 @@
 const SHOWINGS_URL = "http://127.0.0.1:8080/api/v1/showings"
 
 
-async function initShowingsView() {
+async function initShowingsView(movieTitle) {
     // runs this code when you access the showings view
-    displayShowings("Finding Nemo");
+    displayShowings(movieTitle);
     console.log("Showings view initialized");
 
 }
