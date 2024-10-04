@@ -1,3 +1,5 @@
+import { initShowingsView } from "./showings.js";
+import {initializeViewNavigation} from "./router.js";
 const MOVIES_URL = "http://127.0.0.1:8080/api/v1/movies"
 
 async function initMoviesView() {
@@ -10,12 +12,11 @@ async function initMoviesView() {
 const loadMovies = async () => {
     let movies = await getMovies();
     let movieHtml = moviesHTMLFormatter(movies);
-    document.getElementById('movies-div').innerHTML = movieHtml; // insert list
+    document.getElementById('movies-div').appendChild(movieHtml); // insert list
 }
 const loadGenres = async () => {
     let genres = await getGenres();
-    let movieHtml = genresHTMLFormatter(genres);
-    document.getElementById('genre-select').innerHTML = movieHtml; // insert list
+    document.getElementById('genre-select').innerHTML = genresHTMLFormatter(genres); // insert list
 }
 
 
@@ -48,6 +49,20 @@ const getGenres = async () => {
     }
 }
 
+function pgRatingSelector(ageLimit){
+    if(ageLimit == 0) {
+        return "images/MPA_G_RATING.svg.png";
+    }else if(ageLimit < 13){
+        return "images/MPA_PG_RATING.svg.png";
+    }else if(ageLimit < 17){
+        return "images/MPA_PG-13_RATING.svg.png";
+    }else if(ageLimit < 18){
+        return "images/MPA_R_RATING.svg.png";
+    }else{
+        return "images/MPA_NC-17_RATING.svg.png";
+    }
+}
+
 const moviesHTMLFormatter = json => {
     let movieList = [];
 
@@ -58,6 +73,7 @@ const moviesHTMLFormatter = json => {
         let genres = movie.genreList.join(", "); 
         let ageLimit = movie.ageLimit;
         let thumbnail = movie.thumbnail;
+        let pgRating = pgRatingSelector(movie.ageLimit);
 
         movieList.push({
             id: id,
@@ -66,24 +82,26 @@ const moviesHTMLFormatter = json => {
             genres: genres,
             ageLimit: ageLimit,
             thumbnail: thumbnail,
+            pgRating: pgRating,
         });
     }
 
-    let html = `<div class="row row-cols-1 row-cols-md-3 g-4">`;
+    let movieContainer = document.createElement("div");
+    movieContainer.classList.add("row", "row-cols-1", "row-cols-md-3", "g-4");
 
     for (let movie of movieList) {
-        html += `
+        movieContainer.innerHTML += `
         <div class="col mb-4">
-            <a href="${movie.showings}" style="text-decoration: none;"> <!-- TODO link til moviens showings her!! -->
+            <a href="#showings" style="text-decoration: none;"> <!-- TODO link til moviens showings her!! -->
                 <div class="card h-100" style="background-color: #343a40">
                     <div class="card-body">
-                    <img src="${movie.thumbnail}" class="card-img-top" alt="${movie.title}">
-                        <h5 class="card-title text-white">${movie.title}</h5>
-                        <p class="card-text text-white">${movie.description}</p>
-                        <p class="card-text">
-                            <small class="card-text text-white">Genre: ${movie.genres}</small><br>
-                            <small class="text-secondary">Recommended age: ${movie.ageLimit}</small>
-                        </p>
+                        <img data-movie-title="${movie.title}" src="${movie.thumbnail}" class="card-img-top" alt="${movie.title}">
+                            <h5 class="card-title text-white">${movie.title}</h5>
+                            <p class="card-text text-white">${movie.description}</p>
+                            <p class="card-text">
+                                <small class="card-text text-white">Genre: ${movie.genres}</small><br>
+                                <small class="text-secondary">Recommended age: ${movie.ageLimit}</small>
+                            </p>
                     </div>
                 </div>
             </a>
@@ -91,11 +109,21 @@ const moviesHTMLFormatter = json => {
     `;
     }
 
-    html += `</div>`;
+    movieContainer.addEventListener("click",  handleClick);
 
-    return html;
+    return movieContainer;
 }
 
+
+function handleClick(event) {
+    let target = event.target;
+
+    if (target.dataset.movieTitle) {
+        let movieTitle = target.dataset.movieTitle;
+        initializeViewNavigation()
+        initShowingsView(movieTitle);
+    }
+}
 
 
 
