@@ -11,9 +11,12 @@ async function initMoviesView() {
 
 const loadMovies = async () => {
     let movies = await getMovies();
-    let movieHtml = moviesHTMLFormatter(movies);
-    document.getElementById('movies-div').appendChild(movieHtml); // insert list
+    let movieContainer = moviesHTMLFormatter(movies);
+    let moviesDiv = document.getElementById('movies-div');
+    moviesDiv.innerHTML = ''; // Clear existing content
+    moviesDiv.appendChild(movieContainer);
 }
+
 const loadGenres = async () => {
     let genres = await getGenres();
     document.getElementById('genre-select').innerHTML = genresHTMLFormatter(genres); // insert list
@@ -54,6 +57,7 @@ const getGenres = async () => {
     }
 }
 
+// could be rewritten to use rating from omdb instead of ageLimit
 function pgRatingSelector(ageLimit){
     if(ageLimit == 0) {
         return "images/MPA_G_RATING.svg.png";
@@ -98,35 +102,6 @@ const moviesHTMLFormatter = json => {
         });
     }
 
-    // leaving this here for now, in case i missed something 
-    // -mads
-
-    /*
-    let movieContainer = document.createElement("div");
-    movieContainer.classList.add("container-fluid", "row", "row-cols-1", "row-cols-md-5", "g-4");
-
-    for (let movie of movieList) {
-        movieContainer.innerHTML += `
-        <div class="col mb-4">
-            <a href="#showings" style="text-decoration: none;"> <!-- TODO link til moviens showings her!! -->
-                <div class="card h-100 no-border bg-grey-blue d-flex flex-column">
-                    <div class="card-body d-flex flex-column">
-                        <img data-movie-title="${movie.title}" src="${movie.thumbnail}" class="card-img-top mb-2 thumbnail card-shadow rounded img-fluid w-100" alt="${movie.title}">
-                            <h6 class="card-title text-white mb-4">${movie.title}</h6>
-                            <div class="mt-auto">
-                                <button class="btn btn-sm btn-primary">Buy ticket</button>
-                            <p class="card-text">
-                                <small class="text-secondary">Recommended age: ${movie.ageLimit}</small>
-                            </p>
-                            </div>
-                    </div>
-                </div>
-            </a>
-        </div>
-    `;
-    }
-    */
-
     let movieContainer = document.createElement("div");
     movieContainer.classList.add("row", "row-cols-1", "row-cols-md-5", "g-4");
     
@@ -164,7 +139,6 @@ function handleClick(event) {
     let target = event.target;
 
     if (target.dataset.movieId && target.dataset.movieTitle) {
-        console.log(target.dataset.movieId + " " +target.dataset.movieTitle)
         let movieId = target.dataset.movieId;
         let movieTitle = target.dataset.movieTitle;
         initializeViewNavigation()
@@ -186,18 +160,14 @@ const updateTable = async () => {
         event.preventDefault();
 
         let movies = await getMovies();
-        let movieHtml = document.createElement("div");
+        let moviesDiv = document.getElementById('movies-div');
+        moviesDiv.innerHTML = ''; // Clear existing content
 
         if (!movies || movies.length === 0) {
-            let pNode = document.createElement("p");
-            pNode.innerText = "No movies found matching your criteria."
-            movieHtml.appendChild(pNode);
-
+            moviesDiv.innerHTML = `<p>No movies found matching your criteria.</p>`;
         } else {
-            movieHtml = moviesHTMLFormatter(movies);
-            const moviesDiv = document.getElementById('movies-div');
-            moviesDiv.innerHTML = '';
-            moviesDiv.appendChild(movieHtml);
+            let movieContainer = moviesHTMLFormatter(movies);
+            moviesDiv.appendChild(movieContainer);
         }
     }
 }
