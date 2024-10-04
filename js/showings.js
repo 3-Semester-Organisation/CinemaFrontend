@@ -1,15 +1,16 @@
 const SHOWINGS_URL = "http://127.0.0.1:8080/api/v1/showings"
 
 
-async function initShowingsView(movieTitle) {
+async function initShowingsView(movieId, movieTitle) {
     // runs this code when you access the showings view
-    displayShowings(movieTitle);
+    displayShowings(movieId, movieTitle);
     console.log("Showings view initialized");
 }
 
-async function displayShowings(movieTitle) {
+async function displayShowings(movieId, movieTitle) {
+
     try {
-        const response = await fetch(SHOWINGS_URL + "?title=" + movieTitle);
+        const response = await fetch(SHOWINGS_URL + "?movieId=" + movieId);
         checkForErrors(response);
         const showingList = await response.json();
 
