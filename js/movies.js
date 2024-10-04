@@ -1,4 +1,5 @@
 import { initShowingsView } from "./showings.js";
+import {initializeViewNavigation} from "./router.js";
 const MOVIES_URL = "http://127.0.0.1:8080/api/v1/movies"
 
 async function initMoviesView() {
@@ -74,11 +75,11 @@ const moviesHTMLFormatter = json => {
     for (let movie of movieList) {
         movieContainer.innerHTML += `
         <div class="col mb-4">
-            <a style="text-decoration: none;"> <!-- TODO link til moviens showings her!! -->
+            <a href="#showings" style="text-decoration: none;"> <!-- TODO link til moviens showings her!! -->
                 <div class="card h-100" style="background-color: #343a40">
                     <div class="card-body">
-                        <img src="${movie.thumbnail}" class="card-img-top" alt="${movie.title}">
-                            <h5 data-movie-title="${movie.title}" class="card-title text-white">${movie.title}</h5>
+                        <img data-movie-title="${movie.title}" src="${movie.thumbnail}" class="card-img-top" alt="${movie.title}">
+                            <h5 class="card-title text-white">${movie.title}</h5>
                             <p class="card-text text-white">${movie.description}</p>
                             <p class="card-text">
                                 <small class="card-text text-white">Genre: ${movie.genre}</small><br>
@@ -102,6 +103,7 @@ function handleClick(event) {
 
     if (target.dataset.movieTitle) {
         let movieTitle = target.dataset.movieTitle;
+        initializeViewNavigation()
         initShowingsView(movieTitle);
     }
 }
