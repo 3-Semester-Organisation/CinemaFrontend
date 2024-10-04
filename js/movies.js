@@ -29,6 +29,11 @@ const getMovies = async () => { ///movies?genre=&age=
         if (!resp.ok) {
             throw new Error('Network response was not ok');
         }
+
+        if (resp.status === 204){
+            return [];
+        }
+
         const movies = await resp.json();
         return movies;
     } catch (error) {
@@ -143,22 +148,20 @@ const updateTable = async () => {
         event.preventDefault();
 
         let movies = await getMovies();
-        let movieHtml;
+        let movieHtml = document.createElement("div");
+
         if (!movies || movies.length === 0) {
-            movieHtml = `<p>No movies found matching your criteria.</p>`;
+            let pNode = document.createElement("p");
+            pNode.innerText = "No movies found matching your criteria."
+            movieHtml.appendChild(pNode);
+
         } else {
             movieHtml = moviesHTMLFormatter(movies);
-
+            const moviesDiv = document.getElementById('movies-div');
+            moviesDiv.innerHTML = '';
+            moviesDiv.appendChild(movieHtml);
         }
-        document.getElementById('movies-div').innerHTML = movieHtml;
     }
 }
-
-
-
-
-
-
-
 
 export { initMoviesView };
