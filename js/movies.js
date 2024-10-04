@@ -47,6 +47,20 @@ const getGenres = async () => {
     }
 }
 
+function pgRatingSelector(ageLimit){
+    if(ageLimit == 0) {
+        return "images/MPA_G_RATING.svg.png";
+    }else if(ageLimit < 13){
+        return "images/MPA_PG_RATING.svg.png";
+    }else if(ageLimit < 17){
+        return "images/MPA_PG-13_RATING.svg.png";
+    }else if(ageLimit < 18){
+        return "images/MPA_R_RATING.svg.png";
+    }else{
+        return "images/MPA_NC-17_RATING.svg.png";
+    }
+}
+
 const moviesHTMLFormatter = json => {
     let movieList = [];
 
@@ -57,6 +71,7 @@ const moviesHTMLFormatter = json => {
         let genre = movie.genre;
         let ageLimit = movie.ageLimit;
         let thumbnail = movie.thumbnail;
+        let pgRating = pgRatingSelector(movie.ageLimit);
 
         movieList.push({
             id: id,
@@ -65,6 +80,7 @@ const moviesHTMLFormatter = json => {
             genre: genre,
             ageLimit: ageLimit,
             thumbnail: thumbnail,
+            pgRating: pgRating,
         });
     }
 
@@ -76,7 +92,10 @@ const moviesHTMLFormatter = json => {
             <a href="${movie.showings}" style="text-decoration: none;"> <!-- TODO link til moviens showings her!! -->
                 <div class="card h-100" style="background-color: #343a40">
                     <div class="card-body">
-                    <img src="${movie.thumbnail}" class="card-img-top" alt="${movie.title}">
+                        <div style="position: relative">
+                            <img src="${movie.thumbnail}" class="card-img-top" alt="${movie.title}">
+                            <img src="${movie.pgRating}" class="inner-image" alt="${movie.ageLimit}">
+                        </div>
                         <h5 class="card-title text-white">${movie.title}</h5>
                         <p class="card-text text-white">${movie.description}</p>
                         <p class="card-text">
