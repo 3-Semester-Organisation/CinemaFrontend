@@ -141,7 +141,7 @@ const moviesHTMLFormatter = json => {
                     <h6 class="card-title text-white mb-4">${movie.title}</h6>
                     <div class="mt-auto">
                         <a href="#showings">
-                            <button data-movie-title=${movie.title} class="btn btn-sm btn-primary">Buy ticket</button>
+                            <button data-movie-id="${movie.id}" data-movie-title="${movie.title}" class="btn btn-sm btn-primary">Buy ticket</button>
                         </a>
                         <p class="card-text">
                             <small class="text-secondary">Recommended age: ${movie.ageLimit}</small>
@@ -163,10 +163,12 @@ const moviesHTMLFormatter = json => {
 function handleClick(event) {
     let target = event.target;
 
-    if (target.dataset.movieTitle) {
+    if (target.dataset.movieId && target.dataset.movieTitle) {
+        console.log(target.dataset.movieId + " " +target.dataset.movieTitle)
+        let movieId = target.dataset.movieId;
         let movieTitle = target.dataset.movieTitle;
         initializeViewNavigation()
-        initShowingsView(movieTitle);
+        initShowingsView(movieId, movieTitle);
     }
 }
 
