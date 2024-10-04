@@ -23,9 +23,11 @@ const loadGenres = async () => {
 const getMovies = async () => { ///movies?genre=&age=
     let genreChoice = document.getElementById("genre-select").value;
     let ageChoice = document.getElementById("age-input").value;
+    let title = document.getElementById("title").value;
     if (ageChoice === "0") {ageChoice = ""}
     try {
-        const resp = await fetch(`${MOVIES_URL}?genre=${genreChoice}&age=${ageChoice}`);
+        const resp = await fetch(
+            `${MOVIES_URL}?genre=${genreChoice}&age=${ageChoice}&title=${title}`);
         if (!resp.ok) {
             throw new Error('Network response was not ok');
         }
