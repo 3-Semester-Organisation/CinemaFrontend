@@ -5,11 +5,42 @@ export function initSeatView() {
     createSeatView()
 }
 
+const theatre_url = "http://localhost:8080/api/v1/theatre/"
+
+
+const layoutSpace = 32;
 const seatWidth = 20;
 
-function calcSeatViewWidth(seatNumber) {
+async function getLayouts(theatreId) {
+    try {
+        let layouts = await fetch(`${theatre_url+theatreId}/layouts`)
+        return await layouts.json()
+    } catch (error) {
+        console.log(error)
+    }
+    return undefined
+}
+
+
+async function parseLayouts() {
+    const parsedLayouts = {"rows": [], "cols": []}
+    const layouts = await getLayouts(1)
+    console.log("layouts: ", layouts)
+    layouts.forEach((l) => {
+        if (l.theatreRow !== 0) {
+            parsedLayouts["rows"].push(l.theatreRow)
+        }
+        if (l.theatreCol !== 0) {
+            parsedLayouts["cols"].push(l.theatreCol)
+        }
+    })
+    console.log(parsedLayouts)
+    return parsedLayouts
+}
+
+function calcSeatViewWidth(seatNumber,spaces) {
     let margin = 8 // mx-1
-    return (seatWidth+margin) * seatNumber + 80;
+    return (seatWidth+margin) * seatNumber + 80 + (layoutSpace*spaces);
 }
 
 function createScreen() {
@@ -19,38 +50,63 @@ function createScreen() {
     return screen;
 }
 
-function createRow() {
+function createRow(rowSpace = false) {
     const row = document.createElement("div");
-    row.classList.add("row", "mb-2", "mx-auto", "theatre-row", "d-flex", "justify-content-center");
-    return row;
-}
-
-function createSeat() {
-    const seat = document.createElement("div")
-    seat.classList.add("seat", "mx-1")
-    return seat
-}
-
-function createSeats(row, seats) {
-    for (let i = 0; i < seats; i++) {
-        row.appendChild(createSeat())
+    if(rowSpace) {
+        row.classList.add("row", "mb-4", "mx-auto", "theatre-row", "d-flex", "justify-content-center");
+    } else {
+        row.classList.add("row", "mb-2", "mx-auto", "theatre-row", "d-flex", "justify-content-center");
     }
     return row;
 }
 
-function createRows(fragment, rows, seats) {
+function createSeat(col = false) {
+    const seat = document.createElement("div")
+    if(col) {
+        seat.classList.add("seat","ms-1","me-4")
+    } else {
+        seat.classList.add("seat", "mx-1")
+    }
+    return seat
+}
+
+function createSeats(row, seats, layout) {
+    let cols = layout["cols"]
+    for (let i = 0; i < seats; i++) {
+        if(cols.includes(i+1)) {
+            row.appendChild(createSeat(true))
+        } else {
+            row.appendChild(createSeat())
+        }
+    }
+    return row;
+}
+
+function createRows(fragment, rows, seats, layout) {
+    let layoutRows = layout.rows
     for (let i = 0; i < rows; i++) {
-        let row = createRow();
-        row = createSeats(row, seats)
+        let row;
+        if (layoutRows.includes(i+1)) {
+            row = createRow(true);
+        } else {
+            row = createRow();
+        }
+
+        row = createSeats(row, seats, layout)
         fragment.appendChild(row)
     }
 }
 
-function createSeatView() {
+async function createSeatView() {
     const seatView = document.getElementById("seatView");
+    const seatGuide = document.getElementById("seat-guide");
     let fragment = document.createDocumentFragment();
+    let layout = await parseLayouts();
+    let spaces = layout.cols.length
     fragment.appendChild(createScreen());
-    createRows(fragment, 10, 10)
+    createRows(fragment, 10, 10, layout)
     seatView.innerHTML = "";
+    seatView.style.width = `${calcSeatViewWidth(10,spaces)}px`
+    seatGuide.style.width = `${calcSeatViewWidth(10,spaces)}px`
     seatView.appendChild(fragment);
 }
