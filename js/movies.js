@@ -47,12 +47,19 @@ const getGenres = async () => {
     }
 }
 
+function truncateTitle(title, maxLength) {
+    if (title.length > maxLength) {
+        return title.substring(0, maxLength - 3) + "...";
+    }
+    return title;
+}
+
 const moviesHTMLFormatter = json => {
     let movieList = [];
 
     for (let movie of json) {
         let id = movie.id;
-        let title = movie.title;
+        let title = truncateTitle(movie.title, 25);
         let description = movie.description;
         let genres = movie.genreList.join(", ");
         let ageLimit = movie.ageLimit;
@@ -72,13 +79,12 @@ const moviesHTMLFormatter = json => {
 
     for (let movie of movieList) {
         html += `
-        <div class="col mb-4">
+        <div class="col mb-5">
         <a href="${movie.showings}" style="text-decoration: none;"> <!-- TODO link til moviens showings her!! -->
             <div class="card h-100 bg-grey-blue d-flex flex-column no-border">
-                <img src="${movie.thumbnail}" class="card-img-top mb-2 rounded thumbnail" style="box-shadow: 0 4px 8px rgba(0, 0, 0, 0.8);" alt="${movie.title}">
+                <img src="${movie.thumbnail}" class="card-img-top mb-1 rounded thumbnail" style="box-shadow: 0 4px 8px rgba(0, 0, 0, 0.8);" alt="${movie.title}">
                 <div class="card-body d-flex flex-column">
-                    <h6 class="card-title text-white">${movie.title}</h5>
-                
+                    <h6 class="card-title text-white mb-4">${movie.title}</h6>
                     <div class="mt-auto">
                     <button class="btn btn-sm btn-primary">Buy ticket</button>
                         <p class="card-text">
