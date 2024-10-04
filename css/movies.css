@@ -11,8 +11,28 @@
     height: 300px; /* Adjust the height as needed */
     object-fit: cover;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.8);
-  }
+    transition: transform 0.5s ease;
+}
 
-  .no-border {
-    border: none;
-  }
+.thumbnail:hover {
+    transform: scale(1.05);
+}
+
+.no-border {
+  border: none;
+}
+
+.card-title {
+  height: 2.5em; /* Set a fixed height */
+  overflow: hidden;
+  text-overflow: ellipsis; /* Add ellipsis (...) for overflow text */
+}
+
+.card {
+  padding:8px;
+}
+
+#movies-div {
+  height: 960px; /* Set a fixed height for container*/
+  overflow-y: auto; /* Enable vertical scrolling if content exceeds height */
+}
