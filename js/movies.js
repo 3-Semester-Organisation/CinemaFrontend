@@ -11,9 +11,12 @@ async function initMoviesView() {
 
 const loadMovies = async () => {
     let movies = await getMovies();
-    let movieHtml = moviesHTMLFormatter(movies);
-    document.getElementById('movies-div').appendChild(movieHtml); // insert list
+    let movieContainer = moviesHTMLFormatter(movies);
+    let moviesDiv = document.getElementById('movies-div');
+    moviesDiv.innerHTML = ''; // Clear existing content
+    moviesDiv.appendChild(movieContainer);
 }
+
 const loadGenres = async () => {
     let genres = await getGenres();
     document.getElementById('genre-select').innerHTML = genresHTMLFormatter(genres); // insert list
@@ -111,9 +114,6 @@ const moviesHTMLFormatter = json => {
                     <h6 class="card-title text-white mb-4">${movie.title}</h6>
                     <div class="mt-auto">
                     <button class="btn btn-sm btn-primary">Buy ticket</button>
-                        <p class="card-text">
-                            <small class="text-secondary">Recommended age: ${movie.ageLimit}</small>
-                        </p>
                     </div>
                 </div>
             </div>
@@ -152,14 +152,15 @@ const updateTable = async () => {
         event.preventDefault();
 
         let movies = await getMovies();
-        let movieHtml;
-        if (!movies || movies.length === 0) {
-            movieHtml = `<p>No movies found matching your criteria.</p>`;
-        } else {
-            movieHtml = moviesHTMLFormatter(movies);
+        let moviesDiv = document.getElementById('movies-div');
+        moviesDiv.innerHTML = ''; // Clear existing content
 
+        if (!movies || movies.length === 0) {
+            moviesDiv.innerHTML = `<p>No movies found matching your criteria.</p>`;
+        } else {
+            let movieContainer = moviesHTMLFormatter(movies);
+            moviesDiv.appendChild(movieContainer);
         }
-        document.getElementById('movies-div').innerHTML = movieHtml;
     }
 }
 
