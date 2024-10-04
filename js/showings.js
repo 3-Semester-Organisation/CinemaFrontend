@@ -5,7 +5,6 @@ async function initShowingsView(movieTitle) {
     // runs this code when you access the showings view
     displayShowings(movieTitle);
     console.log("Showings view initialized");
-
 }
 
 async function displayShowings(movieTitle) {
@@ -14,16 +13,21 @@ async function displayShowings(movieTitle) {
         checkForErrors(response);
         const showingList = await response.json();
 
+        // Retry mechanism for elements availability
         const movieTitleElement = document.getElementById("movie-title");
-        movieTitleElement.innerText = movieTitle;
-
         const thumbnail = document.getElementById("movie-thumbnail");
+        if (!movieTitleElement || !thumbnail) {
+            setTimeout(() => displayShowings(movieTitle), 100); // Retry after 100ms
+            return;
+        }
+
+        movieTitleElement.innerText = movieTitle;
         thumbnail.setAttribute("src", showingList[0].movie.thumbnail);
-        thumbnail.setAttribute("alt", "poster of the movie: " + movieTitle.toString())
+        thumbnail.setAttribute("alt", "poster of the movie: " + movieTitle.toString());
 
         const descriptionHeader = document.getElementById("movie-description-header");
         descriptionHeader.innerText = "Description";
-        const movieDescription = document.getElementById("movie-description")
+        const movieDescription = document.getElementById("movie-description");
         movieDescription.innerText = showingList[0].movie.description;
 
         const showingsGrid = document.getElementById("showings-grid");
@@ -33,11 +37,11 @@ async function displayShowings(movieTitle) {
             let column = buildColumn(showingDay, showingList);
             showingsGrid.appendChild(column);
         }
-
     } catch (error) {
         console.error(error.message);
     }
 }
+
 
 
 function buildColumn(showingDay, showingList) {
@@ -140,4 +144,4 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 */
 
-export { initShowingsView };
+export {initShowingsView};
