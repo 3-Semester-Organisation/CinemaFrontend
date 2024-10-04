@@ -21,7 +21,7 @@ const loadGenres = async () => {
 
 const getMovies = async () => { ///movies?genre=&age=
     let genreChoice = document.getElementById("genre-select").value;
-    let ageChoice = document.getElementById("age-input").value;
+    let ageChoice = document.getElementById("age-select").value;
     if (ageChoice === "0") {ageChoice = ""}
     try {
         const resp = await fetch(`${MOVIES_URL}?genre=${genreChoice}&age=${ageChoice}`);
