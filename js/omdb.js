@@ -34,9 +34,6 @@ const getMovie = async movieTitle => {
 
 const postMovie = async movie => {
 
-  // takes only the first genre for now
-  let firstGenre = movie.Genre.split(',')[0].trim().toUpperCase();
-
   const ratingMap = {
     'G': 0,
     'PG': 0,
@@ -50,7 +47,7 @@ const postMovie = async movie => {
   const newMovie = {
     title: movie.Title,
     description: movie.Plot,
-    genre: firstGenre,
+    genres: movie.Genre,
     rating: movie.Rated,
     thumbnail: movie.Poster,
     ageLimit: ratingMap[movie.Rated]

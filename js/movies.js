@@ -54,7 +54,7 @@ const moviesHTMLFormatter = json => {
         let id = movie.id;
         let title = movie.title;
         let description = movie.description;
-        let genre = movie.genre;
+        let genres = movie.genreList.join(", ");
         let ageLimit = movie.ageLimit;
         let thumbnail = movie.thumbnail;
 
@@ -62,7 +62,7 @@ const moviesHTMLFormatter = json => {
             id: id,
             title: title,
             description: description,
-            genre: genre,
+            genres: genres,
             ageLimit: ageLimit,
             thumbnail: thumbnail,
         });
@@ -82,7 +82,6 @@ const moviesHTMLFormatter = json => {
                     <div class="mt-auto">
                     <button class="btn btn-sm btn-primary">Buy ticket</button>
                         <p class="card-text">
-                            <small class="card-text text-white">Genre: ${movie.genre}</small><br>
                             <small class="text-secondary">Recommended age: ${movie.ageLimit}</small>
                         </p>
                     </div>
