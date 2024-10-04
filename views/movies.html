@@ -3,18 +3,26 @@
       <h2>Movies</h2>
     </header>
     <p>Movies, bitch</p>
-    <form id="filter-form" class="form-select mb-4">
-        <label for="genre-select">Genre:</label>
-            <select id="genre-select" class="form-select" style="margin-right: 10px">
-                <!--genre html here -->
-            </select>
-
-        <label for="age-input">Maximum age</label>
-            <input id="age-input" class="" type="number" min="0" max="21" placeholder="Enter age  " style="margin-right: 10px">
-
-        <button id="filter-btn" class="btn btn-primary">Apply filters</button>
+    <form id="filter-form" class="form-group mb-4">
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <div class="row">
+                    <div class="col-md-4 mb-3">
+                        <select id="genre-select" class="form-select">
+                            <!--genre html here -->
+                        </select>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <input id="age-input" class="form-control-sm tiny-input" type="number" min="0" max="21" placeholder="Enter age">
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <button id="filter-btn" class="btn btn-sm btn-primary">Apply filters</button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </form>
-<div id="movies-div">
-    <!--movies html here -->
-</div>
-  </section>
+    <div id="movies-div">
+        <!--movies html here -->
+    </div>
+</section>

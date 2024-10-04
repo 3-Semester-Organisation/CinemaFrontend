@@ -98,3 +98,17 @@ body {
 .short-input {
   width: 500px;
 }
+
+.tiny-input {
+  width: 100px;
+}
+
+.no-border {
+  border: none;
+}
+
+.thumbnail {
+  width: 100%;
+  height: 300px; /* Adjust the height as needed */
+  object-fit: cover;
+}

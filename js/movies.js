@@ -68,25 +68,28 @@ const moviesHTMLFormatter = json => {
         });
     }
 
-    let html = `<div class="row row-cols-1 row-cols-md-3 g-4">`;
+    let html = `<div class="row row-cols-1 row-cols-md-5 g-4">`;
 
     for (let movie of movieList) {
         html += `
         <div class="col mb-4">
-            <a href="${movie.showings}" style="text-decoration: none;"> <!-- TODO link til moviens showings her!! -->
-                <div class="card h-100" style="background-color: #343a40">
-                    <div class="card-body">
-                    <img src="${movie.thumbnail}" class="card-img-top" alt="${movie.title}">
-                        <h5 class="card-title text-white">${movie.title}</h5>
-                        <p class="card-text text-white">${movie.description}</p>
+        <a href="${movie.showings}" style="text-decoration: none;"> <!-- TODO link til moviens showings her!! -->
+            <div class="card h-100 bg-grey-blue d-flex flex-column no-border">
+                <img src="${movie.thumbnail}" class="card-img-top mb-2 rounded thumbnail" style="box-shadow: 0 4px 8px rgba(0, 0, 0, 0.8);" alt="${movie.title}">
+                <div class="card-body d-flex flex-column">
+                    <h6 class="card-title text-white">${movie.title}</h5>
+                
+                    <div class="mt-auto">
+                    <button class="btn btn-sm btn-primary">Buy ticket</button>
                         <p class="card-text">
                             <small class="card-text text-white">Genre: ${movie.genre}</small><br>
                             <small class="text-secondary">Recommended age: ${movie.ageLimit}</small>
                         </p>
                     </div>
                 </div>
-            </a>
-        </div>
+            </div>
+        </a>
+    </div>
     `;
     }
 

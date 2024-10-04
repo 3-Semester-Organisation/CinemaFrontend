@@ -65,7 +65,7 @@ const postMovie = async movie => {
       body: JSON.stringify(newMovie),
     });
     if (!res.ok) {
-    
+      console.log(JSON.stringify(newMovie));
       throw new Error('Network response was not ok');
       
     }
