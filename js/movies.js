@@ -134,13 +134,15 @@ const moviesHTMLFormatter = json => {
     for (let movie of movieList) {
         movieContainer.innerHTML += `
         <div class="col mb-4">
-        <a href="${movie.showings}" style="text-decoration: none;"> <!-- TODO link til moviens showings her!! -->
+        <a style="text-decoration: none;"> <!-- TODO link til moviens showings her!! -->
             <div class="card h-100 bg-grey-blue d-flex flex-column no-border">
-                <img data-movie-title=${movie.title} src="${movie.thumbnail}" class="card-img-top mb-1 rounded thumbnail" alt="${movie.title}">
+                <img src="${movie.thumbnail}" class="card-img-top mb-1 rounded thumbnail" alt="${movie.title}">
                 <div class="card-body d-flex flex-column">
                     <h6 class="card-title text-white mb-4">${movie.title}</h6>
                     <div class="mt-auto">
-                    <button class="btn btn-sm btn-primary">Buy ticket</button>
+                        <a href="#showings">
+                            <button data-movie-title=${movie.title} class="btn btn-sm btn-primary">Buy ticket</button>
+                        </a>
                         <p class="card-text">
                             <small class="text-secondary">Recommended age: ${movie.ageLimit}</small>
                         </p>
