@@ -44,9 +44,9 @@ const postMovie = async movie => {
     title: movie.Title,
     description: movie.Plot,
     genres: movie.Genre,
-    ageLimit: ratingMap[movie.Rated],
-    thumbnail: movie.Poster
-    
+    rating: movie.Rated,
+    thumbnail: movie.Poster,
+    ageLimit: ratingMap[movie.Rated]
   }
 
   try {
@@ -59,7 +59,9 @@ const postMovie = async movie => {
     });
     console.log(JSON.stringify(newMovie));
     if (!res.ok) {
-      throw new Error('Network response was not ok');  
+      console.log(JSON.stringify(newMovie));
+      throw new Error('Network response was not ok');
+      
     }
   } catch (error) {
     console.error('Problem with fetch operation on postMovie: ', error);

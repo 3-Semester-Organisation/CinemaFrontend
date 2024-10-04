@@ -1,7 +1,18 @@
-.inner-image{
+.inner-image {
     position: absolute;
     bottom: 15px;
     right: 0px;
     height: 20px;
     width: 40px;
 }
+
+.thumbnail {
+    width: 100%;
+    height: 300px; /* Adjust the height as needed */
+    object-fit: cover;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.8);
+  }
+
+  .no-border {
+    border: none;
+  }
