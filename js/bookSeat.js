@@ -3,13 +3,38 @@ export function initSeatView() {
     console.log(calcSeatViewWidth(15));
     console.log(seatWidth);
     createSeatView()
+    parseSeatBookings(1)
 }
 
 const theatre_url = "http://localhost:8080/api/v1/theatre/"
-
+const showing_url = "http://localhost:8080/api/v1/showing/"
 
 const layoutSpace = 32;
 const seatWidth = 20;
+
+async function getBookedSeats(showing) {
+    let seats;
+    try {
+        seats = await fetch(`${showing_url+showing}/seatbookings`)
+    } catch (err) {
+        console.log(err)
+    }
+    seats = await seats.json()
+    return seats;
+}
+
+
+async function parseSeatBookings(showing) {
+    let parsedSeatBookings = Array(30).fill(Array(30).fill(""))
+    const seatBookings = await getBookedSeats(showing);
+    seatBookings.forEach((sb) => {
+        let row = Number(sb.seatRowNumber);
+        let seat = Number(sb.seatNumber);
+        console.log(`row: ${row}, col: ${seat}`)
+        parsedSeatBookings[row][seat] = "occupied"
+    })
+    console.log("occupied ", parsedSeatBookings)
+}
 
 async function getLayouts(theatreId) {
     try {
