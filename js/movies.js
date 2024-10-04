@@ -48,6 +48,20 @@ const getGenres = async () => {
     }
 }
 
+function pgRatingSelector(ageLimit){
+    if(ageLimit == 0) {
+        return "images/MPA_G_RATING.svg.png";
+    }else if(ageLimit < 13){
+        return "images/MPA_PG_RATING.svg.png";
+    }else if(ageLimit < 17){
+        return "images/MPA_PG-13_RATING.svg.png";
+    }else if(ageLimit < 18){
+        return "images/MPA_R_RATING.svg.png";
+    }else{
+        return "images/MPA_NC-17_RATING.svg.png";
+    }
+}
+
 const moviesHTMLFormatter = json => {
     let movieList = [];
 
@@ -58,6 +72,7 @@ const moviesHTMLFormatter = json => {
         let genre = movie.genre;
         let ageLimit = movie.ageLimit;
         let thumbnail = movie.thumbnail;
+        let pgRating = pgRatingSelector(movie.ageLimit);
 
         movieList.push({
             id: id,
@@ -66,6 +81,7 @@ const moviesHTMLFormatter = json => {
             genre: genre,
             ageLimit: ageLimit,
             thumbnail: thumbnail,
+            pgRating: pgRating,
         });
     }
 
