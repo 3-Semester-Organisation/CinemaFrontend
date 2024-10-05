@@ -142,6 +142,10 @@ async function calculateAvailableTime(newShowing) {
     const theatreId = newShowing.theatreId;
     const latestShowing = await getLatestShowingByTheatreId(theatreId);
 
+    if (!latestShowing) {
+        return new Date(0); //apparently this returns:  (January 1, 1970, 00:00:00 UTC). Its fine since we cant travel back in time aka, we dont want to create a showing back in the future.
+    }
+
     const latestShowingStartTime = new Date(latestShowing.startTime);
 
     let durationSplitArray = latestShowing.movie.runtime.split(" ");
