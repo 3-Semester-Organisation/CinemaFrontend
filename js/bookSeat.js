@@ -2,8 +2,7 @@ export function initSeatView() {
     console.log("Init seat view!")
     console.log(calcSeatViewWidth(15));
     console.log(seatWidth);
-    createSeatView()
-    parseSeatBookings(1)
+    createSeatView();
 }
 
 const theatre_url = "http://localhost:8080/api/v1/theatre/"
@@ -12,29 +11,18 @@ const showing_url = "http://localhost:8080/api/v1/showing/"
 const layoutSpace = 32;
 const seatWidth = 20;
 
-async function getBookedSeats(showing) {
-    let seats;
+async function getSeatMap(id) {
+    let seatMap
     try {
-        seats = await fetch(`${showing_url+showing}/seatbookings`)
+        seatMap = await fetch(`${showing_url+id}/seatmap`)
     } catch (err) {
-        console.log(err)
+        console.error(err)
     }
-    seats = await seats.json()
-    return seats;
+    let seatMapJson = await seatMap.json()
+    console.log("## SEAT MAP:  ",seatMapJson.seatMap)
+    return seatMapJson.seatMap
 }
 
-
-async function parseSeatBookings(showing) {
-    let parsedSeatBookings = Array(30).fill(Array(30).fill(""))
-    const seatBookings = await getBookedSeats(showing);
-    seatBookings.forEach((sb) => {
-        let row = Number(sb.seatRowNumber);
-        let seat = Number(sb.seatNumber);
-        console.log(`row: ${row}, col: ${seat}`)
-        parsedSeatBookings[row][seat] = "occupied"
-    })
-    console.log("occupied ", parsedSeatBookings)
-}
 
 async function getLayouts(theatreId) {
     try {
@@ -85,31 +73,37 @@ function createRow(rowSpace = false) {
     return row;
 }
 
-function createSeat(col = false) {
+function createSeat(space = false, type, row, col) {
     const seat = document.createElement("div")
-    if(col) {
+    if(space) {
         seat.classList.add("seat","ms-1","me-4")
     } else {
         seat.classList.add("seat", "mx-1")
     }
+    seat.classList.add(type)
+    seat.dataset.row = row;
+    seat.dataset.seat = col
     return seat
 }
 
-function createSeats(row, seats, layout) {
+function createSeats(row ,seats, layout) {
     let cols = layout["cols"]
-    for (let i = 0; i < seats; i++) {
+    let numSeats = seats.length
+    for (let i = 0; i < numSeats; i++) {
         if(cols.includes(i+1)) {
-            row.appendChild(createSeat(true))
+            row.appendChild(createSeat(true, seats[i]))
         } else {
-            row.appendChild(createSeat())
+            row.appendChild(createSeat(false, seats[i]))
         }
     }
     return row;
 }
 
-function createRows(fragment, rows, seats, layout) {
+function createRows(seatMap, layout) {
     let layoutRows = layout.rows
-    for (let i = 0; i < rows; i++) {
+    let fragment = document.createDocumentFragment()
+    let numRows = seatMap.length
+    for (let i = 0; i < numRows; i++) {
         let row;
         if (layoutRows.includes(i+1)) {
             row = createRow(true);
@@ -117,9 +111,28 @@ function createRows(fragment, rows, seats, layout) {
             row = createRow();
         }
 
-        row = createSeats(row, seats, layout)
+        row = createSeats(row , seatMap[i], layout)
         fragment.appendChild(row)
     }
+    return fragment
+}
+
+function magic(seatMap, layout) {
+    let numRows = seatMap.length
+    let layoutRows = layout.rows
+    let layoutCols = layout.cols
+    let fragment = document.createDocumentFragment()
+
+    for (let i = 0; i < numRows; i++) {
+        let row = createRow(layoutRows.includes(i+1))
+        let numSeats = seatMap[i].length
+        for (let j = 0; j < numSeats; j++ ) {
+            let seat = createSeat(layoutCols.includes(j+1), seatMap[i][j], i+1, j+1)
+            row.appendChild(seat);
+        }
+        fragment.appendChild(row)
+    }
+    return fragment
 }
 
 async function createSeatView() {
@@ -127,9 +140,12 @@ async function createSeatView() {
     const seatGuide = document.getElementById("seat-guide");
     let fragment = document.createDocumentFragment();
     let layout = await parseLayouts();
-    let spaces = layout.cols.length
+    let seatMap = await getSeatMap(1);
+
     fragment.appendChild(createScreen());
-    createRows(fragment, 10, 10, layout)
+    fragment.appendChild(magic(seatMap,layout));
+    let spaces = layout.cols.length
+    // createRows(fragment, 10, 10, layout)
     seatView.innerHTML = "";
     seatView.style.width = `${calcSeatViewWidth(10,spaces)}px`
     seatGuide.style.width = `${calcSeatViewWidth(10,spaces)}px`
