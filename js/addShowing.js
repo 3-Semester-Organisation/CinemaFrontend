@@ -16,22 +16,7 @@ function initOptions() {
 
 function initTheatreOptions() {
     const theatreOptions = document.getElementById("theatre-options");
-    let allTheatres = [
-        {
-            id: 1,
-            title: "sal1",
-        },
-        {
-            id: 2,
-            title: "sal2",
-        },
-        {
-            id: 3,
-            title: "sal3"
-        }
-    ];
-
-    // getAllTheatres();
+    let allTheatres = getAllTheatres();
     allTheatres.sort((theatre1, theatre2) => theatre1.id - theatre2.id);
 
     theatreOptions.innerHTML += `<option selected></option>`;
