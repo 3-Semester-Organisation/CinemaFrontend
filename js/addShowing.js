@@ -1,5 +1,5 @@
 import {checkForHttpErrors, makeOption} from "./util.js";
-import {getMovies} from "./movies.js";
+import {getFilteredMovies} from "./movies.js";
 import {getAllTheatres} from "./theatres.js";
 import {getLatestShowingByTheatreId} from "./showings.js";
 
@@ -44,7 +44,7 @@ async function initTheatreOptions() {
 async function initMovieOptions() {
     const dropDownOptions = document.getElementById("movie-options");
 
-    let allMovies = await getMovies()
+    let allMovies = await getFilteredMovies()
     allMovies.sort((movie1, movie2) => movie1.id - movie2.id);
 
     dropDownOptions.innerHTML += `<option selected></option>`;

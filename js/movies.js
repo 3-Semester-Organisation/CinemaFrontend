@@ -14,7 +14,7 @@ async function initMoviesView() {
 
 // not used
 const loadMovies = async () => {
-    let movies = await getMovies();
+    let movies = await getFilteredMovies();
     let movieContainer = moviesHTMLFormatter(movies);
     let moviesDiv = document.getElementById('movies-div');
     moviesDiv.innerHTML = ''; // Clear existing content
@@ -22,7 +22,7 @@ const loadMovies = async () => {
 }
 
 const loadAllMovies = async () => {
-    allMovies = await getMovies();
+    allMovies = await getFilteredMovies();
     renderPage(1);
 }
 
@@ -63,7 +63,7 @@ const loadGenres = async () => {
 
 
 
-const getMovies = async () => { ///movies?genre=&age=
+const getFilteredMovies = async () => { ///movies?genre=&age=
     let genreChoice = document.getElementById("genre-select").value;
     let ageChoice = document.getElementById("age-select").value;
     if (ageChoice === "0") {ageChoice = ""}
@@ -211,10 +211,10 @@ const updateTable = async () => {
 const updateTable = async () => {
     document.getElementById('filter-btn').onclick = async (event) => {
         event.preventDefault();
-        allMovies = await getMovies();
+        allMovies = await getFilteredMovies();
         renderPage(1); // Render the first page with the new filtered movies
     }
 }
 
 export { initMoviesView };
-export { getMovies };
+export { getFilteredMovies };
