@@ -70,6 +70,8 @@ async function createShowing() {
     try {
 
         const theatreAvailabilityTime = calculateAvailableTime(newShowing);
+        console.log("ava: " + theatreAvailabilityTime);
+        console.log("new starttime" + newShowingStartTime);
         if (newShowingStartTime <= theatreAvailabilityTime) {
             alert("the scheduled time for the new showing conflicts with an existing showing.")
             return;
@@ -153,12 +155,15 @@ async function calculateAvailableTime(newShowing) {
 
     const latestShowingStartTime = new Date(latestShowing.startTime);
 
-    let durationSplitArray = latestShowing.movie.runtime.split(" ");
+    console.log("before split: " + latestShowingStartTime);
+    let durationSplitArray = latestShowing.movie.runtime.split(" "); //beacuse this value is null in the db, this whole function dont work. it stops running after it encounters the error
     const latestShowingMovieDuration = Number(durationSplitArray[0]);
     const prepareTimeTheatre = 30;
 
     //calculating the time when the theatre is avaliable again by adding movie duration and cleaning time to the original start time of movie from latest showing.
     latestShowingStartTime.setMinutes(latestShowingStartTime.getMinutes() + latestShowingMovieDuration + prepareTimeTheatre);
+    console.log("afet split: " + latestShowingStartTime)
+
     const calculatedAvailabilityTime = latestShowingStartTime;
 
     return calculatedAvailabilityTime;
