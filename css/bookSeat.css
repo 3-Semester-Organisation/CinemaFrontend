@@ -30,26 +30,26 @@
     color: black;
 }
 
-.seat.occupied {
+.occupied {
     background-color: red;
 }
 
-.seat.picked {
-    background-color: orange;
-    border-color: whitesmoke;
-    border-style: solid;
-    border-width: 1px;
-}
 
-.seat.yellow {
+.yellow {
     background-color: yellow;
 
 }
 
-.seat.wheelchair {
+.wheelchair {
     background-color: deepskyblue;
 }
 
+.picked {
+    background-color: orange;
+    /*border-color: whitesmoke;*/
+    /*border-style: solid;*/
+    /*border-width: 1px;*/
+}
 .theatre-row {
     width: 90%;
 }
@@ -57,6 +57,10 @@
 #seat-guide {
     padding-top: 15px;
     background-color: #1a1d20;
+}
+
+#seatChoice {
+    width: 200px;
 }
 
 .layout-col {

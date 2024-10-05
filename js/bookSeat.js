@@ -1,8 +1,10 @@
+
 export function initSeatView() {
     console.log("Init seat view!")
     console.log(calcSeatViewWidth(15));
     console.log(seatWidth);
     createSeatView();
+    setUpEvents();
 }
 
 const theatre_url = "http://localhost:8080/api/v1/theatre/"
@@ -10,6 +12,8 @@ const showing_url = "http://localhost:8080/api/v1/showing/"
 
 const layoutSpace = 32;
 const seatWidth = 20;
+
+let pickedSeats = []
 
 async function getSeatMap(id) {
     let seatMap
@@ -53,7 +57,7 @@ async function parseLayouts() {
 
 function calcSeatViewWidth(seatNumber,spaces) {
     let margin = 8 // mx-1
-    return (seatWidth+margin) * seatNumber + 80 + (layoutSpace*spaces);
+    return (seatWidth+margin) * seatNumber + 90 + (layoutSpace*spaces);
 }
 
 function createScreen() {
@@ -86,37 +90,6 @@ function createSeat(space = false, type, row, col) {
     return seat
 }
 
-function createSeats(row ,seats, layout) {
-    let cols = layout["cols"]
-    let numSeats = seats.length
-    for (let i = 0; i < numSeats; i++) {
-        if(cols.includes(i+1)) {
-            row.appendChild(createSeat(true, seats[i]))
-        } else {
-            row.appendChild(createSeat(false, seats[i]))
-        }
-    }
-    return row;
-}
-
-function createRows(seatMap, layout) {
-    let layoutRows = layout.rows
-    let fragment = document.createDocumentFragment()
-    let numRows = seatMap.length
-    for (let i = 0; i < numRows; i++) {
-        let row;
-        if (layoutRows.includes(i+1)) {
-            row = createRow(true);
-        } else {
-            row = createRow();
-        }
-
-        row = createSeats(row , seatMap[i], layout)
-        fragment.appendChild(row)
-    }
-    return fragment
-}
-
 function magic(seatMap, layout) {
     let numRows = seatMap.length
     let layoutRows = layout.rows
@@ -146,8 +119,47 @@ async function createSeatView() {
     fragment.appendChild(magic(seatMap,layout));
     let spaces = layout.cols.length
     // createRows(fragment, 10, 10, layout)
+    console.log("####### WIDTH: ", calcSeatViewWidth(10,spaces))
     seatView.innerHTML = "";
     seatView.style.width = `${calcSeatViewWidth(10,spaces)}px`
     seatGuide.style.width = `${calcSeatViewWidth(10,spaces)}px`
     seatView.appendChild(fragment);
+}
+
+function createSeatBooking(row, seat) {
+    let seatBooking = {}
+    seatBooking.booking = {"id": 1}
+    seatBooking.seatRowNumber = row
+    seatBooking.seatNumber = seat
+    return seatBooking
+}
+
+function renderPickedSeats() {
+    const seatChoice = document.getElementById("seatChoice")
+    let count = pickedSeats.length
+    seatChoice.innerHTML = '';
+    seatChoice.innerHTML = `<p> You've picked ${count} seats!</p>`
+
+}
+
+function handleSeatClick(e) {
+    const target = e.target;
+    if (!target.classList.contains("seat")) return;
+    if (target.classList.contains("occupied")) return;
+    let toggle = target.classList.toggle("picked")
+    let row = target.dataset.row
+    let seat = target.dataset.seat
+    let seatBooking = createSeatBooking(row,seat)
+    if (toggle) {
+        pickedSeats.push(seatBooking)
+    } else {
+        pickedSeats = pickedSeats
+            .filter((sb) => sb.seatRowNumber !== seatBooking.seatRowNumber || sb.seatNumber !== seatBooking.seatNumber)
+    }
+    renderPickedSeats()
+}
+
+function setUpEvents() {
+    const seatView = document.getElementById("seatView");
+    seatView.addEventListener("click", handleSeatClick)
 }
