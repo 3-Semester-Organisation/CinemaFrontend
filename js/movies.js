@@ -1,20 +1,59 @@
 import { initShowingsView } from "./showings.js";
 import {initializeViewNavigation} from "./router.js";
+
 const MOVIES_URL = "http://127.0.0.1:8080/api/v1/movies"
+let allMovies = [];
+const MOVIES_PER_PAGE = 10;
 
 async function initMoviesView() {
-    await loadMovies();
+    await loadAllMovies();
     await loadGenres();
     await updateTable();
     console.log('Movies view initialized');
 }
 
+// not used
 const loadMovies = async () => {
     let movies = await getMovies();
     let movieContainer = moviesHTMLFormatter(movies);
     let moviesDiv = document.getElementById('movies-div');
     moviesDiv.innerHTML = ''; // Clear existing content
     moviesDiv.appendChild(movieContainer);
+}
+
+const loadAllMovies = async () => {
+    allMovies = await getMovies();
+    renderPage(1);
+}
+
+const renderPage = (page) => {
+    const startIndex = (page - 1) * MOVIES_PER_PAGE;
+    const endIndex = startIndex + MOVIES_PER_PAGE;
+    const moviesToDisplay = allMovies.slice(startIndex, endIndex);
+
+    let movieContainer = moviesHTMLFormatter(moviesToDisplay);
+    let moviesDiv = document.getElementById('movies-div');
+    moviesDiv.innerHTML = ''; // Clear existing content
+    moviesDiv.appendChild(movieContainer);
+
+    renderPaginationControls(page);
+}
+
+const renderPaginationControls = (currentPage) => {
+    const totalPages = Math.ceil(allMovies.length / MOVIES_PER_PAGE);
+    let paginationDiv = document.getElementById('pagination-div');
+    paginationDiv.innerHTML = ''; // Clear existing content
+
+    for (let i = 1; i <= totalPages; i++) {
+        let pageButton = document.createElement('button');
+        pageButton.innerText = i;
+        pageButton.classList.add('btn', 'btn-sm', 'btn-secondary', 'mr-1');
+        if (i === currentPage) {
+            pageButton.classList.add('active');
+        }
+        pageButton.addEventListener('click', () => renderPage(i));
+        paginationDiv.appendChild(pageButton);
+    }
 }
 
 const loadGenres = async () => {
@@ -44,6 +83,7 @@ const getMovies = async () => { ///movies?genre=&age=
         console.error('Problem with fetch operation on getMovies: ', error);
     }
 }
+
 const getGenres = async () => {
     try {
         const resp = await fetch(`${MOVIES_URL}/genres`);
@@ -73,20 +113,13 @@ function pgRatingSelector(ageLimit){
     }
 }
 
-function truncateTitle(title, maxLength) {
-    if (title.length > maxLength) {
-        return title.substring(0, maxLength - 3) + "...";
-    }
-    return title;
-}
-
 const moviesHTMLFormatter = json => {
     let movieList = [];
 
     //is this not redundant?
     for (let movie of json) {
         let id = movie.id;
-        let title = truncateTitle(movie.title, 25);
+        let title = movie.title
         let description = movie.description;
         let genres = movie.genreList.join(", ");
         let ageLimit = movie.ageLimit;
@@ -113,16 +146,18 @@ const moviesHTMLFormatter = json => {
         <div class="col mb-4">
         <a style="text-decoration: none;"> <!-- TODO link til moviens showings her!! -->
             <div class="card h-100 bg-grey-blue d-flex flex-column no-border">
-                <img src="${movie.thumbnail}" class="card-img-top mb-1 rounded thumbnail" alt="${movie.title}">
+                <div style="position:relative">
+                    <a href="#showings">
+                        <img data-movie-id=${movie.id} data-movie-title=${movie.title} src="${movie.thumbnail}" class="card-img-top mb-1 rounded thumbnail" alt="${movie.title}">
+                    </a>
+                    <img src="${movie.pgRating}" class="inner-image" alt="${movie.ageLimit}">
+                </div>
                 <div class="card-body d-flex flex-column">
                     <h6 class="card-title text-white mb-4">${movie.title}</h6>
                     <div class="mt-auto">
                         <a href="#showings">
                             <button data-movie-id="${movie.id}" data-movie-title="${movie.title}" class="btn btn-sm btn-primary">Buy ticket</button>
                         </a>
-                        <p class="card-text">
-                            <small class="text-secondary">Recommended age: ${movie.ageLimit}</small>
-                        </p>
                     </div>
                 </div>
             </div>
@@ -156,7 +191,7 @@ const genresHTMLFormatter = json => {
     }
     return html;
 };
-
+/*
 const updateTable = async () => {
     document.getElementById('filter-btn').onclick = async (event) => {
         event.preventDefault();
@@ -171,6 +206,15 @@ const updateTable = async () => {
             let movieContainer = moviesHTMLFormatter(movies);
             moviesDiv.appendChild(movieContainer);
         }
+    }
+}
+*/
+
+const updateTable = async () => {
+    document.getElementById('filter-btn').onclick = async (event) => {
+        event.preventDefault();
+        allMovies = await getMovies();
+        renderPage(1); // Render the first page with the new filtered movies
     }
 }
 

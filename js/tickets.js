@@ -12,8 +12,16 @@ const loadShowings = async () => {
 
 const updateTable = async () => {
     document.getElementById('selectBody').onchange = async () => { // when a showing is selected
+        document.getElementById('tableBody').innerHTML = ''; // clear the table
         let showingId = document.getElementById('selectBody').value; // get the showing id
         let bookings = await getBookings(showingId); // get the bookings for showing
+
+        if (!bookings || bookings.length === 0) {
+            document.getElementById('errorContainer').innerHTML = '<p>No bookings found</p>';
+            return;
+        }
+        errorContainer.innerHTML = ''; // clear any previous errors
+        
         let bookingId = bookings[0].id; // get the booking id
         let seatBookings = await getSeatBookings(bookingId); // get the seat bookings for booking
         fillTable(bookings, seatBookings); // fill the table with the bookings and seat bookings
@@ -74,9 +82,14 @@ const getBookings = async showingId => {
         if (!res.ok) {
             throw new Error('Network response was not ok');
         }
-        return await res.json();
+        let bookings = await res.json();
+        if (!bookings || bookings.length === 0) {
+            return [];
+        }
+        return bookings;
     } catch (error) {
         console.error('Problem with fetch operation on getbookings: ', error);
+        return [];
     }
 }
 
@@ -97,6 +110,11 @@ const getSeatBookings = async bookingId => {
 const fillTable = async (bookingList, seatBookingList) => {
     const bookings = bookingList;
     const seatBookings = seatBookingList;
+
+    if (!bookings || !bookings.length === 0) {
+        document.getElementById('errorContainer').innerHTML = '<p>No bookings found</p>';
+        return;
+    }
 
     // Create a map of seat bookings by booking ID
     const seatBookingMap = new Map();
