@@ -75,7 +75,9 @@ function resetForm() {
     document.getElementById("start-time").value = "";
 }
 
-
+// Because the input fields are not wrapped in a form tag, when create-btn is clicked the "required" keyword dont work as intended.
+// Therefor the existence of this method. Also prettier styling the back-btn and the same line/row of create.
+// Would not be possible if it was inside the form, containing input fields that are marked with "required"
 function ifAllInputFieldsFilled() {
     const theatreId = document.getElementById("theatre-options").value;
     const movieId = document.getElementById("movie-options").value;
