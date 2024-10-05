@@ -1,7 +1,7 @@
 import {checkForHttpErrors, makeOption} from "./util.js";
 import {getMovies} from "./movies.js";
 import {getAllTheatres} from "./theatres.js";
-import {getLatestShowingByTheatreId} from "./showings";
+import {getLatestShowingByTheatreId} from "./showings.js";
 
 const SHOWING_URL = "http://127.0.0.1:8080/api/v1/showing"
 
