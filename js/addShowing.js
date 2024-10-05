@@ -44,22 +44,19 @@ function initMovieOptions() {
 
 async function createShowing() {
 
-    const newShowing = ifAllInputFieldsFilled();
-    const newShowingStartTime =  new Date(newShowing.startTime);
+
+    const newShowing = ifAllInputFieldsFilled(); //returns a newShowing if all input fields are filed.
+    const newShowingStartTime = new Date(newShowing.startTime);
+
     try {
 
+        const theatreAvailabilityTime = calculateAvailableTime(newShowing);
+        if (newShowingStartTime <= theatreAvailabilityTime) {
+            alert("the scheduled time for the new showing conflicts with an existing showing.")
+            return;
+        }
 
-    const theatreAvailabilityTime = calculateAvailableTime();
-
-
-    //if statement checks if newShowing start time is newShowing.startTime => theatreOcupationTime ? createNewShowing : alert(theatre is occupied and not ready for the showing) return;
-    if (newShowingStartTime <= theatreAvailabilityTime) {
-        alert("the scheduled time for the new showing conflicts with an existing showing.")
-        return;
-    }
-
-    const postOption = makeOption("POST", newShowing);
-
+        const postOption = makeOption("POST", newShowing);
 
         const response = await fetch(SHOWINGS_URL, postOption);
         checkForHttpErrors(response);
@@ -105,5 +102,26 @@ function ifAllInputFieldsFilled() {
 
     return newShowing;
 }
+
+
+// checks that the new showing is scheduled to start playing 30min after the previous movie has ended - time for clean up and what not.
+async function calculateAvailableTime(newShowing) {
+
+    const theatreId = newShowing.theatreId;
+    const latestShowing = await getLatestShowingByTheatreId(theatreId);
+
+    const latestShowingStartTime = new Date(latestShowing.startTime);
+
+    let durationSplitArray = latestShowing.movie.duration.split(" ");
+    const latestShowingMovieDuration = Number(durationSplitArray[0]);
+    const prepareTimeTheatre = 30;
+
+    //calculating the time when the theatre is avaliable again by adding movie duration and cleaning time to the original start time of movie from latest showing.
+    latestShowingStartTime.setMinutes(latestShowingStartTime.getMinutes() + latestShowingMovieDuration + prepareTimeTheatre);
+    const calculatedAvailabilityTime = latestShowingStartTime;
+
+    return calculatedAvailabilityTime;
+}
+
 
 export {initOptions};
