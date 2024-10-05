@@ -15,7 +15,7 @@ async function getAllTheatres() {
         return allTheatres;
 
     }catch (error) {
-        alert("something went wrong when trying to fetch all the theatres: " + error);
+        alert("something went wrong: \n" + error);
         console.error(error);
     }
 }
