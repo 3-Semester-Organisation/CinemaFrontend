@@ -13,7 +13,7 @@ function makeOption(httpMethod, body) {
 }
 
 
-function checkForErrors(response) {
+function checkForHttpErrors(response) {
     if (!response.ok) {
         let errorResponse = response.json();
         let error = new Error("statue: " + response.status + "\nMessage: " + errorResponse.message);
@@ -22,5 +22,5 @@ function checkForErrors(response) {
     }
 }
 
-export {checkForErrors};
+export {checkForHttpErrors};
 export {makeOption};

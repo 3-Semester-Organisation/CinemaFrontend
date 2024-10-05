@@ -1,4 +1,4 @@
-import {checkForErrors, makeOption} from "./util.js";
+import {checkForHttpErrors, makeOption} from "./util.js";
 import {getMovies} from "./movies.js";
 
 const SHOWINGS_URL = "http://127.0.0.1:8080/api/v1/showing"
@@ -83,7 +83,7 @@ async function createShowing() {
 
     try {
         const response = await fetch(SHOWINGS_URL, postOption);
-        checkForErrors(response);
+        checkForHttpErrors(response);
         let createdShowing = await response.json();
         alert("you created the following showing: " + createdShowing);
         resetForm();

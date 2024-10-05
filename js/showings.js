@@ -1,4 +1,4 @@
-import {checkForErrors} from "./util.js";
+import {checkForHttpErrors} from "./util.js";
 
 const SHOWINGS_URL = "http://127.0.0.1:8080/api/v1/showings"
 
@@ -13,7 +13,7 @@ async function displayShowingsBy(movieId, movieTitle) {
 
     try {
         const response = await fetch(SHOWINGS_URL + "?movieId=" + movieId);
-        checkForErrors(response);
+        checkForHttpErrors(response);
         const showingList = await response.json();
 
         // Retry mechanism for elements availability
