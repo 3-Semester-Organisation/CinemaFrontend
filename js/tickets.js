@@ -56,7 +56,7 @@ const htmlFormatter = json => {
 // fetches all showings from the database
 const getShowings = async () => {
     try {
-        const res = await fetch(`http://localhost:8080/api/v1/allshowings`);
+        const res = await fetch(`http://localhost:8080/api/v1/showings/all`);
         if (!res.ok) {
             throw new Error('Network response was not ok');
         }
