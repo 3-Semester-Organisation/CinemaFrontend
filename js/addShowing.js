@@ -144,7 +144,7 @@ async function calculateAvailableTime(newShowing) {
 
     const latestShowingStartTime = new Date(latestShowing.startTime);
 
-    let durationSplitArray = latestShowing.movie.duration.split(" ");
+    let durationSplitArray = latestShowing.movie.runtime.split(" ");
     const latestShowingMovieDuration = Number(durationSplitArray[0]);
     const prepareTimeTheatre = 30;
 
