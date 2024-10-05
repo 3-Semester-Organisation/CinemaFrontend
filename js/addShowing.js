@@ -23,9 +23,9 @@ function initOptions() {
 
 
 
-function initTheatreOptions() {
+async function initTheatreOptions() {
     const theatreOptions = document.getElementById("theatre-options");
-    let allTheatres = getAllTheatres();
+    let allTheatres = await getAllTheatres();
     allTheatres.sort((theatre1, theatre2) => theatre1.id - theatre2.id);
 
     theatreOptions.innerHTML += `<option selected></option>`;
@@ -40,10 +40,10 @@ function initTheatreOptions() {
 
 
 
-function initMovieOptions() {
+async function initMovieOptions() {
     const dropDownOptions = document.getElementById("movie-options");
 
-    let allMovies = getMovies()
+    let allMovies = await getMovies()
     allMovies.sort((movie1, movie2) => movie1.id - movie2.id);
 
     dropDownOptions.innerHTML += `<option selected></option>`;
