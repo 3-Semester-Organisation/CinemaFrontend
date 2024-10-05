@@ -1,6 +1,5 @@
 import { initShowingsView } from "./showings.js";
 import {initializeViewNavigation} from "./router.js";
-import {checkForErrors} from "./util.js";
 const MOVIES_URL = "http://127.0.0.1:8080/api/v1/movies"
 
 async function initMoviesView() {
@@ -23,16 +22,6 @@ const loadGenres = async () => {
     document.getElementById('genre-select').innerHTML = genresHTMLFormatter(genres); // insert list
 }
 
-
-async function getActiveMovies() {
-    try {
-        const response = await fetch(MOVIES_URL + "/active")
-        checkForErrors(response);
-        return await response.json();
-    } catch (error) {
-        alert("Something went wrong trying to fetch the active movies: " + error)
-    }
-}
 
 
 const getMovies = async () => { ///movies?genre=&age=
@@ -186,4 +175,4 @@ const updateTable = async () => {
 }
 
 export { initMoviesView };
-export { getActiveMovies };
+export { getMovies };
