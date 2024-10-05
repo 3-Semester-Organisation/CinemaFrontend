@@ -1,5 +1,5 @@
 import {checkForErrors, makeOption} from "./util.js";
-import {getActiveMovies} from "./movies.js";
+import {getMovies} from "./movies.js";
 
 const SHOWINGS_URL = "http://127.0.0.1:8080/api/v1/showing"
 
@@ -44,7 +44,7 @@ function initTheatreOptions() {
 function initMovieOptions() {
     const dropDownOptions = document.getElementById("movie-options");
 
-    let allMovies = getActiveMovies()
+    let allMovies = getMovies()
     allMovies.sort((movie1, movie2) => movie1.id - movie2.id);
 
     dropDownOptions.innerHTML += `<option selected></option>`;
