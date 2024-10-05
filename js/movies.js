@@ -141,11 +141,10 @@ const moviesHTMLFormatter = json => {
     for (let movie of movieList) {
         movieContainer.innerHTML += `
         <div class="col mb-4">
-        <a style="text-decoration: none;"> <!-- TODO link til moviens showings her!! -->
             <div class="card h-100 bg-grey-blue d-flex flex-column no-border">
                 <div style="position:relative">
                     <a href="#showings">
-                        <img data-movie-id=${movie.id} data-movie-title=${movie.title} src="${movie.thumbnail}" class="card-img-top mb-1 rounded thumbnail" alt="${movie.title}">
+                        <img data-movie-id="${movie.id}" data-movie-title="${movie.title}" src="${movie.thumbnail}" class="card-img-top mb-1 rounded thumbnail" alt="${movie.title}">
                     </a>
                     <img src="${movie.pgRating}" class="inner-image" alt="${movie.ageLimit}">
                 </div>
@@ -158,7 +157,6 @@ const moviesHTMLFormatter = json => {
                     </div>
                 </div>
             </div>
-        </a>
     </div>
     `;
     }
