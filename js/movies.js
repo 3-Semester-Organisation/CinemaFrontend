@@ -1,6 +1,6 @@
 import { initShowingsView } from "./showings.js";
 import {initializeViewNavigation} from "./router.js";
-import {checkForHttpErrors} from "./util";
+import {checkForHttpErrors} from "./util.js";
 
 const MOVIES_URL = "http://127.0.0.1:8080/api/v1/movies"
 let allFilteredMovies = [];
