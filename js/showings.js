@@ -3,11 +3,20 @@ import {checkForHttpErrors} from "./util.js";
 const SHOWINGS_URL = "http://127.0.0.1:8080/api/v1/showings"
 
 
+
+
+
+
 async function initShowingsView(movieId, movieTitle) {
     // runs this code when you access the showings view
     await displayShowingsBy(movieId, movieTitle);
     console.log("Showings view initialized");
 }
+
+
+
+
+
 
 async function displayShowingsBy(movieId, movieTitle) {
 
@@ -47,6 +56,9 @@ async function displayShowingsBy(movieId, movieTitle) {
 
 
 
+
+
+
 function buildColumn(showingDay, showingList) {
     const column = document.createElement("div");
     column.classList.add("col");
@@ -72,6 +84,10 @@ function buildColumn(showingDay, showingList) {
 }
 
 
+
+
+
+
 function buildCard(showing) {
     const showingCard = document.createElement("a");
     showingCard.classList.add("text-decoration-none");
@@ -95,6 +111,10 @@ function buildCard(showing) {
 }
 
 
+
+
+
+
 function getNextSevenDays() {
     const daysArray = [];
     const currentDate = new Date();
@@ -107,6 +127,10 @@ function getNextSevenDays() {
 
     return daysArray;
 }
+
+
+
+
 
 
 function parseJsonLocalDateTimeToDate(jsonLocalDateTime) {
@@ -130,6 +154,24 @@ function displaySeatBooking() {
     alert("redirect to seatbooking")
 }
 
+
+
+
+
+
+async function getLatestShowingByTheatreId(theatreId) {
+    try {
+        const response = await fetch(SHOWINGS_URL + "?theatreId=" + theatreId)
+        checkForHttpErrors(response);
+        const latestShowing = response.json();
+
+        return latestShowing;
+
+    }catch (error) {
+        throw error;
+    }
+}
+
 // commented this out, runs in init function now
 /*
 document.addEventListener("DOMContentLoaded", () => {
@@ -137,4 +179,5 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 */
 
-export {initShowingsView};
+export { initShowingsView };
+export { getLatestShowingByTheatreId };
