@@ -31,7 +31,7 @@ async function initTheatreOptions() {
     //generally dont use innerHTMl and use document.createElement for better protection against XSS (Cross-Site Scripting)
     theatreOptions.innerHTML += `<option selected></option>`;
     for (const theatre of allTheatres) {
-        theatreOptions.innerHTML += `<option value="${theatre.id}">${theatre.title}</option>`;
+        theatreOptions.innerHTML += `<option value="${theatre.id}">${theatre.name}</option>`;
 
     }
 }
