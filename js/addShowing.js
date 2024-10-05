@@ -62,6 +62,9 @@ async function initMovieOptions() {
 async function createShowing() {
 
     const newShowing = ifAllInputFieldsFilled(); //returns a newShowing if all input fields are filed.
+    if (!newShowing) {
+        return;
+    }
     const newShowingStartTime = new Date(newShowing.startTime);
 
     try {
