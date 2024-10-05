@@ -1,5 +1,6 @@
 import {checkForHttpErrors, makeOption} from "./util.js";
 import {getMovies} from "./movies.js";
+import {getAllTheatres} from "./theatres.js";
 
 const SHOWINGS_URL = "http://127.0.0.1:8080/api/v1/showing"
 
@@ -30,7 +31,7 @@ function initTheatreOptions() {
         }
     ];
 
-    //getAllTheatres();
+    // getAllTheatres();
     allTheatres.sort((theatre1, theatre2) => theatre1.id - theatre2.id);
 
     theatreOptions.innerHTML += `<option selected></option>`;
