@@ -1,6 +1,7 @@
 import {checkForHttpErrors} from "./util.js";
 
 const SHOWINGS_URL = "http://127.0.0.1:8080/api/v1/showings"
+const SHOWING_URL = "http://127.0.0.1:8080/api/v1/showing"
 
 
 
@@ -160,7 +161,7 @@ function displaySeatBooking() {
 
 async function getLatestShowingByTheatreId(theatreId) {
     try {
-        const response = await fetch(SHOWINGS_URL + "?theatreId=" + theatreId)
+        const response = await fetch(SHOWING_URL + "?theatreId=" + theatreId)
         checkForHttpErrors(response);
         const latestShowing = response.json();
 
