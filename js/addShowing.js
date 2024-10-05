@@ -5,14 +5,22 @@ import {getLatestShowingByTheatreId} from "./showings";
 
 const SHOWINGS_URL = "http://127.0.0.1:8080/api/v1/showing"
 
+
+
+
+
+
 function initOptions() {
     initTheatreOptions();
     initMovieOptions();
 
     const createShowingBtn = document.getElementById("create-showing-btn");
     createShowingBtn.addEventListener("click", createShowing);
-
 }
+
+
+
+
 
 
 function initTheatreOptions() {
@@ -26,6 +34,10 @@ function initTheatreOptions() {
 
     }
 }
+
+
+
+
 
 
 function initMovieOptions() {
@@ -42,8 +54,11 @@ function initMovieOptions() {
 }
 
 
-async function createShowing() {
 
+
+
+
+async function createShowing() {
 
     const newShowing = ifAllInputFieldsFilled(); //returns a newShowing if all input fields are filed.
     const newShowingStartTime = new Date(newShowing.startTime);
@@ -69,16 +84,27 @@ async function createShowing() {
     }
 }
 
+
+
+
+
+
 function resetForm() {
     document.getElementById("theatre-options").value = "";
     document.getElementById("movie-options").value = "";
     document.getElementById("start-time").value = "";
 }
 
+
+
+
+
+
 // Because the input fields are not wrapped in a form tag, when create-btn is clicked the "required" keyword dont work as intended.
 // Therefor the existence of this method. Also prettier styling the back-btn and the same line/row of create.
 // Would not be possible if it was inside the form, containing input fields that are marked with "required"
 function ifAllInputFieldsFilled() {
+
     const theatreId = document.getElementById("theatre-options").value;
     const movieId = document.getElementById("movie-options").value;
     const startTime = document.getElementById("start-time").value;
@@ -106,6 +132,10 @@ function ifAllInputFieldsFilled() {
 }
 
 
+
+
+
+
 // checks that the new showing is scheduled to start playing 30min after the previous movie has ended - time for clean up and what not.
 async function calculateAvailableTime(newShowing) {
 
@@ -124,6 +154,10 @@ async function calculateAvailableTime(newShowing) {
 
     return calculatedAvailabilityTime;
 }
+
+
+
+
 
 
 export {initOptions};
