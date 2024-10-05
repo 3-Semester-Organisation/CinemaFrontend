@@ -36,9 +36,8 @@ async function displayShowingsBy(movieId, movieTitle) {
         movieTitleElement.innerText = movieTitle;
         thumbnail.setAttribute("src", showingList[0].movie.thumbnail);
         thumbnail.setAttribute("alt", "poster of the movie: " + movieTitle.toString());
+        thumbnail.classList.add("poster", "rounded");
 
-        const descriptionHeader = document.getElementById("movie-description-header");
-        descriptionHeader.innerText = "Description";
         const movieDescription = document.getElementById("movie-description");
         movieDescription.innerText = showingList[0].movie.description;
 
