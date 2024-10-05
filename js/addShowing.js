@@ -28,6 +28,7 @@ async function initTheatreOptions() {
     let allTheatres = await getAllTheatres();
     allTheatres.sort((theatre1, theatre2) => theatre1.id - theatre2.id);
 
+    //generally dont use innerHTMl and use document.createElement for better protection against XSS (Cross-Site Scripting)
     theatreOptions.innerHTML += `<option selected></option>`;
     for (const theatre of allTheatres) {
         theatreOptions.innerHTML += `<option value="${theatre.id}">${theatre.title}</option>`;
