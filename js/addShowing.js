@@ -80,6 +80,7 @@ async function createShowing() {
         resetForm();
 
     } catch (error) {
+        console.error("Error details:", error);
         alert("A error occurred while trying to create the showing.")
     }
 }
