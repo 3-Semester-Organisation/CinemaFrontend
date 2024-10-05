@@ -1,9 +1,15 @@
 import { initShowingsView } from "./showings.js";
 import {initializeViewNavigation} from "./router.js";
+import {checkForHttpErrors} from "./util";
 
 const MOVIES_URL = "http://127.0.0.1:8080/api/v1/movies"
-let allMovies = [];
+let allFilteredMovies = [];
 const MOVIES_PER_PAGE = 10;
+
+
+
+
+
 
 async function initMoviesView() {
     await loadAllMovies();
@@ -11,6 +17,11 @@ async function initMoviesView() {
     await updateTable();
     console.log('Movies view initialized');
 }
+
+
+
+
+
 
 // not used
 const loadMovies = async () => {
@@ -21,15 +32,25 @@ const loadMovies = async () => {
     moviesDiv.appendChild(movieContainer);
 }
 
+
+
+
+
+
 const loadAllMovies = async () => {
-    allMovies = await getFilteredMovies();
+    allFilteredMovies = await getFilteredMovies();
     renderPage(1);
 }
+
+
+
+
+
 
 const renderPage = (page) => {
     const startIndex = (page - 1) * MOVIES_PER_PAGE;
     const endIndex = startIndex + MOVIES_PER_PAGE;
-    const moviesToDisplay = allMovies.slice(startIndex, endIndex);
+    const moviesToDisplay = allFilteredMovies.slice(startIndex, endIndex);
 
     let movieContainer = moviesHTMLFormatter(moviesToDisplay);
     let moviesDiv = document.getElementById('movies-div');
@@ -39,8 +60,13 @@ const renderPage = (page) => {
     renderPaginationControls(page);
 }
 
+
+
+
+
+
 const renderPaginationControls = (currentPage) => {
-    const totalPages = Math.ceil(allMovies.length / MOVIES_PER_PAGE);
+    const totalPages = Math.ceil(allFilteredMovies.length / MOVIES_PER_PAGE);
     let paginationDiv = document.getElementById('pagination-div');
     paginationDiv.innerHTML = ''; // Clear existing content
 
@@ -63,6 +89,27 @@ const loadGenres = async () => {
 
 
 
+
+
+
+
+async function getAllActiveMovies() {
+    try {
+        const response = await fetch(MOVIES_URL);
+        checkForHttpErrors(response);
+        return await response.json();
+
+    }catch (error) {
+        console.error(error)
+    }
+}
+
+
+
+
+
+
+//change structure so this function is only run when the filter btn is clicked else run the getAllActiveMovies.
 const getFilteredMovies = async () => { ///movies?genre=&age=
     let genreChoice = document.getElementById("genre-select").value;
     let ageChoice = document.getElementById("age-select").value;
@@ -84,6 +131,11 @@ const getFilteredMovies = async () => { ///movies?genre=&age=
     }
 }
 
+
+
+
+
+
 const getGenres = async () => {
     try {
         const resp = await fetch(`${MOVIES_URL}/genres`);
@@ -97,6 +149,11 @@ const getGenres = async () => {
         console.error('Problem with fetch operation on getMovies: ', error);
     }
 }
+
+
+
+
+
 
 // could be rewritten to use rating from omdb instead of ageLimit
 function pgRatingSelector(ageLimit){
@@ -112,6 +169,11 @@ function pgRatingSelector(ageLimit){
         return "images/MPA_NC-17_RATING.svg.png";
     }
 }
+
+
+
+
+
 
 const moviesHTMLFormatter = json => {
     let movieList = [];
@@ -170,6 +232,10 @@ const moviesHTMLFormatter = json => {
 }
 
 
+
+
+
+
 function handleClick(event) {
     let target = event.target;
 
@@ -180,6 +246,11 @@ function handleClick(event) {
         initShowingsView(movieId, movieTitle);
     }
 }
+
+
+
+
+
 
 const genresHTMLFormatter = json => {
     json.sort();
@@ -211,10 +282,15 @@ const updateTable = async () => {
 const updateTable = async () => {
     document.getElementById('filter-btn').onclick = async (event) => {
         event.preventDefault();
-        allMovies = await getFilteredMovies();
+        allFilteredMovies = await getFilteredMovies();
         renderPage(1); // Render the first page with the new filtered movies
     }
 }
 
+
+
+
+
+
 export { initMoviesView };
-export { getFilteredMovies };
+export { getAllActiveMovies };
