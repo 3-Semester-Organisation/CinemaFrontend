@@ -1,6 +1,7 @@
 import {checkForHttpErrors, makeOption} from "./util.js";
 import {getMovies} from "./movies.js";
 import {getAllTheatres} from "./theatres.js";
+import {getLatestShowingByTheatreId} from "./showings";
 
 const SHOWINGS_URL = "http://127.0.0.1:8080/api/v1/showing"
 
@@ -42,6 +43,43 @@ function initMovieOptions() {
 
 
 async function createShowing() {
+
+    const newShowing = ifAllInputFieldsFilled();
+    const newShowingStartTime =  new Date(newShowing.startTime);
+    try {
+
+
+    const theatreAvailabilityTime = calculateAvailableTime();
+
+
+    //if statement checks if newShowing start time is newShowing.startTime => theatreOcupationTime ? createNewShowing : alert(theatre is occupied and not ready for the showing) return;
+    if (newShowingStartTime <= theatreAvailabilityTime) {
+        alert("the scheduled time for the new showing conflicts with an existing showing.")
+        return;
+    }
+
+    const postOption = makeOption("POST", newShowing);
+
+
+        const response = await fetch(SHOWINGS_URL, postOption);
+        checkForHttpErrors(response);
+        let createdShowing = await response.json();
+        alert("you created the following showing: " + createdShowing);
+        resetForm();
+
+    } catch (error) {
+        alert("A error occurred while trying to create the showing.")
+    }
+}
+
+function resetForm() {
+    document.getElementById("theatre-options").value = "";
+    document.getElementById("movie-options").value = "";
+    document.getElementById("start-time").value = "";
+}
+
+
+function ifAllInputFieldsFilled() {
     const theatreId = document.getElementById("theatre-options").value;
     const movieId = document.getElementById("movie-options").value;
     const startTime = document.getElementById("start-time").value;
@@ -65,24 +103,7 @@ async function createShowing() {
         startTime: startTime
     }
 
-    const postOption = makeOption("POST", newShowing);
-
-    try {
-        const response = await fetch(SHOWINGS_URL, postOption);
-        checkForHttpErrors(response);
-        let createdShowing = await response.json();
-        alert("you created the following showing: " + createdShowing);
-        resetForm();
-
-    } catch (error) {
-        alert("A error occurred while trying to create the showing.")
-    }
-}
-
-function resetForm() {
-    document.getElementById("theatre-options").value = "";
-    document.getElementById("movie-options").value = "";
-    document.getElementById("start-time").value = "";
+    return newShowing;
 }
 
 export {initOptions};
