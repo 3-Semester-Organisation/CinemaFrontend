@@ -8,8 +8,7 @@ async function getAllTheatres() {
         if (allTheatres.length === 0) {
             const response = await fetch(ALL_THEATRES_URL);
             checkForHttpErrors(response);
-            const dataList = await response.json();
-            allTheatres = JSON.parse(dataList);
+            allTheatres = await response.json();
         }
 
         return allTheatres;
