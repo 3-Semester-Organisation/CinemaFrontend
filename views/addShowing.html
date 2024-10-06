@@ -1,12 +1,29 @@
-<section id="add-showing" class="bg-grey-blue p-4 rounded">
+<section id="addShowing" class="bg-grey-blue p-4 rounded">
+    <h1 style="font-weight: 60">Create showing</h1>
 
-  <form>
-    <label for="movie-selection">Movie Selection</label>
-      <select id="movie-selection">
-  <!--      populate med available movies hent kun de aktive movies-->
-      </select>
+    <div class="mb-3">
+        <label for="theatre-options" class="form-label">Theatres</label>
+        <select id="theatre-options" class="form-control" required>
+            <!--hent all theatres dynamisk-->
 
-    <button type="submit">Create</button>
-  </form>
+        </select>
+    </div>
+
+    <div class="mb-3">
+        <label for="movie-options" class="form-label">Movies</label>
+        <select id="movie-options" class="form-control" required>
+            <!--hent all active movies dynamisk-->
+
+        </select>
+    </div>
+
+    <div class="mb-3">
+        <label for="start-time" class="form-label">Scheduled time</label>
+        <input id="start-time" type="datetime-local" class="form-control" required>
+    </div>
+
+    <button class="btn btn-primary mb-3" id="create-showing-btn">Create</button>
+
+    <button onclick="history.back()" class="btn btn-secondary mb-3">Back</button>
 
 </section>

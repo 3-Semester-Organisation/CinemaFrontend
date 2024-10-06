@@ -1,24 +1,36 @@
+import {checkForHttpErrors} from "./util.js";
+
 const SHOWINGS_URL = "http://127.0.0.1:8080/api/v1/showings"
+const SHOWING_URL = "http://127.0.0.1:8080/api/v1/showing"
+
+
+
+
 
 
 async function initShowingsView(movieId, movieTitle) {
     // runs this code when you access the showings view
-    displayShowings(movieId, movieTitle);
+    await displayShowingsBy(movieId, movieTitle);
     console.log("Showings view initialized");
 }
 
-async function displayShowings(movieId, movieTitle) {
+
+
+
+
+
+async function displayShowingsBy(movieId, movieTitle) {
 
     try {
         const response = await fetch(SHOWINGS_URL + "?movieId=" + movieId);
-        checkForErrors(response);
+        checkForHttpErrors(response);
         const showingList = await response.json();
 
         // Retry mechanism for elements availability
         const movieTitleElement = document.getElementById("movie-title");
         const thumbnail = document.getElementById("movie-thumbnail");
         if (!movieTitleElement || !thumbnail) {
-            setTimeout(() => displayShowings(movieTitle), 100); // Retry after 100ms
+            setTimeout(() => displayShowingsBy(movieId, movieTitle), 100); // Retry after 100ms
             return;
         }
 
@@ -41,6 +53,9 @@ async function displayShowings(movieId, movieTitle) {
         console.error(error.message);
     }
 }
+
+
+
 
 
 
@@ -69,6 +84,10 @@ function buildColumn(showingDay, showingList) {
 }
 
 
+
+
+
+
 function buildCard(showing) {
     const showingCard = document.createElement("a");
     showingCard.classList.add("text-decoration-none");
@@ -92,14 +111,8 @@ function buildCard(showing) {
 }
 
 
-function checkForErrors(response) {
-    if (!response.ok) {
-        let errorResponse = response.json();
-        let error = new Error(errorResponse.message);
-        error.apiError = errorResponse;
-        throw error;
-    }
-}
+
+
 
 
 function getNextSevenDays() {
@@ -114,6 +127,10 @@ function getNextSevenDays() {
 
     return daysArray;
 }
+
+
+
+
 
 
 function parseJsonLocalDateTimeToDate(jsonLocalDateTime) {
@@ -137,11 +154,30 @@ function displaySeatBooking() {
     alert("redirect to seatbooking")
 }
 
+
+
+
+
+
+async function getLatestShowingByTheatreId(theatreId) {
+    try {
+        const response = await fetch(SHOWING_URL + "?theatreId=" + theatreId)
+        checkForHttpErrors(response);
+        const latestShowing = response.json();
+
+        return latestShowing;
+
+    }catch (error) {
+        throw error;
+    }
+}
+
 // commented this out, runs in init function now
 /*
 document.addEventListener("DOMContentLoaded", () => {
-    displayShowings("Alien");
+    displayShowingsBy("Alien");
 });
 */
 
-export {initShowingsView};
+export { initShowingsView };
+export { getLatestShowingByTheatreId };
