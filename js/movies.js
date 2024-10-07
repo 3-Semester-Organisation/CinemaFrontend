@@ -132,11 +132,12 @@ const getFilteredMovies = async () => { ///movies?genre=&age=
 }
 
 export async function getMovieSearchFilter() {
-    let movieSearch = document.getElementById("movie-search")
+    let movieSearch = document.getElementById("movie-search").value.toLowerCase()
+    console.log("searching for: " + movieSearch)
     const movies = await getAllActiveMovies()
     console.log(movies)
-    allFilteredMovies = movies.filter(movie => movie.title.includes(movieSearch));
-    console.log("im being called!")
+    allFilteredMovies = movies.filter(movie => movie.title.toLowerCase().includes(movieSearch))
+    console.log("im searching very hard!")
     console.log(allFilteredMovies)
     await updateTable();
 }
