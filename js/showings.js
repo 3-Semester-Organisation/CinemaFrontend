@@ -1,7 +1,8 @@
-import {checkForHttpErrors} from "./util.js";
+import {checkForHttpErrors, makeOption} from "./util.js";
 
 const SHOWINGS_URL = "http://127.0.0.1:8080/api/v1/showings"
 const SHOWING_URL = "http://127.0.0.1:8080/api/v1/showing"
+const DELETE_MOVIE_URL = "http://localhost:8080/api/v1/movies/delete"
 
 
 
@@ -13,11 +14,6 @@ async function initShowingsView(movieId, movieTitle) {
     await displayShowingsBy(movieId, movieTitle);
     console.log("Showings view initialized");
 }
-
-
-
-
-
 
 async function displayShowingsBy(movieId, movieTitle) {
 
@@ -45,6 +41,17 @@ async function displayShowingsBy(movieId, movieTitle) {
         const showingsGrid = document.getElementById("showings-grid");
         const nextSevenDaysFromCurrentDate = getNextSevenDays();
 
+        // delete functionality
+        const deleteMovieButton = document.getElementById("delete-button");
+        deleteMovieButton.addEventListener("click", () => {
+        const deleteModal = new bootstrap.Modal(document.getElementById('deleteModal'));
+        deleteModal.show();
+        });
+
+        document.getElementById("confirmDeleteButton").addEventListener("click", () => {
+            deleteMovie(movieId);
+        });
+
         for (const showingDay of nextSevenDaysFromCurrentDate) {
             let column = buildColumn(showingDay, showingList);
             showingsGrid.appendChild(column);
@@ -55,8 +62,20 @@ async function displayShowingsBy(movieId, movieTitle) {
 }
 
 
+const deleteMovie = async (movieId) => {
+    const url = `${DELETE_MOVIE_URL}?id=${movieId}`;
+    const option = makeOption("DELETE");
 
+    try {
+        const res = await fetch(url, option); 
+        checkForHttpErrors(res);
+        window.location.href = "#movies";
+    } catch (error) {
+        console.error(error.message);
+    }
 
+    
+}
 
 
 function buildColumn(showingDay, showingList) {

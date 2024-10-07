@@ -1,5 +1,5 @@
-import { initShowingsView } from "./showings.js";
-import {initializeViewNavigation} from "./router.js";
+import {initShowingsView} from "./showings.js";
+import {initializeViewNavigation, loadView, loadViewWithoutScript} from "./router.js";
 import {checkForHttpErrors} from "./util.js";
 
 const MOVIES_URL = "http://127.0.0.1:8080/api/v1/movies"
@@ -129,6 +129,19 @@ const getFilteredMovies = async () => { ///movies?genre=&age=
     } catch (error) {
         console.error('Problem with fetch operation on getMovies: ', error);
     }
+}
+
+async function getMovieSearchFilter(event) {
+    event.preventDefault();
+    await loadViewWithoutScript("movies")
+    let movieSearch = document.getElementById("movie-search").value.toLowerCase()
+    console.log("searching for: " + movieSearch)
+    const movies = await getAllActiveMovies()
+    console.log(movies)
+    allFilteredMovies = movies.filter(movie => movie.title.toLowerCase().includes(movieSearch))
+    console.log("im searching very hard!")
+    console.log(allFilteredMovies)
+    renderPage(1)
 }
 
 
@@ -292,5 +305,4 @@ const updateTable = async () => {
 
 
 
-export { initMoviesView };
-export { getAllActiveMovies };
+export { initMoviesView,getAllActiveMovies,getMovieSearchFilter }

@@ -4,7 +4,8 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link
+  
+    <link
       href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
       rel="stylesheet"
     />
@@ -58,6 +59,11 @@
             <a class="nav-link view-link hoverbutton" href="#addShowing">Showing</a>
           </li>
         </ul>
+        <form class="form-check-inline">
+          <input class="form-control mx-sm-2" id="movie-search" type="text"
+                 placeholder="Enter name..." size="15" aria-label="Movie search">
+          <button class="btn btn-outline-success my-2 my-sm-2" type="button" id="movie-search-btn">Search</button>
+        </form>
         <ul class="navbar-nav ml-auto">
           <li class="nav-item">
             <a class="nav-link view-link text-white hoverbutton" href="#login">Login</a>
@@ -70,6 +76,7 @@
     <main class="container-fluid main-container mt-4" id="app">
       <!-- Main content will be loaded here -->
     </main>
+    
       <!-- Bootstrap JS and dependencies -->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
