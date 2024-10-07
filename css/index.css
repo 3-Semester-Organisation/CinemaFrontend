@@ -1,3 +1,6 @@
+.main-container {
+  width: 73%;
+}
 
 body {
     background-color: rgb(28, 39, 58);
@@ -10,8 +13,8 @@ body {
 /* puts all content in pages in a box with shadow */
 #home, #book, #movies  {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  margin-bottom: 20px;
 }
-
 
 .nav-font {
     font-size: 20px;
@@ -102,6 +105,3 @@ body {
 .tiny-input {
   width: 100px;
 }
-
-
-
