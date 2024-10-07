@@ -1,5 +1,6 @@
 import { initAddMovieView } from "./omdb.js";
 import { initTicketsView } from "./tickets.js";
+import { initSeatView } from "./bookSeat.js";
 import { initShowingsView } from "./showings.js";
 import { initMoviesView } from "./movies.js";
 import { initOptions } from "./addShowing.js";
@@ -49,6 +50,8 @@ function initView(viewName) {
     initTicketsView();
   } else if (viewName === 'movies') {
     initMoviesView();
+  } else if (viewName === 'bookSeat') {
+    initSeatView()
   } else if (viewName === 'addShowing') {
     initOptions();
   }

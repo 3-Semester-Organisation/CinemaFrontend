@@ -1,0 +1,68 @@
+#seatView {
+    background-color: #1a1d20;
+}
+
+#screen {
+    width: 80%;
+    margin-left: auto;
+    margin-right: auto;
+    background-color: darkblue;
+    margin-bottom: 3rem;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+    font-size: small;
+    height: 10px;
+}
+
+.seat {
+    height: 15px;
+    width: 20px;
+    background-color: darkolivegreen;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+}
+
+.seat.guide {
+    width: 100%;
+    height: 100%;
+    font-weight: bold;
+    font-size: small;
+    color: black;
+}
+
+.occupied {
+    background-color: red;
+}
+
+
+.yellow {
+    background-color: yellow;
+
+}
+
+.wheelchair {
+    background-color: deepskyblue;
+}
+
+.picked {
+    background-color: orange;
+    /*border-color: whitesmoke;*/
+    /*border-style: solid;*/
+    /*border-width: 1px;*/
+}
+.theatre-row {
+    width: 90%;
+}
+
+#seat-guide {
+    padding-top: 15px;
+    background-color: #1a1d20;
+}
+
+#seatChoice {
+    width: 200px;
+}
+
+.layout-col {
+    margin-right: 80px;
+}
