@@ -55,7 +55,9 @@ async function displayShowingsBy(movieId, movieTitle) {
 }
 
 
-
+const deleteMovie = async (movieId) => {
+    
+}
 
 
 
