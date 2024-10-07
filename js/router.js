@@ -43,6 +43,12 @@ function loadView(viewName) {
     });
 }
 
+async function loadViewWithoutScript(viewName){
+  const app = document.getElementById("app")
+  let response = await fetch(`views/${viewName}.html`)
+  app.innerHTML = await response.text();
+}
+
 // helper function for loadView, initializes js for given view
 function initView(viewName) {
   if (viewName === 'addMovie') {
@@ -71,4 +77,4 @@ function updateNavbarActiveLink(view) {
   });
 }
 
-export { initializeViewNavigation, loadView };
+export { initializeViewNavigation, loadView, loadViewWithoutScript };

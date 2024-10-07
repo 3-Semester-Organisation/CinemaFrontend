@@ -1,5 +1,5 @@
 import {initShowingsView} from "./showings.js";
-import {initializeViewNavigation, loadView} from "./router.js";
+import {initializeViewNavigation, loadView, loadViewWithoutScript} from "./router.js";
 import {checkForHttpErrors} from "./util.js";
 
 const MOVIES_URL = "http://127.0.0.1:8080/api/v1/movies"
@@ -133,7 +133,7 @@ const getFilteredMovies = async () => { ///movies?genre=&age=
 
 async function getMovieSearchFilter(event) {
     event.preventDefault();
-    loadView("movies")
+    await loadViewWithoutScript("movies")
     let movieSearch = document.getElementById("movie-search").value.toLowerCase()
     console.log("searching for: " + movieSearch)
     const movies = await getAllActiveMovies()
