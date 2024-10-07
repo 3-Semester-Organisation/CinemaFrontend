@@ -69,7 +69,7 @@ async function createShowing() {
 
     try {
 
-        const theatreAvailabilityTime = calculateAvailableTime(newShowing);
+        const theatreAvailabilityTime = await calculateAvailableTime(newShowing);
         console.log("ava: " + theatreAvailabilityTime);
         console.log("new starttime" + newShowingStartTime);
         if (newShowingStartTime <= theatreAvailabilityTime) {
