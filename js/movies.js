@@ -217,7 +217,7 @@ const moviesHTMLFormatter = json => {
                     <h6 class="card-title text-white mb-2">${movie.title}</h6>
                     <div class="mt-auto">
                         <a href="#showings">
-                            <button data-movie-id="${movie.id}" data-movie-title="${movie.title}" class="btn btn-sm btn-primary">Buy ticket</button>
+                            <button data-movie-id="${movie.id}" data-movie-title="${movie.title}" class="btn btn-sm btn-primary">Buy ticket <img id="ticket-png" src="/images/tickets.png"></button>
                         </a>
                     </div>
                 </div>
