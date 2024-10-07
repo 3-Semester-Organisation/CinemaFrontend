@@ -131,7 +131,8 @@ const getFilteredMovies = async () => { ///movies?genre=&age=
     }
 }
 
-async function getMovieSearchFilter() {
+async function getMovieSearchFilter(event) {
+    event.preventDefault();
     loadView("movies")
     let movieSearch = document.getElementById("movie-search").value.toLowerCase()
     console.log("searching for: " + movieSearch)
@@ -140,7 +141,7 @@ async function getMovieSearchFilter() {
     allFilteredMovies = movies.filter(movie => movie.title.toLowerCase().includes(movieSearch))
     console.log("im searching very hard!")
     console.log(allFilteredMovies)
-    await updateTable();
+    renderPage(1)
 }
 
 
