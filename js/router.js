@@ -71,4 +71,4 @@ function updateNavbarActiveLink(view) {
   });
 }
 
-export { initializeViewNavigation };
+export { initializeViewNavigation, loadView };
