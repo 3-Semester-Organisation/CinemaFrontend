@@ -5,6 +5,7 @@ import { initShowingsView } from "./showings.js";
 import { initMoviesView } from "./movies.js";
 import { initOptions } from "./addShowing.js";
 
+
 function initializeViewNavigation() {
   window.addEventListener("hashchange", handleViewChange);
   handleViewChange(); // Set initial view

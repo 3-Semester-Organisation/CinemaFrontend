@@ -1,4 +1,4 @@
-import { initShowingsView } from "./showings.js";
+import {initShowingsView} from "./showings.js";
 import {initializeViewNavigation} from "./router.js";
 import {checkForHttpErrors} from "./util.js";
 
@@ -129,6 +129,16 @@ const getFilteredMovies = async () => { ///movies?genre=&age=
     } catch (error) {
         console.error('Problem with fetch operation on getMovies: ', error);
     }
+}
+
+export async function getMovieSearchFilter() {
+    let movieSearch = document.getElementById("movie-search")
+    const movies = await getAllActiveMovies()
+    console.log(movies)
+    allFilteredMovies = movies.filter(movie => movie.title.includes(movieSearch));
+    console.log("im being called!")
+    console.log(allFilteredMovies)
+    await updateTable();
 }
 
 
