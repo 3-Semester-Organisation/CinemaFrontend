@@ -44,3 +44,30 @@
   width: 1.5em;
   margin-left: 0.2em;
 }
+
+.bg-grey-blue {
+  background-color: rgb(43, 54, 74);
+}
+
+.pagination-custom {
+  background-color: rgb(43, 54, 74);
+  padding: 10px;
+  border-radius: 5px;
+}
+
+.pagination-custom .page-item .page-link {
+  color: white;
+  background-color: rgb(43, 54, 74);
+  border: 1px solid white;
+}
+
+.pagination-custom .page-item.active .page-link {
+  background-color: white;
+  color: rgb(43, 54, 74);
+  border: 1px solid white;
+}
+
+.pagination-custom .page-item .page-link:hover {
+  background-color: white;
+  color: rgb(43, 54, 74);
+}
