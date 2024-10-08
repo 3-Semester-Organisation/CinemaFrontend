@@ -169,8 +169,11 @@ function parseJsonLocalDateTimeToDate(jsonLocalDateTime) {
 }
 
 
-function displaySeatBooking() {
-    alert("redirect to seatbooking")
+function displaySeatBooking(e) {
+    console.log("click!")
+    console.log("e.target: ", e.target)
+    console.log(e.target.classList);
+    alert("redirect to seatbooking:::: ", e.target.classList)
 }
 
 

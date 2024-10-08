@@ -1,9 +1,9 @@
 
-export function initSeatView() {
+export function initSeatView(showingId = 1) {
     console.log("Init seat view!")
     console.log(calcSeatViewWidth(15));
     console.log(seatWidth);
-    createSeatView();
+    createSeatView(showingId);
     setUpEvents();
 }
 
@@ -39,7 +39,7 @@ async function getLayouts(theatreId) {
 }
 
 
-async function parseLayouts() {
+async function parseLayouts(showingId) {
     const parsedLayouts = {"rows": [], "cols": []}
     const layouts = await getLayouts(1)
     console.log("layouts: ", layouts)
@@ -108,18 +108,16 @@ function magic(seatMap, layout) {
     return fragment
 }
 
-async function createSeatView() {
+async function createSeatView(showingId) {
     const seatView = document.getElementById("seatView");
     const seatGuide = document.getElementById("seat-guide");
     let fragment = document.createDocumentFragment();
-    let layout = await parseLayouts();
-    let seatMap = await getSeatMap(1);
+    let layout = await parseLayouts(showingId);
+    let seatMap = await getSeatMap(showingId);
 
     fragment.appendChild(createScreen());
     fragment.appendChild(magic(seatMap,layout));
     let spaces = layout.cols.length
-    // createRows(fragment, 10, 10, layout)
-    console.log("####### WIDTH: ", calcSeatViewWidth(10,spaces))
     seatView.innerHTML = "";
     seatView.style.width = `${calcSeatViewWidth(10,spaces)}px`
     seatGuide.style.width = `${calcSeatViewWidth(10,spaces)}px`
