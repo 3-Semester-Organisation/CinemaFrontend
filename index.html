@@ -4,15 +4,8 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  
-    <link
-      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
-      rel="stylesheet"
-    />
-<!-- Bootstrap 5.3 start -->
-<!--    <link rel="stylesheet" href="css/bootstrap/bootstrap.min.css">-->
-<!--    <script src="js/bootstrap/bootstrap.bundle.min.js"></script>-->
-<!-- Bootstrap 5.3 end -->
+
+    <link rel="stylesheet" href="css/bootstrap/bootstrap.min.css">
     <link rel="stylesheet" href="css/index.css" />
     <link rel="stylesheet" href="css/showings.css" />
     <link rel="stylesheet" href="css/bookSeat.css" />
@@ -26,7 +19,7 @@
   <body>
     <!-- Navigation Bar -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-navbar nav-font" aria-label="Main navigation">
-      <a class="navbar-brand" href="#">CINEMA</a>
+      <a class="navbar-brand ms-3" href="#">CINEMA</a>
       <button
         class="navbar-toggler"
         type="button"
@@ -39,7 +32,7 @@
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav mx-auto">
+        <ul class="navbar-nav">
           <li class="nav-item">
             <a class="nav-link view-link hoverbutton" href="#home">Home</a>
           </li>
@@ -53,20 +46,17 @@
             <a class="nav-link view-link hoverbutton" href="#addMovie">Add Movie</a>
           </li>
           <li>
-            <a class="nav-link view-link hoverbutton" href="#showings">Showings</a>
-          </li>
-          <li>
             <a class="nav-link view-link hoverbutton" href="#addShowing">Showing</a>
           </li>
         </ul>
-        <form class="form-check-inline">
-          <input class="form-control mx-sm-2" id="movie-search" type="text"
+        <form class="d-flex mx-auto">
+          <input class="form-control me-2" id="movie-search" type="text"
                  placeholder="Enter name..." size="15" aria-label="Movie search">
-          <button class="btn btn-outline-success my-2 my-sm-2" type="button" id="movie-search-btn">Search</button>
+          <button class="btn btn-outline-success me-5" type="button" id="movie-search-btn">Search</button>
         </form>
         <ul class="navbar-nav ml-auto">
           <li class="nav-item">
-            <a class="nav-link view-link text-white hoverbutton" href="#login">Login</a>
+            <a class="nav-link view-link text-white hoverbutton me-2" href="#login">Login</a>
           </li>
         </ul>
       </div>
@@ -80,7 +70,7 @@
       <!-- Bootstrap JS and dependencies -->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="js/bootstrap/bootstrap.bundle.min.js"></script>
     <script src="js/util.js" type="module"></script>
     <script src="js/bookSeat.js" type="module"></script>
     <script src="js/omdb.js" type="module"></script>

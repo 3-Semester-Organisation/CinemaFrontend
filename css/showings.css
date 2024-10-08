@@ -25,10 +25,12 @@
 }
 
 .poster {
-    width: 11vw;
-    height: 17vw;
-    object-fit: cover;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.8);
+  width: 100%;
+  height: auto;
+  max-width: 11vw;
+  max-height: 17vw;
+  object-fit: cover;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.8);
 }
   
 #right-column {
