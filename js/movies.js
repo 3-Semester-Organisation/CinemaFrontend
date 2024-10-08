@@ -3,12 +3,9 @@ import {initializeViewNavigation, loadView, loadViewWithoutScript} from "./route
 import {checkForHttpErrors} from "./util.js";
 
 const MOVIES_URL = "http://127.0.0.1:8080/api/v1/movies"
+const FILTERED_MOVIES_URL = "http://localhost:8080/api/v1/movies/filter"
 let allFilteredMovies = [];
 const MOVIES_PER_PAGE = 10;
-
-
-
-
 
 
 async function initMoviesView() {
@@ -19,32 +16,10 @@ async function initMoviesView() {
 }
 
 
-
-
-
-
-// not used
-const loadMovies = async () => {
-    let movies = await getFilteredMovies();
-    let movieContainer = moviesHTMLFormatter(movies);
-    let moviesDiv = document.getElementById('movies-div');
-    moviesDiv.innerHTML = ''; // Clear existing content
-    moviesDiv.appendChild(movieContainer);
-}
-
-
-
-
-
-
 const loadAllMovies = async () => {
     allFilteredMovies = await getFilteredMovies();
     renderPage(1);
 }
-
-
-
-
 
 
 const renderPage = (page) => {
@@ -61,36 +36,36 @@ const renderPage = (page) => {
 }
 
 
-
-
-
-
 const renderPaginationControls = (currentPage) => {
     const totalPages = Math.ceil(allFilteredMovies.length / MOVIES_PER_PAGE);
     let paginationDiv = document.getElementById('pagination-div');
     paginationDiv.innerHTML = ''; // Clear existing content
 
+    const paginationList = document.createElement('ul');
+    paginationList.classList.add('pagination', 'justify-content-center', 'pagination-custom');
+
     for (let i = 1; i <= totalPages; i++) {
-        let pageButton = document.createElement('button');
-        pageButton.innerText = i;
-        pageButton.classList.add('btn', 'btn-sm', 'btn-secondary', 'mr-1');
+        const paginationItem = document.createElement('li');
+        paginationItem.classList.add('page-item');
         if (i === currentPage) {
-            pageButton.classList.add('active');
+            paginationItem.classList.add('active');
         }
-        pageButton.addEventListener('click', () => renderPage(i));
-        paginationDiv.appendChild(pageButton);
+
+        const paginationLink = document.createElement('a');
+        paginationLink.classList.add('page-link');
+        paginationLink.href = '#';
+        paginationLink.innerText = i;
+        paginationLink.addEventListener('click', (event) => {
+            event.preventDefault();
+            renderPage(i);
+        });
+
+        paginationItem.appendChild(paginationLink);
+        paginationList.appendChild(paginationItem);
     }
+
+    paginationDiv.appendChild(paginationList);
 }
-
-const loadGenres = async () => {
-    let genres = await getGenres();
-    document.getElementById('genre-select').innerHTML = genresHTMLFormatter(genres); // insert list
-}
-
-
-
-
-
 
 
 async function getAllActiveMovies() {
@@ -104,27 +79,22 @@ async function getAllActiveMovies() {
     }
 }
 
-
-
-
-
-
 //change structure so this function is only run when the filter btn is clicked else run the getAllActiveMovies.
 const getFilteredMovies = async () => { ///movies?genre=&age=
     let genreChoice = document.getElementById("genre-select").value;
     let ageChoice = document.getElementById("age-select").value;
     if (ageChoice === "0") {ageChoice = ""}
     try {
-        const resp = await fetch(`${MOVIES_URL}?genre=${genreChoice}&age=${ageChoice}`);
-        if (!resp.ok) {
+        const res = await fetch(`${FILTERED_MOVIES_URL}?genre=${genreChoice}&age=${ageChoice}`);
+        if (!res.ok) {
             throw new Error('Network response was not ok');
         }
 
-        if (resp.status === 204){
+        if (res.status === 204){
             return [];
         }
 
-        const movies = await resp.json();
+        const movies = await res.json();
         return movies;
     } catch (error) {
         console.error('Problem with fetch operation on getMovies: ', error);
@@ -145,10 +115,6 @@ async function getMovieSearchFilter(event) {
 }
 
 
-
-
-
-
 const getGenres = async () => {
     try {
         const resp = await fetch(`${MOVIES_URL}/genres`);
@@ -163,9 +129,10 @@ const getGenres = async () => {
     }
 }
 
-
-
-
+const loadGenres = async () => {
+    let genres = await getGenres();
+    document.getElementById('genre-select').innerHTML = genresHTMLFormatter(genres);
+}
 
 
 // could be rewritten to use rating from omdb instead of ageLimit
@@ -184,11 +151,8 @@ function pgRatingSelector(ageLimit){
 }
 
 
-
-
-
-
 const moviesHTMLFormatter = json => {
+
     
     // den her funktion er kun nødvendig da vi sætter pgRating i frontend.    
     let movieList = json.map(movie => ({
@@ -201,6 +165,7 @@ const moviesHTMLFormatter = json => {
         pgRating: pgRatingSelector(movie.ageLimit),
     }));
     
+
     let movieContainer = document.createElement("div");
     movieContainer.classList.add("row", "row-cols-1", "row-cols-md-5", "g-4");
     
@@ -217,8 +182,8 @@ const moviesHTMLFormatter = json => {
                 <div class="card-body d-flex flex-column">
                     <h6 class="card-title text-white mb-2">${movie.title}</h6>
                     <div class="mt-auto">
-                        <a href="#showings">
-                            <button data-movie-id="${movie.id}" data-movie-title="${movie.title}" class="btn btn-sm btn-primary">Buy ticket <img id="ticket-png" src="/images/tickets.png"></button>
+                        <a href="#showings" data-movie-id="${movie.id}" data-movie-title="${movie.title}" class="btn btn-sm btn-primary">
+                            Buy ticket <img id="ticket-png" src="/images/tickets.png">
                         </a>
                     </div>
                 </div>
@@ -233,10 +198,6 @@ const moviesHTMLFormatter = json => {
 }
 
 
-
-
-
-
 function handleClick(event) {
     let target = event.target;
 
@@ -249,48 +210,17 @@ function handleClick(event) {
 }
 
 
-
-
-
-
-const genresHTMLFormatter = json => {
-    json.sort();
-    let html = `<option value="" selected >Select a genre</option>`;
-    for (let genre of json) {
-        html += `<option value="${genre}">${genre}</option>`;
-    }
-    return html;
-};
-/*
-const updateTable = async () => {
-    document.getElementById('filter-btn').onclick = async (event) => {
-        event.preventDefault();
-
-        let movies = await getMovies();
-        let moviesDiv = document.getElementById('movies-div');
-        moviesDiv.innerHTML = ''; // Clear existing content
-
-        if (!movies || movies.length === 0) {
-            moviesDiv.innerHTML = `<p>No movies found matching your criteria.</p>`;
-        } else {
-            let movieContainer = moviesHTMLFormatter(movies);
-            moviesDiv.appendChild(movieContainer);
-        }
-    }
+const genresHTMLFormatter = genres => {
+    return `<option value="" selected>Select Genre</option>` 
+    + genres.map(genre => `<option value="${genre}">${genre}</option>`).join('');
 }
-*/
 
 const updateTable = async () => {
-    document.getElementById('filter-btn').onclick = async (event) => {
+    document.getElementById('filter-form').onclick = async (event) => {
         event.preventDefault();
         allFilteredMovies = await getFilteredMovies();
         renderPage(1); // Render the first page with the new filtered movies
     }
 }
-
-
-
-
-
 
 export { initMoviesView,getAllActiveMovies,getMovieSearchFilter }
