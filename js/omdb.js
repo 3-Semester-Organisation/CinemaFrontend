@@ -47,6 +47,7 @@ const postMovie = async movie => {
     rating: movie.Rated,
     thumbnail: movie.Poster,
     ageLimit: ratingMap[movie.Rated],
+    runtime: movie.Runtime,
     imdbId: movie.imdbID
   }
 
