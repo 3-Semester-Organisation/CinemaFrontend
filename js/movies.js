@@ -152,33 +152,23 @@ function pgRatingSelector(ageLimit){
 
 
 const moviesHTMLFormatter = json => {
-let movieList = [];
 
-    //is this not redundant?
-    for (let movie of json) {
-        let id = movie.id;
-        let title = movie.title
-        let description = movie.description;
-        let genres = movie.genreList.join(", ");
-        let ageLimit = movie.ageLimit;
-        let thumbnail = movie.thumbnail;
-        let pgRating = pgRatingSelector(movie.ageLimit);
-
-        movieList.push({
-            id: id,
-            title: title,
-            description: description,
-            genres: genres,
-            ageLimit: ageLimit,
-            thumbnail: thumbnail,
-            pgRating: pgRating,
-        });
-    }
+    
+    // den her funktion er kun nødvendig da vi sætter pgRating i frontend.    
+    let movieList = json.map(movie => ({
+        id: movie.id,
+        title: movie.title,
+        description: movie.description,
+        genres: movie.genreList.join(", "),
+        ageLimit: movie.ageLimit,
+        thumbnail: movie.thumbnail,
+        pgRating: pgRatingSelector(movie.ageLimit),
+    }));
+    
 
     let movieContainer = document.createElement("div");
     movieContainer.classList.add("row", "row-cols-1", "row-cols-md-5", "g-4");
     
-
     for (let movie of movieList) {
         movieContainer.innerHTML += `
         <div class="col">
