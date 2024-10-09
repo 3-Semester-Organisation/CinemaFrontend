@@ -105,3 +105,13 @@ body {
 .tiny-input {
   width: 100px;
 }
+
+.search-icon {
+  position: absolute;
+  right: 55px; /* Adjust this value as needed */
+  top: 48%;
+  transform: translateY(-50%);
+  height: 1em;
+  width: 1em;
+  cursor: pointer;
+}
