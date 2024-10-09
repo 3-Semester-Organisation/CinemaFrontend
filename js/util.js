@@ -12,6 +12,20 @@ function makeOption(httpMethod, body) {
     return option;
 }
 
+function makeAuthOption(httpMethod, body, token) {
+    const option = {
+        method: httpMethod.toUpperCase(),
+        headers: {
+            "Content-type": "application/json",
+            "Authorization": "Bearer " + token
+        }
+    }
+    if (body) {
+        option.body = JSON.stringify(body);
+    }
+    return option;
+}
+
 
 function checkForHttpErrors(response) {
     if (!response.ok) {
