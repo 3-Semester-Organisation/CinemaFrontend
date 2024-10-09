@@ -111,6 +111,7 @@ async function getMovieSearchFilter(event) {
     allFilteredMovies = movies.filter(movie => movie.title.toLowerCase().includes(movieSearch))
     console.log("im searching very hard!")
     console.log(allFilteredMovies)
+    await loadGenres()
     renderPage(1)
 }
 
