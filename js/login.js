@@ -3,9 +3,10 @@ import {initializeViewNavigation} from "./router.js";
 
 const LOGIN_URL = "http://localhost:8080/api/v1/";
 
-const loginBtn = document.getElementById("sign-in");
-loginBtn.addEventListener("click", login)
-
+function initLoginView() {
+    const loginBtn = document.getElementById("sign-in");
+    loginBtn.addEventListener("click", login)
+}
 
 
 
@@ -81,3 +82,5 @@ function loadAdminView() {
 
     initializeViewNavigation();
 }
+
+export {initLoginView}
