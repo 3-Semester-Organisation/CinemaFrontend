@@ -26,6 +26,9 @@ async function login() {
         checkForHttpErrors(response);
         const jwtToken = await response.json();
 
+        //store the token locally instead of in a cookie. Cookies opens up for csrf.
+        localStorage.setItem("jwtToken", jwtToken)
+
         const decodedToken = jwt_decode(jwtToken);
         checkRole(decodedToken);
 
