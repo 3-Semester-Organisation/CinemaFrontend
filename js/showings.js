@@ -189,6 +189,10 @@ async function getLatestShowingByTheatreId(theatreId) {
         checkForHttpErrors(response);
         const latestShowing = response.json();
 
+        if (!latestShowing){
+            return null;
+        }
+
         return latestShowing;
 
     }catch (error) {
