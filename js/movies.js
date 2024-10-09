@@ -173,11 +173,10 @@ const moviesHTMLFormatter = json => {
         movieContainer.innerHTML += `
         <div class="col">
             <div class="card h-100 bg-grey-blue d-flex flex-column no-border">
-                <div style="position:relative">
+                <div>
                     <a href="#showings">
                         <img data-movie-id="${movie.id}" data-movie-title="${movie.title}" src="${movie.thumbnail}" class="card-img-top mb-1 rounded thumbnail" alt="${movie.title}">
                     </a>
-                    <img src="${movie.pgRating}" class="inner-image" alt="${movie.ageLimit}">
                 </div>
                 <div class="card-body d-flex flex-column">
                     <h6 class="card-title text-white mb-2">${movie.title}</h6>
