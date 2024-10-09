@@ -1,9 +1,9 @@
 
-export function initSeatView(showingId = 1) {
+export async function initSeatView(showingId = 1, theatreId = 1) {
     console.log("Init seat view!")
-    console.log(calcSeatViewWidth(15));
+    console.log("### calc: " + calcSeatViewWidth(15));
     console.log(seatWidth);
-    createSeatView(showingId);
+    await createSeatView(showingId, theatreId);
     setUpEvents();
 }
 
@@ -57,6 +57,7 @@ async function parseLayouts(showingId) {
 
 function calcSeatViewWidth(seatNumber,spaces) {
     let margin = 8 // mx-1
+    console.log("#### CALCING ON GOING")
     return (seatWidth+margin) * seatNumber + 90 + (layoutSpace*spaces);
 }
 
@@ -108,11 +109,11 @@ function magic(seatMap, layout) {
     return fragment
 }
 
-async function createSeatView(showingId) {
+async function createSeatView(showingId, theatreId) {
     const seatView = document.getElementById("seatView");
     const seatGuide = document.getElementById("seat-guide");
     let fragment = document.createDocumentFragment();
-    let layout = await parseLayouts(showingId);
+    let layout = await parseLayouts(theatreId);
     let seatMap = await getSeatMap(showingId);
 
     fragment.appendChild(createScreen());
@@ -156,6 +157,13 @@ function handleSeatClick(e) {
     }
     renderPickedSeats()
 }
+
+//
+// function createBookingRequest() {
+//     let email;
+//     let showingId;
+//     pickedSeats
+// }
 
 function setUpEvents() {
     const seatView = document.getElementById("seatView");
