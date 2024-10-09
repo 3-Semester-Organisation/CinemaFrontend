@@ -104,7 +104,7 @@ const getBookings = async (showingId, token) => {
 const getSeatBookings = async (bookingId, token) => {
 
     try {
-        const res = await fetch(`http://localhost:8080/api/v1/seatbookings?bookingId=${bookingId}`, token);
+        const res = await fetch(`http://localhost:8080/api/v1/seatbooking?bookingId=${bookingId}`, token);
         checkForHttpErrors(res);
         return await res.json();
 
