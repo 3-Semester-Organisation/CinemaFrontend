@@ -1,25 +1,23 @@
 <section id="addShowing" class="bg-grey-blue p-4 rounded">
-    <h1 style="font-weight: 60">Create showing</h1>
+    <h1 class="mb-4" style="font-weight: 60">Create showing</h1>
 
-    <div class="mb-3">
-        <label for="theatre-options" class="form-label">Theatres</label>
-        <select id="theatre-options" class="form-select short-input" required>
+    <div class="mb-3 form-floating">
+        <select id="theatre-options" id="theatre-options" class="form-select short-input" placeholer="Theatre" required>
             <!--hent all theatres dynamisk-->
-
         </select>
+        <label for="theatre-options" class="form-label">Theatre</label>
     </div>
 
-    <div class="mb-3">
-        <label for="movie-options" class="form-label">Movies</label>
+    <div class="mb-3 form-floating">
         <select id="movie-options" class="form-select short-input" required>
             <!--hent all active movies dynamisk-->
-
         </select>
+        <label for="movie-options" class="form-label">Movie</label>
     </div>
 
-    <div class="mb-3">
-        <label for="start-time" class="form-label">Scheduled time</label>
+    <div class="mb-3 form-floating">
         <input id="start-time" type="datetime-local" class="form-control short-input" required>
+        <label for="start-time" class="form-label">Scheduled time</label>
     </div>
 
     <button class="btn btn-primary mb-3" id="create-showing-btn">Create</button>

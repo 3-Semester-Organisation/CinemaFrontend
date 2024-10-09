@@ -105,3 +105,11 @@ body {
 .tiny-input {
   width: 100px;
 }
+
+.form-floating label {
+  color: #6c757d; 
+}
+
+input::placeholder {
+  color: #6c757d; 
+}
