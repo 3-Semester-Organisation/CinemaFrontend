@@ -46,7 +46,9 @@ const postMovie = async movie => {
     genres: movie.Genre,
     rating: movie.Rated,
     thumbnail: movie.Poster,
-    ageLimit: ratingMap[movie.Rated]
+    ageLimit: ratingMap[movie.Rated],
+    runtime: movie.Runtime,
+    imdbId: movie.imdbID
   }
 
   try {
