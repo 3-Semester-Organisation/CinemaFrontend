@@ -1,4 +1,4 @@
-import {checkForHttpErrors, makeAuthOption, makeOption} from "./util.js";
+import {checkForHttpErrors, makeAuthOption} from "./util.js";
 
 const SHOWINGS_URL = "http://127.0.0.1:8080/api/v1/showings"
 const SHOWING_URL = "http://127.0.0.1:8080/api/v1/showing"
