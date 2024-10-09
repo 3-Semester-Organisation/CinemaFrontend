@@ -1,4 +1,4 @@
-import {checkForHttpErrors, makeOption} from "./util.js";
+import {checkForHttpErrors, makeAuthOption, makeOption} from "./util.js";
 
 const SHOWINGS_URL = "http://127.0.0.1:8080/api/v1/showings"
 const SHOWING_URL = "http://127.0.0.1:8080/api/v1/showing"
@@ -30,6 +30,7 @@ async function displayShowingsBy(movieId, movieTitle) {
             return;
         }
 
+        //populates the HTMLelements such as img, h2 and p(description) with data.
         movieTitleElement.innerText = movieTitle;
         thumbnail.setAttribute("src", showingList[0].movie.thumbnail);
         thumbnail.setAttribute("alt", "poster of the movie: " + movieTitle.toString());
@@ -41,7 +42,7 @@ async function displayShowingsBy(movieId, movieTitle) {
         const showingsGrid = document.getElementById("showings-grid");
         const nextSevenDaysFromCurrentDate = getNextSevenDays();
 
-        // delete functionality
+        // delete functionality //should be moved to a seperate page
         const deleteMovieButton = document.getElementById("delete-button");
         deleteMovieButton.addEventListener("click", () => {
         const deleteModal = new bootstrap.Modal(document.getElementById('deleteModal'));
@@ -52,6 +53,7 @@ async function displayShowingsBy(movieId, movieTitle) {
             deleteMovie(movieId);
         });
 
+        //builds each colum for the next seven days starting from current day
         for (const showingDay of nextSevenDaysFromCurrentDate) {
             let column = buildColumn(showingDay, showingList);
             showingsGrid.appendChild(column);
@@ -64,10 +66,11 @@ async function displayShowingsBy(movieId, movieTitle) {
 
 const deleteMovie = async (movieId) => {
     const url = `${DELETE_MOVIE_URL}?id=${movieId}`;
-    const option = makeOption("DELETE");
+    const token = localStorage.getItem("jwtToken")
+    const deleteOption = makeAuthOption("DELETE", null, token);
 
     try {
-        const res = await fetch(url, option); 
+        const res = await fetch(url, deleteOption);
         checkForHttpErrors(res);
         window.location.href = "#movies";
     } catch (error) {
@@ -89,11 +92,13 @@ function buildColumn(showingDay, showingList) {
     header.innerText = showingDay.toLocaleDateString('en-US', dateOptions); // Show full date as a header
     column.appendChild(header);
 
+    //filters showingList to only contain the showing for the particular day.
     const filteredShowings = showingList.filter(showing => {
         const showingDate = parseJsonLocalDateTimeToDate(showing.startTime.match(/(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2})/));
         return showingDay.toDateString() === showingDate.toDateString();
     });
 
+    //build each card in the colum for showing
     filteredShowings.forEach(showing => {
         let showingCard = buildCard(showing);
         column.appendChild(showingCard);
