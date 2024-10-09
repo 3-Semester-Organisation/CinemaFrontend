@@ -217,7 +217,7 @@ const genresHTMLFormatter = genres => {
 }
 
 const updateTable = async () => {
-    document.getElementById('filter-form').onclick = async (event) => {
+    document.getElementById('filter-form').onchange = async (event) => {
         event.preventDefault();
         allFilteredMovies = await getFilteredMovies();
         renderPage(1); // Render the first page with the new filtered movies

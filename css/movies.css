@@ -1,9 +1,11 @@
 .inner-image {
     position: absolute;
-    bottom: 1em;
-    right: 0px;
-    height: 1.25em;
-    width: 2.5em;
+    bottom: 2em;
+    left: 12em;
+    height: auto;
+    width: 100%;
+    max-height: 2em;
+    max-width: 2em;
 }
 
 .thumbnail {
