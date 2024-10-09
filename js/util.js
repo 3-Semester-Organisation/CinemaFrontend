@@ -38,3 +38,4 @@ function checkForHttpErrors(response) {
 
 export {checkForHttpErrors};
 export {makeOption};
+export {makeAuthOption};
