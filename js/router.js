@@ -1,10 +1,14 @@
 import { initAddMovieView } from "./omdb.js";
 import { initTicketsView } from "./tickets.js";
 import { initSeatView } from "./bookSeat.js";
-import { initShowingsView } from "./showings.js";
 import { initMoviesView } from "./movies.js";
 import { initOptions } from "./addShowing.js";
-import {initLoginView} from "./login.js";
+import {initLoginView, loadAdminView} from "./adminLogin.js";
+import {initLogoutView} from "./logout.js";
+
+
+
+
 
 
 function initializeViewNavigation() {
@@ -12,16 +16,27 @@ function initializeViewNavigation() {
   handleViewChange(); // Set initial view
 }
 
+
+
+
+
+
 function handleViewChange() {
   let viewName = "home"; // Default view
 
   if (location.hash) {
     viewName = location.hash.substring(1); // Remove '#' from the hash
+    console.log("inside ig in ganle vorw: " + viewName)
   }
 
   loadView(viewName);
   updateNavbarActiveLink(`#${viewName}`); // Update active link in navbar
 }
+
+
+
+
+
 
 function loadView(viewName) {
   const app = document.getElementById("app");
@@ -36,7 +51,8 @@ function loadView(viewName) {
     })
     .then(html => {
       app.innerHTML = html; // sets the innerHTML of the app div to the fetched html
-      initView(viewName); // inits js for the view
+      // initView(viewName)
+      checkAuth(initView, viewName); // inits js for the view
     })
     .catch(error => {
       console.error(error);
@@ -44,11 +60,21 @@ function loadView(viewName) {
     });
 }
 
+
+
+
+
+
 async function loadViewWithoutScript(viewName){
   const app = document.getElementById("app")
   let response = await fetch(`views/${viewName}.html`)
   app.innerHTML = await response.text();
 }
+
+
+
+
+
 
 // helper function for loadView, initializes js for given view
 function initView(viewName) {
@@ -59,14 +85,21 @@ function initView(viewName) {
   } else if (viewName === 'movies') {
     initMoviesView();
   } else if (viewName === 'bookSeat') {
-    initSeatView()
+    initSeatView();
   } else if (viewName === 'addShowing') {
     initOptions();
   } else if (viewName === 'login') {
-    initLoginView()
+    initLoginView();
+  } else if (viewName === 'logout') {
+    initLogoutView();
   }
   // Initialize other views as needed
 }
+
+
+
+
+
 
 function updateNavbarActiveLink(view) {
   // Update the active class on the navbar links
@@ -80,4 +113,40 @@ function updateNavbarActiveLink(view) {
   });
 }
 
-export { initializeViewNavigation, loadView, loadViewWithoutScript };
+
+
+
+
+function checkAuth(initView, viewName) {
+  const token = localStorage.getItem("jwtToken");
+  console.log("token : " + token)
+  if (!token) {
+    // No token, redirect to home
+    initView(viewName);
+    return;
+  }
+
+  try {
+    const decodedToken = jwt_decode(token);
+    const currentTime = Date.now() / 1000; //converts milisec to sec, because jwt uses sec and Date uses milisec.
+
+    // Check if the token is expired
+    if (decodedToken.exp < currentTime) {
+      initLogoutView("token expired");
+      window.location.href = '/login';
+      return;
+    }
+    // Token is valid, allow user to stay on admin page
+    loadAdminView()
+    initView(viewName);
+
+  } catch (error) {
+    console.error("Error decoding token: ", error);
+    initLogoutView("an error occurred");
+  }
+
+}
+
+
+
+export { initializeViewNavigation, handleViewChange, loadView, loadViewWithoutScript };
