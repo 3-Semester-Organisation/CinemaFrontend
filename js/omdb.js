@@ -1,4 +1,4 @@
-import {checkForHttpErrors, makeAuthOption} from "./util";
+import {checkForHttpErrors, makeAuthOption} from "./util.js";
 
 function initAddMovieView() {
     const addButton = document.getElementById('add');
