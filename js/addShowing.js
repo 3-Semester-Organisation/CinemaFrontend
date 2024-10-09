@@ -1,4 +1,4 @@
-import {checkForHttpErrors, makeOption} from "./util.js";
+import {checkForHttpErrors, makeAuthOption} from "./util.js";
 import {getAllActiveMovies} from "./movies.js";
 import {getAllTheatres} from "./theatres.js";
 import {getLatestShowingByTheatreId} from "./showings.js";
@@ -62,22 +62,19 @@ async function initMovieOptions() {
 async function createShowing() {
 
     const newShowing = ifAllInputFieldsFilled(); //returns a newShowing if all input fields are filed.
-    if (!newShowing) {
-        return;
-    }
+    if (!newShowing) { return; }
     const newShowingStartTime = new Date(newShowing.startTime);
 
     try {
 
         const theatreAvailabilityTime = await calculateAvailableTime(newShowing);
-        console.log("ava: " + theatreAvailabilityTime);
-        console.log("new starttime" + newShowingStartTime);
         if (newShowingStartTime <= theatreAvailabilityTime) {
             alert("the scheduled time for the new showing conflicts with an existing showing.")
             return;
         }
 
-        const postOption = makeOption("POST", newShowing);
+        const token = localStorage.getItem("jwtToken");
+        const postOption = makeAuthOption("POST", newShowing, token);
 
         const response = await fetch(SHOWING_URL, postOption);
         checkForHttpErrors(response);
@@ -155,14 +152,12 @@ async function calculateAvailableTime(newShowing) {
 
     const latestShowingStartTime = new Date(latestShowing.startTime);
 
-    console.log("before split: " + latestShowingStartTime);
-    let durationSplitArray = latestShowing.movie.runtime.split(" "); //beacuse this value is null in the db, this whole function dont work. it stops running after it encounters the error
+    let durationSplitArray = latestShowing.movie.runtime.split(" ");
     const latestShowingMovieDuration = Number(durationSplitArray[0]);
     const prepareTimeTheatre = 30;
 
     //calculating the time when the theatre is avaliable again by adding movie duration and cleaning time to the original start time of movie from latest showing.
     latestShowingStartTime.setMinutes(latestShowingStartTime.getMinutes() + latestShowingMovieDuration + prepareTimeTheatre);
-    console.log("afet split: " + latestShowingStartTime)
 
     const calculatedAvailabilityTime = latestShowingStartTime;
 
