@@ -4,6 +4,7 @@ import { initSeatView } from "./bookSeat.js";
 import { initShowingsView } from "./showings.js";
 import { initMoviesView } from "./movies.js";
 import { initOptions } from "./addShowing.js";
+import {initLoginView} from "./login.js";
 
 
 function initializeViewNavigation() {
@@ -61,6 +62,8 @@ function initView(viewName) {
     initSeatView()
   } else if (viewName === 'addShowing') {
     initOptions();
+  } else if (viewName === 'login') {
+    initLoginView()
   }
   // Initialize other views as needed
 }
