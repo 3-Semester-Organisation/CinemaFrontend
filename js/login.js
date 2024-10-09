@@ -22,16 +22,16 @@ async function login() {
 
     const postOption = makeOption("POST", loginRequest);
     try {
-        const response = await fetch(LOGIN_URL + "login");
+        const response = await fetch(LOGIN_URL + "login", postOption);
         checkForHttpErrors(response);
         const jwtToken = await response.json();
+
+        const decodedToken = jwt_decode(jwtToken);
+        checkRole(decodedToken);
+
     } catch (error) {
         console.error(error)
     }
-
-    const decodedToken = jwt_decode(jwtToken);
-
-    checkRole(decodedToken);
 }
 
 
