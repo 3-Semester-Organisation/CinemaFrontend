@@ -68,7 +68,7 @@ async function createShowing() {
     try {
 
         const theatreAvailabilityTime = await calculateAvailableTime(newShowing);
-        if (newShowingStartTime <= theatreAvailabilityTime) {
+        if (newShowingStartTime <= theatreAvailabilityTime && newShowingStartTime.getDay() === theatreAvailabilityTime.getDay()) {
             alert("the scheduled time for the new showing conflicts with an existing showing.")
             return;
         }
