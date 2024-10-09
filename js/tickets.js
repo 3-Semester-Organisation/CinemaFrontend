@@ -22,7 +22,7 @@ const updateTable = async () => {
         let bookings = await getBookings(showingId, getOption); // get the bookings for showing
 
         if (!bookings || bookings.length === 0) {
-            document.getElementById('errorContainer').innerHTML = '<p>No bookings found</p>';
+            document.getElementById('errorContainer').innerHTML = '<p>No bookings found.</p>';
             return;
         }
         errorContainer.innerHTML = ''; // clear any previous errors

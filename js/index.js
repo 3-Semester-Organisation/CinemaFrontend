@@ -8,6 +8,11 @@ function initApp() {
   initializeViewNavigation();
   const search = document.getElementById("search-icon")
   search.addEventListener("click", getMovieSearchFilter)
+  searchInput.addEventListener("keypress", (event) => {
+    if(event.key === "Enter"){
+      search.click();
+    }
+  })
 }
 
 
