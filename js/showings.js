@@ -1,4 +1,6 @@
 import {checkForHttpErrors, makeOption} from "./util.js";
+import {initSeatView} from "./bookSeat.js";
+import {loadViewWithoutScript} from "./router.js";
 
 const SHOWINGS_URL = "http://127.0.0.1:8080/api/v1/showings"
 const SHOWING_URL = "http://127.0.0.1:8080/api/v1/showing"
@@ -21,7 +23,7 @@ async function displayShowingsBy(movieId, movieTitle) {
         const response = await fetch(SHOWINGS_URL + "?movieId=" + movieId);
         checkForHttpErrors(response);
         const showingList = await response.json();
-
+        console.log("#### SHOWING LIST: ", showingList)
         // Retry mechanism for elements availability
         const movieTitleElement = document.getElementById("movie-title");
         const thumbnail = document.getElementById("movie-thumbnail");
@@ -127,6 +129,8 @@ function buildColumn(showingDay, showingList) {
 
 function buildCard(showing) {
     const showingCard = document.createElement("a");
+    showingCard.dataset.showingId = showing.id;
+    showingCard.dataset.theatreId = showing.theatre.id;
     showingCard.classList.add("text-decoration-none");
 
     const showingDate = parseJsonLocalDateTimeToDate(showing.startTime.match(/(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2})/));
@@ -135,7 +139,7 @@ function buildCard(showing) {
     const showingTime = showingDate.toLocaleTimeString('default', timeOptions);
 
     showingCard.innerHTML += `
-                    <div class="card showing-card">
+                    <div class="card showing-card ">
                         <div class="card-body">
                             <h7 class="card-title">${showing.theatre.name}</h7>
                             <h5 class="card-text">${showingTime}</h5>
@@ -187,8 +191,12 @@ function parseJsonLocalDateTimeToDate(jsonLocalDateTime) {
 }
 
 
-function displaySeatBooking() {
-    alert("redirect to seatbooking")
+async function displaySeatBooking(e) {
+    let target = e.currentTarget;
+    let showingId = Number(target.dataset.showingId);
+    let theatreId = Number(target.dataset.theatreId);
+    await loadViewWithoutScript("bookSeat")
+    await initSeatView(showingId,theatreId)
 }
 
 
