@@ -1,3 +1,8 @@
+const navbar = document.getElementById("navbar-content");
+let defaultNavbar = navbar.innerHTML;
+
+
+
 function makeOption(httpMethod, body) {
     const option = {
         method: httpMethod.toUpperCase(),
@@ -36,6 +41,4 @@ function checkForHttpErrors(response) {
     }
 }
 
-export {checkForHttpErrors};
-export {makeOption};
-export {makeAuthOption};
+export {checkForHttpErrors, makeOption, makeAuthOption, defaultNavbar};
