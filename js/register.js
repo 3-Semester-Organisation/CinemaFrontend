@@ -31,7 +31,7 @@ function registerCostumer(clickEvent) {
         "fullName": registedFullName,
         "email": registedEmail,
         "phoneNumber": registedPhoneNumber,
-        "birthday": registedBirthday
+        "birthDate": registedBirthday
     }
 
     processRegisterRequest(registerRequest);
@@ -56,8 +56,8 @@ async function processRegisterRequest(request) {
         resetRegisterForm();
 
     }catch (error) {
-        console.error(error)
-        alert("Something went wrong when trying to register")
+        console.error(error) //TODO should be made more rebost.
+        alert("Username already taken find another one.")
     }
 }
 
@@ -118,4 +118,4 @@ function setCostumerNavbar() {
 
 
 
-export {initRegister}
+export {initRegister, setCostumerNavbar}
