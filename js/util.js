@@ -41,4 +41,14 @@ function checkForHttpErrors(response) {
     }
 }
 
-export {checkForHttpErrors, makeOption, makeAuthOption, defaultNavbar};
+
+
+
+function getDecodedToken() {
+    const token = localStorage.getItem("jwtToken");
+    const decodedToken = jwt_decode(token);
+    return decodedToken;
+}
+
+
+export {checkForHttpErrors, makeOption, makeAuthOption, defaultNavbar, getDecodedToken};
