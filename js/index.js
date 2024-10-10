@@ -1,5 +1,6 @@
 import { initializeViewNavigation } from "./router.js";
 import { getMovieSearchFilter } from "./movies.js";
+import {searchInputSuggestion} from "./search";
 
 document.addEventListener("DOMContentLoaded", initApp);
 
@@ -7,7 +8,7 @@ document.addEventListener("DOMContentLoaded", initApp);
 function initApp() {
   initializeViewNavigation();
 
-  //TODO ONE OF THESE IS REDUNDANT
+  //TODO ONE OF THESE IS REDUNDANT (this one)
   const search = document.getElementById("search-icon")
   search.addEventListener("click", getMovieSearchFilter)
   searchInput.addEventListener("keypress", (event) => {
@@ -26,6 +27,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
 
   if (searchInput && searchButton) {
       searchInput.addEventListener('keypress', function(event) {
+          searc
           if (event.key === 'Enter') {
               event.preventDefault(); // Prevent the default form submission
               searchButton.click(); // Trigger the search button click
