@@ -223,4 +223,15 @@ const updateTable = async () => {
     }
 }
 
-export { initMoviesView,getAllActiveMovies,getMovieSearchFilter }
+export { initMoviesView, 
+    getAllActiveMovies, 
+    getMovieSearchFilter,
+    getFilteredMovies,
+    getGenres,
+    loadGenres,
+    moviesHTMLFormatter,
+    pgRatingSelector,
+    updateTable,
+    renderPage,
+    renderPaginationControls,
+    handleClick };
