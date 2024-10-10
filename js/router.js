@@ -5,6 +5,7 @@ import { initMoviesView } from "./movies.js";
 import { initOptions } from "./addShowing.js";
 import {initLoginView, setAdminNavbar} from "./adminLogin.js";
 import {initLogoutView} from "./logout.js";
+import {initRegister} from "./register.js";
 
 
 
@@ -92,6 +93,8 @@ function initView(viewName) {
     initLoginView();
   } else if (viewName === 'logout') {
     initLogoutView();
+  } else if (viewName === 'register') {
+    initRegister();
   }
   // Initialize other views as needed
 }
@@ -133,7 +136,7 @@ function checkAuth(initView, viewName) {
     // Check if the token is expired
     if (decodedToken.exp < currentTime) {
       initLogoutView("token expired");
-      window.location.href = '/login';
+      initView('login');
       return;
     }
     // Token is valid, allow user to stay on admin page
