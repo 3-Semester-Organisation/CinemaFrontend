@@ -1,4 +1,4 @@
-import {defaultNavbar} from "./adminLogin.js";
+import {defaultNavbar} from "./util.js";
 
 function initLogoutView(message) {
     logout(message);
@@ -20,6 +20,6 @@ function logout(message) {
 
 
 function redirectToHome() {
-    window.location.href = 'http://localhost:63342/CinemaFrontend/index.html?_ijt=sl3tgeje30eisstrtta395t5av&_ij_reload=RELOAD_ON_SAVE#home';
+    location.hash = "#home";
 }
 export {initLogoutView}
