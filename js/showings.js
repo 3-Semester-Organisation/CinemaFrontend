@@ -200,7 +200,7 @@ async function displaySeatBooking(e) {
     let showingId = Number(target.dataset.showingId);
     let theatreId = Number(target.dataset.theatreId);
     await loadViewWithoutScript("bookSeat")
-    await initSeatView(showingId,theatreId)
+    await initSeatViewScript(showingId,theatreId)
 }
 
 

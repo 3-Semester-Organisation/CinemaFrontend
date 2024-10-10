@@ -4,7 +4,7 @@ import {initializeViewNavigation} from "./router.js";
 const LOGIN_URL = "http://localhost:8080/api/v1/";
 
 
-function initLoginView() {
+function initLoginViewScript() {
     const loginBtn = document.getElementById("sign-in");
     loginBtn.addEventListener("click", adminLogin)
 
@@ -101,4 +101,4 @@ function setAdminNavbar() {
     navbar.innerHTML = adminNavbarContent;
 }
 
-export {initLoginView, setAdminNavbar}
+export {initLoginViewScript, setAdminNavbar}

@@ -1,6 +1,6 @@
 import {defaultNavbar} from "./util.js";
 
-function initLogoutView(message) {
+function initLogoutViewScript(message) {
     location.hash = "#logout" //switch to logout.html so this script can load.
     logout(message);
 }
@@ -26,4 +26,4 @@ function redirectToHome() {
 
 
 
-export {initLogoutView}
+export {initLogoutViewScript}

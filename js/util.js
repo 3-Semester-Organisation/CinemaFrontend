@@ -46,6 +46,9 @@ function checkForHttpErrors(response) {
 
 function getDecodedToken() {
     const token = localStorage.getItem("jwtToken");
+    if (!token) {
+        return null;
+    }
     const decodedToken = jwt_decode(token);
     return decodedToken;
 }
