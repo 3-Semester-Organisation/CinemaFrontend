@@ -8,7 +8,7 @@ let allFilteredMovies = [];
 const MOVIES_PER_PAGE = 10;
 
 
-async function initMoviesView() {
+async function initMoviesViewScript() {
     await loadAllMovies();
     await loadGenres();
     await updateTable();
@@ -225,7 +225,7 @@ const updateTable = async () => {
     }
 }
 
-export { initMoviesView, 
+export { initMoviesViewScript,
     getAllActiveMovies, 
     getMovieSearchFilter,
     getFilteredMovies,

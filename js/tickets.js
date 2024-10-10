@@ -1,6 +1,6 @@
 import {checkForHttpErrors, makeAuthOption} from "./util.js";
 
-async function initTicketsView() {
+async function initTicketsViewScript() {
     await loadShowings();
     await updateTable();
     console.log('Tickets view initialized');
@@ -147,4 +147,4 @@ const fillTable = async (bookingList, seatBookingList) => {
     document.getElementById('tableBody').innerHTML = html;
 }
     
-export { initTicketsView };
+export { initTicketsViewScript };

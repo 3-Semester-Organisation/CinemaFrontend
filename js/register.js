@@ -6,7 +6,7 @@ const REGISTER_URL = "http://localhost:8080/api/v1/register";
 
 
 
-function initRegister() {
+function initRegisterViewScript() {
     const registerBtn = document.getElementById("register-btn");
     registerBtn.addEventListener("click", registerCostumer);
 }
@@ -123,4 +123,4 @@ function setCostumerNavbar() {
 
 
 
-export {initRegister, setCostumerNavbar}
+export {initRegisterViewScript, setCostumerNavbar}

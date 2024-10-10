@@ -1,5 +1,5 @@
 
-export async function initSeatView(showingId = 1, theatreId = 1) {
+export async function initSeatViewScript(showingId = 1, theatreId = 1) {
     console.log("Init seat view!")
     console.log("### calc: " + calcSeatViewWidth(15));
     console.log(seatWidth);
