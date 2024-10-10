@@ -1,4 +1,4 @@
-import {checkForHttpErrors, makeOption} from "./util";
+import {checkForHttpErrors, makeOption} from "./util.js";
 
 
 const REGISTER_URL = "http://localhost:8080/api/v1/register";
@@ -52,12 +52,28 @@ async function processRegisterRequest(request) {
         localStorage.setItem("jwtToken", token);
 
         setCostumerNavbar();
+        alert("Successfully created a account");
+        resetRegisterForm();
 
     }catch (error) {
         console.error(error)
         alert("Something went wrong when trying to register")
     }
 }
+
+
+
+
+
+function resetRegisterForm() {
+    document.getElementById("register-username").value = "";
+    document.getElementById("register-password").value = "";
+    document.getElementById("register-full-name").value = "";
+    document.getElementById("register-email").value = "";
+    document.getElementById("register-phone-number").value = "";
+    document.getElementById("register-birthday").value = "";
+}
+
 
 
 
@@ -74,7 +90,7 @@ function setCostumerNavbar() {
             <a class="nav-link view-link hoverbutton" href="#movies">Movies</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link view-link hoverbutton" href="#">My tickets</a> <!--           TODO impliment feature-->
+            <a class="nav-link view-link hoverbutton" href="#">My tickets</a> <!--           TODO implement feature-->
         </li>
     </ul>
     
@@ -87,6 +103,9 @@ function setCostumerNavbar() {
     
     <ul class="navbar-nav ml-auto">
         <li class="nav-item">
+            <a class="nav-link view-link text-white hoverbutton me-2" href="">Account</a> <!--           TODO implement feature-->
+        </li>
+        <li class="nav-item">
             <a class="nav-link view-link text-white hoverbutton me-2" href="#logout">logout</a>
         </li>
     </ul>
@@ -95,3 +114,8 @@ function setCostumerNavbar() {
     const navbar = document.getElementById("navbar-content");
     navbar.innerHTML = costumerNavbar;
 }
+
+
+
+
+export {initRegister}
