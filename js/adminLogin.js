@@ -1,4 +1,4 @@
-import {checkForHttpErrors, makeOption} from "./util.js";
+import {checkForHttpErrors, getDecodedToken, makeOption} from "./util.js";
 import {initializeViewNavigation} from "./router.js";
 
 const LOGIN_URL = "http://localhost:8080/api/v1/";
@@ -61,7 +61,10 @@ export function checkRole(decodedToken) {
 
 
 function setAdminNavbar() {
-    console.log("inside loadAdminView")
+
+    const decodedToken = getDecodedToken();
+    const username = decodedToken.sub;
+
 
     //add admin content
     const adminNavbarContent =
@@ -77,13 +80,24 @@ function setAdminNavbar() {
             </li>
         </ul>
 
+        <form class="d-flex mx-auto position-relative">
+            <input class="form-control pe-5 me-5" id="movie-search" type="text" placeholder="Enter name..." size="15" aria-label="Movie search">
+            <span id="search-icon">
+                <img class="search-icon" src="/images/search.png" alt="Search">
+            </span>
+        </form>
+
         <!--logout-->
         <ul class="navbar-nav ml-auto">
+            <li class="nav-item">
+                <a class="nav-link view-link text-white hoverbutton me-2" href="">${username}</a> <!--TODO implement account feature-->
+            </li>
             <li class="nav-item">
                 <a id="logout-btn" class="nav-link view-link text-white hoverbutton me-2" href="#logout">logout</a>
             </li>
         </ul>
 `
+    const navbar = document.getElementById("navbar-content");
     navbar.innerHTML = adminNavbarContent;
 }
 

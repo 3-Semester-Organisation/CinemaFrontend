@@ -1,4 +1,4 @@
-import {checkForHttpErrors, makeOption} from "./util.js";
+import {checkForHttpErrors, getDecodedToken, makeOption} from "./util.js";
 
 
 const REGISTER_URL = "http://localhost:8080/api/v1/register";
@@ -83,8 +83,7 @@ function resetRegisterForm() {
 function setCostumerNavbar() {
 
     //used to set username in navbar when logged in to make it more interactive
-    const token = localStorage.getItem("jwtToken");
-    const decodedToken = jwt_decode(token);
+    const decodedToken = getDecodedToken();
     const username = decodedToken.sub;
 
     const costumerNavbar = `
@@ -96,7 +95,7 @@ function setCostumerNavbar() {
             <a class="nav-link view-link hoverbutton" href="#movies">Movies</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link view-link hoverbutton" href="#">My tickets</a> <!--           TODO implement feature-->
+            <a class="nav-link view-link hoverbutton" href="#">My tickets</a> <!-- TODO implement feature-->
         </li>
     </ul>
     
@@ -109,7 +108,7 @@ function setCostumerNavbar() {
     
     <ul class="navbar-nav ml-auto">
         <li class="nav-item">
-            <a class="nav-link view-link text-white hoverbutton me-2" href="">${username} (Account)</a> <!--           TODO implement feature-->
+            <a class="nav-link view-link text-white hoverbutton me-2" href="">${username}</a> <!--TODO implement account feature-->
         </li>
         <li class="nav-item">
             <a class="nav-link view-link text-white hoverbutton me-2" href="#logout">logout</a>
