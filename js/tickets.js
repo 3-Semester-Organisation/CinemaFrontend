@@ -118,7 +118,7 @@ const fillTable = async (bookingList, seatBookingList) => {
     const bookings = bookingList;
     const seatBookings = seatBookingList;
 
-    if (!bookings || !bookings.length === 0) {
+    if (!bookings || bookings.length === 0) {
         document.getElementById('errorContainer').innerHTML = '<p>No bookings found</p>';
         return;
     }
@@ -126,10 +126,11 @@ const fillTable = async (bookingList, seatBookingList) => {
     // Create a map of seat bookings by booking ID
     const seatBookingMap = new Map();
     for (let seatBooking of seatBookings) {
-        if (!seatBookingMap.has(seatBooking.booking.id)) {
-            seatBookingMap.set(seatBooking.booking.id, []);
+        console.log(seatBooking);
+        if (!seatBookingMap.has(seatBooking.id)) {
+            seatBookingMap.set(seatBooking.id, []);
         }
-        seatBookingMap.get(seatBooking.booking.id).push(seatBooking);
+        seatBookingMap.get(seatBooking.id).push(seatBooking);
     }
 
     let html = "";
