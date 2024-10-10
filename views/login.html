@@ -1,35 +1,41 @@
-<section id="login" class="bg-grey-blue p-4 rounded">
-  <div class="container">
-    <div class="row justify-content-center">
-      <div class="col-md-6">
-        <header class="mb-2">
-          <h2>Login</h2>
-        </header>
-        <div id="form-container" class="container"></div>
-        <form>
-          <!-- Email input -->
-          <div class="mb-4 form-floating">
-            <input type="email" class="form-control" id="email" placeholder="Email address"/>
-            <label for="email">Email address</label>
-          </div>
-        
-          <!-- Password input -->
-          <div class="mb-4 form-floating">
-            <input type="password" class="form-control" id="password" placeholder="Password"/>
-            <label for="password">Password</label>
-          </div>
-        
-          <!-- 2 column grid layout for inline styling -->
-          <div class="row mb-4">
-            <div class="col d-flex justify-content-center">
-              <a href="#login" onclick="function fuku(){alert('womp womp')};fuku()">Forgot password?</a>
+<section id="adminLogin" class=" bg-grey-blue p-4 rounded">
+    <header>
+        <div class="container">
+            <div class="row justify-content-center">
+                <header class="mb-2">
+                    <h2 style="margin-bottom: 50px; font-weight: bold; font-size: xxx-large">Login</h2>
+                </header>
+
+                <div id="form-container" class="container">
+                    <form>
+                        <!-- Username input -->
+                        <div class="mb-4">
+                            <label for="username" class="form-label">Username</label>
+                            <input id="username" type="text" class="form-control" required/>
+                        </div>
+
+                        <!-- Password input -->
+                        <div class="mb-4">
+                            <label for="password" class="form-label">Password</label>
+                            <input id="password" type="password" class="form-control" required/>
+                        </div>
+
+                        <!-- 2 column grid layout for inline styling -->
+                        <div class="row mb-4">
+                            <div class="col d-flex justify-content-center">
+                                <a style="margin-right: auto" href="#register">Register</a>
+                                <a style="margin-left: auto" href="#adminLogin" onclick="function fuku(){alert('womp womp')} fuku()">Forgot password?</a>
+                            </div>
+                        </div>
+
+                        <!-- Submit button -->
+                        <a href="#adminDashboard">
+                            <button id="sign-in" type="button" class="btn btn-primary btn-block mb-4">Sign in</button>
+                        </a>
+                    </form>
+                </div>
+
             </div>
-          </div>
-        
-          <!-- Submit button -->
-          <button type="button" class="btn btn-primary btn-block mb-4">Sign in</button>
-        </form>
-      </div>
-    </div>
-  </div>
+        </div>
+    </header>
 </section>

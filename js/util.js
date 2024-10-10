@@ -1,9 +1,28 @@
+const navbar = document.getElementById("navbar-content");
+let defaultNavbar = navbar.innerHTML;
+
+
+
 function makeOption(httpMethod, body) {
     const option = {
         method: httpMethod.toUpperCase(),
         headers: {
             "Content-type": "application/json",
             "Accept": "application/json"
+        }
+    }
+    if (body) {
+        option.body = JSON.stringify(body);
+    }
+    return option;
+}
+
+function makeAuthOption(httpMethod, body, token) {
+    const option = {
+        method: httpMethod.toUpperCase(),
+        headers: {
+            "Content-type": "application/json",
+            "Authorization": "Bearer " + token
         }
     }
     if (body) {
@@ -22,5 +41,14 @@ function checkForHttpErrors(response) {
     }
 }
 
-export {checkForHttpErrors};
-export {makeOption};
+
+
+
+function getDecodedToken() {
+    const token = localStorage.getItem("jwtToken");
+    const decodedToken = jwt_decode(token);
+    return decodedToken;
+}
+
+
+export {checkForHttpErrors, makeOption, makeAuthOption, defaultNavbar, getDecodedToken};

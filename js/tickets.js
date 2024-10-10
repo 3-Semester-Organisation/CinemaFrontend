@@ -1,3 +1,5 @@
+import {checkForHttpErrors, makeAuthOption} from "./util.js";
+
 async function initTicketsView() {
     await loadShowings();
     await updateTable();
@@ -14,7 +16,10 @@ const updateTable = async () => {
     document.getElementById('selectBody').onchange = async () => { // when a showing is selected
         document.getElementById('tableBody').innerHTML = ''; // clear the table
         let showingId = document.getElementById('selectBody').value; // get the showing id
-        let bookings = await getBookings(showingId); // get the bookings for showing
+
+        const token = localStorage.getItem("jwtToken");
+        const getOption = makeAuthOption("GET", null, token);
+        let bookings = await getBookings(showingId, getOption); // get the bookings for showing
 
         if (!bookings || bookings.length === 0) {
             document.getElementById('errorContainer').innerHTML = '<p>No bookings found.</p>';
@@ -23,7 +28,7 @@ const updateTable = async () => {
         errorContainer.innerHTML = ''; // clear any previous errors
         
         let bookingId = bookings[0].id; // get the booking id
-        let seatBookings = await getSeatBookings(bookingId); // get the seat bookings for booking
+        let seatBookings = await getSeatBookings(bookingId, getOption); // get the seat bookings for booking
         fillTable(bookings, seatBookings); // fill the table with the bookings and seat bookings
     }
 }
@@ -76,17 +81,19 @@ const getShowings = async () => {
 }
 
 // fetches all bookings for a specific showing
-const getBookings = async showingId => {
+const getBookings = async (showingId, token) => {
+
     try {
-        const res = await fetch(`http://localhost:8080/api/v1/bookings?showingId=${showingId}`);
-        if (!res.ok) {
-            throw new Error('Network response was not ok');
-        }
+        const res = await fetch(`http://localhost:8080/api/v1/bookings?showingId=${showingId}`, token);
+        checkForHttpErrors(res)
         let bookings = await res.json();
+
         if (!bookings || bookings.length === 0) {
             return [];
         }
+
         return bookings;
+
     } catch (error) {
         console.error('Problem with fetch operation on getbookings: ', error);
         return [];
@@ -94,13 +101,13 @@ const getBookings = async showingId => {
 }
 
 // fetches all seat bookings for a specific booking
-const getSeatBookings = async bookingId => {
+const getSeatBookings = async (bookingId, token) => {
+
     try {
-        const res = await fetch(`http://localhost:8080/api/v1/seatbookings?bookingId=${bookingId}`);
-        if (!res.ok) {
-            throw new Error('Network response was not ok');
-        }
+        const res = await fetch(`http://localhost:8080/api/v1/seatbooking?bookingId=${bookingId}`, token);
+        checkForHttpErrors(res);
         return await res.json();
+
     } catch (error) {
         console.error('Problem with fetch operation on getSeatBookings: ', error);
     }
@@ -111,7 +118,7 @@ const fillTable = async (bookingList, seatBookingList) => {
     const bookings = bookingList;
     const seatBookings = seatBookingList;
 
-    if (!bookings || !bookings.length === 0) {
+    if (!bookings || bookings.length === 0) {
         document.getElementById('errorContainer').innerHTML = '<p>No bookings found</p>';
         return;
     }
@@ -119,10 +126,10 @@ const fillTable = async (bookingList, seatBookingList) => {
     // Create a map of seat bookings by booking ID
     const seatBookingMap = new Map();
     for (let seatBooking of seatBookings) {
-        if (!seatBookingMap.has(seatBooking.booking.id)) {
-            seatBookingMap.set(seatBooking.booking.id, []);
+        if (!seatBookingMap.has(seatBooking.id)) {
+            seatBookingMap.set(seatBooking.id, []);
         }
-        seatBookingMap.get(seatBooking.booking.id).push(seatBooking);
+        seatBookingMap.get(seatBooking.id).push(seatBooking);
     }
 
     let html = "";

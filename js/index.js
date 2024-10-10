@@ -6,6 +6,8 @@ document.addEventListener("DOMContentLoaded", initApp);
 
 function initApp() {
   initializeViewNavigation();
+
+  //TODO ONE OF THESE IS REDUNDANT
   const search = document.getElementById("search-icon")
   search.addEventListener("click", getMovieSearchFilter)
   searchInput.addEventListener("keypress", (event) => {
@@ -16,6 +18,7 @@ function initApp() {
 }
 
 
+// TODO ONE OF THESE IS REDUNDANT
 // press enter for search
 document.addEventListener('DOMContentLoaded', (event) => {
   const searchInput = document.getElementById('movie-search');
