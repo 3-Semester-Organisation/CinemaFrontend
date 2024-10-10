@@ -3,8 +3,6 @@ import {initializeViewNavigation} from "./router.js";
 
 const LOGIN_URL = "http://localhost:8080/api/v1/";
 
-const navbar = document.getElementById("navbar-content");
-let defaultNavbar = navbar.innerHTML;
 
 function initLoginView() {
     const loginBtn = document.getElementById("sign-in");
@@ -38,12 +36,14 @@ async function adminLogin() {
 
         //store the token locally instead of in a cookie. Cookies opens up for csrf.
         localStorage.setItem("jwtToken", jwtToken)
-        console.log("inside adming login 2 : " + localStorage.getItem("jwtToken"))
         //the jwt_decode only takes strings not js objects. If we did not unwrap it would not work.
         const decodedToken = jwt_decode(jwtToken);
         checkRole(decodedToken);
 
     } catch (error) {
+        alert("Wrong credentials"); //TODO check server response, and handle this better
+        history.back(); //TODO this was a quick fix. This should be made better, because when login is clicked it re-directs to adminDashboard
+                        //to keep user interaction alive to redirect to login again. So handle click better.
         console.error(error)
     }
 }
@@ -87,4 +87,4 @@ function setAdminNavbar() {
     navbar.innerHTML = adminNavbarContent;
 }
 
-export {initLoginView, setAdminNavbar, defaultNavbar}
+export {initLoginView, setAdminNavbar}
