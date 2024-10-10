@@ -14,7 +14,6 @@ function initApp() {
     searchInput.addEventListener("keypress", (event) => {
         if (event.key === "Enter") {
             event.preventDefault(); // Prevent the default form submission
-            search.click();
             searchButton.click();
         }
     })

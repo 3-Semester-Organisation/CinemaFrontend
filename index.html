@@ -5,11 +5,11 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 
-    <link rel="stylesheet" href="css/bootstrap/bootstrap.min.css">
-    <link rel="stylesheet" href="css/index.css"/>
-    <link rel="stylesheet" href="css/showings.css"/>
-    <link rel="stylesheet" href="css/bookSeat.css"/>
-    <link rel="stylesheet" href="css/movies.css"/>
+    <link rel="stylesheet" href="./css/bootstrap/bootstrap.min.css">
+    <link rel="stylesheet" href="./css/index.css"/>
+    <link rel="stylesheet" href="./css/showings.css"/>
+    <link rel="stylesheet" href="./css/bookSeat.css"/>
+    <link rel="stylesheet" href="./css/movies.css"/>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap"
@@ -43,11 +43,9 @@
             </li>
         </ul>
         <div class="d-flex mx-auto position-relative">
-          <input autocomplete="off" class="form-control pe-5 me-5" id="movie-search" type="text" placeholder="Enter name..." size="15" aria-label="Movie search">
-          <span id="search-icon"><img class="search-icon" src="./images/search.svg" alt="Search"></span>
-        </div>
-        <div id="search-results">
-
+            <input autocomplete="off" class="form-control pe-5 me-5" id="movie-search" type="text"
+                   placeholder="Enter name..." size="15" aria-label="Movie search">
+            <span id="search-icon"><img class="search-icon" src="./images/search.svg" alt="Search"></span>
         </div>
         <ul class="navbar-nav ml-auto">
             <li class="nav-item">
@@ -59,6 +57,8 @@
         </ul>
     </div>
 </nav>
+<div class="search-results"></div>
+
 
 <!-- Main Content -->
 <main class="container-fluid main-container mt-4" id="app">
@@ -79,8 +79,9 @@
 <script src="./js/adminLogin.js" type="module"></script>
 <script src="./js/logout.js" type="module"></script>
 <script src="./js/register.js" type="module"></script>
+<script src="./js/search.js" type="module"></script>
 <!-- index.js SKAL execute som det sidste, meget vigtig-->
-<script src="js/index.js" type="module"></script>
+<script src="./js/index.js" type="module"></script>
 
 </body>
 </html>
