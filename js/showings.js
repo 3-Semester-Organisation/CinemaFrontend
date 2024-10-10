@@ -27,6 +27,7 @@ async function displayShowingsBy(movieId, movieTitle) {
         // Retry mechanism for elements availability
         const movieTitleElement = document.getElementById("movie-title");
         const thumbnail = document.getElementById("movie-thumbnail");
+        const pgRatingElement = document.getElementById("pg-rating");
         if (!movieTitleElement || !thumbnail) {
             setTimeout(() => displayShowingsBy(movieId, movieTitle), 100); // Retry after 100ms
             return;
@@ -37,6 +38,9 @@ async function displayShowingsBy(movieId, movieTitle) {
         thumbnail.setAttribute("alt", "poster of the movie: " + movieTitle.toString());
         thumbnail.classList.add("poster", "rounded");
 
+        pgRatingElement.classList.add("pg-rating-icon");
+        pgRatingElement.innerHTML = `<img src="${pgRatingSelector(showingList[0].movie.ageLimit)}" alt="PG Rating" class="pg-rating-icon">`;
+        
         const movieDescription = document.getElementById("movie-description");
         movieDescription.innerText = showingList[0].movie.description;
 
@@ -60,6 +64,20 @@ async function displayShowingsBy(movieId, movieTitle) {
         }
     } catch (error) {
         console.error(error.message);
+    }
+}
+
+function pgRatingSelector(ageLimit){
+    if(ageLimit == 0) {
+        return "images/MPA_G_RATING.svg.png";
+    }else if(ageLimit < 13){
+        return "images/MPA_PG_RATING.svg.png";
+    }else if(ageLimit < 17){
+        return "images/MPA_PG-13_RATING.svg.png";
+    }else if(ageLimit < 18){
+        return "images/MPA_R_RATING.svg.png";
+    }else{
+        return "images/MPA_NC-17_RATING.svg.png";
     }
 }
 

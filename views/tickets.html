@@ -5,16 +5,13 @@
     <p>The place to go for ticketchecking</p>
 
     <!-- dropdown menu with all current showings-->
-    <form>
-      <div class="form-group">
-        <label for="showing" hidden>Select a showing</label>
-        <select class="form-select short-input mb-4" id="selectBody">
-        </select>
-      </div>
-    </form>
-    <div id="errorContainer">
-      
-    </div>
+    <div class="mb-3 form-floating">
+      <select id="selectBody" class="form-select short-input mb-4" required>
+        <!--hent all showings dynamisk-->
+      </select>
+      <label for="showing-options" class="form-label">Showing</label>
+  
+    <div id="errorContainer"></div>
 
     <table class="table table-bordered table-hover table-dark">
       <thead>

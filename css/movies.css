@@ -1,11 +1,3 @@
-.inner-image {
-    position: absolute;
-    bottom: 1em;
-    right: 0px;
-    height: 1.25em;
-    width: 2.5em;
-}
-
 .thumbnail {
     width: 100%;
     height: 13vw;
@@ -13,6 +5,7 @@
     object-fit: cover;
     box-shadow: 0 0.25em 0.5em rgba(0, 0, 0, 0.8);
     transition: transform 0.5s ease;
+    display: block;
 }
 
 .thumbnail:hover {
@@ -30,13 +23,40 @@
 }
 
 .card {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
   padding-top: 0.5em;
   padding-left: 0.5em;
   padding-right: 0.5em;
 }
 
+/* Default height for large screens */
 #movies-div {
-  height: 45vw; /* Set a fixed height for container*/
+  height: 80vh; /* Set a height relative to viewport height */
+  min-height: 800px;
+}
+
+/* Medium screens (tablets) */
+@media (max-width: 992px) {
+  #movies-div {
+    height: 60vh; /* Adjust height for medium screens */
+  }
+}
+
+/* Small screens (phones) */
+@media (max-width: 768px) {
+  #movies-div {
+    height: 245vh; /* Adjust height for small screens */
+  }
+}
+
+/* Extra small screens (very small phones) */
+@media (max-width: 576px) {
+  #movies-div {
+    height: 230vh; /* Adjust height for extra small screens */
+  }
 }
 
 #ticket-png {

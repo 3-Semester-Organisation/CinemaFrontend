@@ -1,22 +1,22 @@
-<section id="login" class=" bg-grey-blue p-4 rounded">
-    <header>
-    <div class="container">
-      <div class="row justify-content-center">
+<section id="login" class="bg-grey-blue p-4 rounded">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-md-6">
         <header class="mb-2">
           <h2>Login</h2>
         </header>
         <div id="form-container" class="container"></div>
         <form>
           <!-- Email input -->
-          <div class="mb-4">
-            <input type="email" class="form-control"/>
-            <label class="form-label">Email address</label>
+          <div class="mb-4 form-floating">
+            <input type="email" class="form-control" id="email" placeholder="Email address"/>
+            <label for="email">Email address</label>
           </div>
         
           <!-- Password input -->
-          <div class="mb-4">
-            <input type="password" class="form-control" />
-            <label class="form-label">Password</label>
+          <div class="mb-4 form-floating">
+            <input type="password" class="form-control" id="password" placeholder="Password"/>
+            <label for="password">Password</label>
           </div>
         
           <!-- 2 column grid layout for inline styling -->
@@ -27,8 +27,9 @@
           </div>
         
           <!-- Submit button -->
-          <button  type="button" class="btn btn-primary btn-block mb-4">Sign in</button>
+          <button type="button" class="btn btn-primary btn-block mb-4">Sign in</button>
         </form>
       </div>
     </div>
-  </section>
+  </div>
+</section>
