@@ -1,9 +1,9 @@
 
-export function initSeatView() {
+export async function initSeatView(showingId = 1, theatreId = 1) {
     console.log("Init seat view!")
-    console.log(calcSeatViewWidth(15));
+    console.log("### calc: " + calcSeatViewWidth(15));
     console.log(seatWidth);
-    createSeatView();
+    await createSeatView(showingId, theatreId);
     setUpEvents();
 }
 
@@ -39,7 +39,7 @@ async function getLayouts(theatreId) {
 }
 
 
-async function parseLayouts() {
+async function parseLayouts(showingId) {
     const parsedLayouts = {"rows": [], "cols": []}
     const layouts = await getLayouts(1)
     console.log("layouts: ", layouts)
@@ -57,6 +57,7 @@ async function parseLayouts() {
 
 function calcSeatViewWidth(seatNumber,spaces) {
     let margin = 8 // mx-1
+    console.log("#### CALCING ON GOING")
     return (seatWidth+margin) * seatNumber + 90 + (layoutSpace*spaces);
 }
 
@@ -108,18 +109,16 @@ function magic(seatMap, layout) {
     return fragment
 }
 
-async function createSeatView() {
+async function createSeatView(showingId, theatreId) {
     const seatView = document.getElementById("seatView");
     const seatGuide = document.getElementById("seat-guide");
     let fragment = document.createDocumentFragment();
-    let layout = await parseLayouts();
-    let seatMap = await getSeatMap(1);
+    let layout = await parseLayouts(theatreId);
+    let seatMap = await getSeatMap(showingId);
 
     fragment.appendChild(createScreen());
     fragment.appendChild(magic(seatMap,layout));
     let spaces = layout.cols.length
-    // createRows(fragment, 10, 10, layout)
-    console.log("####### WIDTH: ", calcSeatViewWidth(10,spaces))
     seatView.innerHTML = "";
     seatView.style.width = `${calcSeatViewWidth(10,spaces)}px`
     seatGuide.style.width = `${calcSeatViewWidth(10,spaces)}px`
@@ -158,6 +157,13 @@ function handleSeatClick(e) {
     }
     renderPickedSeats()
 }
+
+//
+// function createBookingRequest() {
+//     let email;
+//     let showingId;
+//     pickedSeats
+// }
 
 function setUpEvents() {
     const seatView = document.getElementById("seatView");
