@@ -101,6 +101,8 @@ const getFilteredMovies = async () => { ///movies?genre=&age=
     }
 }
 
+
+//TODO fix genre/age-search functionality to work alongside name search
 async function getMovieSearchFilter(event) {
     event.preventDefault();
     await loadViewWithoutScript("movies")
@@ -111,7 +113,7 @@ async function getMovieSearchFilter(event) {
     allFilteredMovies = movies.filter(movie => movie.title.toLowerCase().includes(movieSearch))
     console.log("im searching very hard!")
     console.log(allFilteredMovies)
-    await loadGenres()
+    await loadGenres() //without this the genre list has no content
     renderPage(1)
 }
 
