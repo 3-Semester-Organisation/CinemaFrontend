@@ -3,7 +3,7 @@ import { initTicketsView } from "./tickets.js";
 import { initSeatView } from "./bookSeat.js";
 import { initMoviesView } from "./movies.js";
 import { initOptions } from "./addShowing.js";
-import {initLoginView, loadAdminView} from "./adminLogin.js";
+import {initLoginView, setAdminNavbar} from "./adminLogin.js";
 import {initLogoutView} from "./logout.js";
 
 
@@ -137,7 +137,7 @@ function checkAuth(initView, viewName) {
       return;
     }
     // Token is valid, allow user to stay on admin page
-    loadAdminView()
+    setAdminNavbar()
     initView(viewName);
 
   } catch (error) {

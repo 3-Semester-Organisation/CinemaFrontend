@@ -53,14 +53,14 @@ export function checkRole(decodedToken) {
 
     const role = decodedToken.role;
     if (role === "ROLE_ADMIN") {
-        loadAdminView();
+        setAdminNavbar();
     }
 
     initializeViewNavigation();
 }
 
 
-function loadAdminView() {
+function setAdminNavbar() {
     console.log("inside loadAdminView")
 
     //add admin content
@@ -87,4 +87,4 @@ function loadAdminView() {
     navbar.innerHTML = adminNavbarContent;
 }
 
-export {initLoginView, loadAdminView, defaultNavbar}
+export {initLoginView, setAdminNavbar, defaultNavbar}

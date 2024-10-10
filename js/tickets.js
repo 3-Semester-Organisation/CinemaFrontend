@@ -126,7 +126,6 @@ const fillTable = async (bookingList, seatBookingList) => {
     // Create a map of seat bookings by booking ID
     const seatBookingMap = new Map();
     for (let seatBooking of seatBookings) {
-        console.log(seatBooking);
         if (!seatBookingMap.has(seatBooking.id)) {
             seatBookingMap.set(seatBooking.id, []);
         }
