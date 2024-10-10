@@ -7,7 +7,6 @@ document.addEventListener("DOMContentLoaded", initApp);
 function initApp() {
     initializeViewNavigation();
 
-    //TODO ONE OF THESE IS REDUNDANT (this one)
     const searchInput = document.getElementById('movie-search');
     const searchButton = document.getElementById('search-icon');
     const search = document.getElementById("search-icon")
