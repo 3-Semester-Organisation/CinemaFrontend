@@ -1,6 +1,7 @@
 import {defaultNavbar} from "./util.js";
 
-function initLogoutView(message) {
+function initLogoutViewScript(message) {
+    location.hash = "#logout" //switch to logout.html so this script can load.
     logout(message);
 }
 
@@ -15,11 +16,14 @@ function logout(message) {
     }
 
     localStorage.removeItem("jwtToken");
-    setTimeout(redirectToHome, 3500);
+    setTimeout(redirectToHome, 1500);
 }
 
 
 function redirectToHome() {
     location.hash = "#home";
 }
-export {initLogoutView}
+
+
+
+export {initLogoutViewScript}

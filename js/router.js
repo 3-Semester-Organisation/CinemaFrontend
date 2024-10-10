@@ -1,11 +1,12 @@
-import {initAddMovieView} from "./omdb.js";
-import {initTicketsView} from "./tickets.js";
-import {initSeatView} from "./bookSeat.js";
-import {initMoviesView} from "./movies.js";
-import {initOptions} from "./addShowing.js";
-import {initLoginView, setAdminNavbar} from "./adminLogin.js";
-import {initLogoutView} from "./logout.js";
-import {initRegister, setCostumerNavbar} from "./register.js";
+import {initAddMovieViewScript} from "./omdb.js";
+import {initTicketsViewScript} from "./tickets.js";
+import {initSeatViewScript} from "./bookSeat.js";
+import {initMoviesViewScript} from "./movies.js";
+import {initAddShowingScript} from "./addShowing.js";
+import {initLoginViewScript, setAdminNavbar} from "./adminLogin.js";
+import {initLogoutViewScript} from "./logout.js";
+import {initRegisterViewScript, setCostumerNavbar} from "./register.js";
+import {checkForHttpErrors, getDecodedToken} from "./util.js";
 
 
 function initializeViewNavigation() {
@@ -23,7 +24,6 @@ function handleViewChange() {
 
     if (location.hash) {
         viewName = location.hash.substring(1); // Remove '#' from the hash
-        console.log("inside ig in ganle vorw: " + viewName)
     }
 
     loadView(viewName);
@@ -35,26 +35,21 @@ function handleViewChange() {
 
 
 
-function loadView(viewName) {
+async function loadView(viewName) {
     const app = document.getElementById("app");
 
-    // Fetch the HTML content of the view
-    fetch(`views/${viewName}.html`)
-        .then(response => {
-            if (!response.ok) {
-                throw new Error(`Could not load ${viewName}.html`);
-            }
-            return response.text();
-        })
-        .then(html => {
-            app.innerHTML = html; // sets the innerHTML of the app div to the fetched html
-            // initView(viewName)
-            checkAuth(initView, viewName); // inits js for the view
-        })
-        .catch(error => {
-            console.error(error);
-            app.innerHTML = `<p>Error loading view.</p>`;
-        });
+    try {
+        // Fetch the HTML content of the view
+        const response = await fetch(`views/${viewName}.html`)
+        checkForHttpErrors(response);
+        const html = await response.text();
+        app.innerHTML = html; // sets the innerHTML of the app div to the fetched html
+        checkAuth(initViewScript, viewName);// inits js for the view
+
+    }catch (error) {
+        console.error(error)
+        app.innerHTML = `<p>Error loading view.</p>`;
+    }
 }
 
 
@@ -74,25 +69,25 @@ async function loadViewWithoutScript(viewName) {
 
 
 // helper function for loadView, initializes js for given view
-function initView(viewName) {
+function initViewScript(viewName) {
     if (viewName === 'addMovie') {
-        initAddMovieView();
+        initAddMovieViewScript();
     } else if (viewName === 'tickets') {
-        initTicketsView();
+        initTicketsViewScript();
     } else if (viewName === 'movies') {
-        initMoviesView();
+        initMoviesViewScript();
     } else if (viewName === 'bookSeat') {
-        initSeatView();
+        initSeatViewScript();
     } else if (viewName === 'addShowing') {
-        initOptions();
+        initAddShowingScript();
     } else if (viewName === 'login') {
-        initLoginView();
+        initLoginViewScript();
     } else if (viewName === 'logout') {
-        initLogoutView();
+        initLogoutViewScript();
     } else if (viewName === 'register') {
-        initRegister();
+        initRegisterViewScript();
     }
-    // Initialize other views as needed
+    // Initialize other scripts as needed
 }
 
 
@@ -106,6 +101,7 @@ function updateNavbarActiveLink(view) {
     document.querySelectorAll(".view-link").forEach(link => {
         if (link.getAttribute("href") === view) {
             link.classList.add("active");
+
         } else {
             link.classList.remove("active");
         }
@@ -118,25 +114,24 @@ function updateNavbarActiveLink(view) {
 
 
 function checkAuth(initView, viewName) {
-    const token = localStorage.getItem("jwtToken");
-    console.log("token : " + token)
-    if (!token) {
-        // No token, redirect to home
+
+    const decodedToken = getDecodedToken();
+    if (!decodedToken) {
+        // No token, just refresh and stay on page
         initView(viewName);
         return;
     }
 
     try {
-        const decodedToken = jwt_decode(token);
         const currentTime = Date.now() / 1000; //converts milisec to sec, because jwt uses sec and Date uses milisec.
 
-        // Check if the token is expired
+        // Check if the token is expired. If it is, lock the person out, and then redirect to login, so they can login and refresh their token.
         if (decodedToken.exp < currentTime) {
-            initLogoutView("token expired");
+            initLogoutViewScript("token expired");
             initView('login');
             return;
         }
-        // Token is valid, allow user to stay on admin page
+        // If token is valid, and has role admin, allow user to stay on admin page
         if (decodedToken.role === "ROLE_ADMIN") {
             setAdminNavbar()
             initView(viewName);
@@ -145,8 +140,9 @@ function checkAuth(initView, viewName) {
         if (decodedToken.role === "ROLE_USER") {
             setCostumerNavbar();
 
+            //todo sometimes you end up on adminDashbord, even tho you are not logged in as admin, this prevents it.
+            //have not pinpointed the reason yet.
             if (viewName === "adminDashboard") {
-                console.log("viewName is admin")
                 location.hash = "#home";
                 return;
             }
@@ -154,9 +150,11 @@ function checkAuth(initView, viewName) {
             initView(viewName);
         }
 
+        updateNavbarActiveLink("#" + viewName);
+
     } catch (error) {
         console.error("Error decoding token: ", error);
-        initLogoutView("an error occurred");
+        initLogoutViewScript("an error occurred");
     }
 
 }

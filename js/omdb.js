@@ -1,6 +1,6 @@
 import {checkForHttpErrors, makeAuthOption} from "./util.js";
 
-function initAddMovieView() {
+function initAddMovieViewScript() {
     const addButton = document.getElementById('add');
     if (addButton) {
         addButton.onclick = async () => {
@@ -67,4 +67,4 @@ const postMovie = async movie => {
     }
 }
 
-export {initAddMovieView};
+export {initAddMovieViewScript};
