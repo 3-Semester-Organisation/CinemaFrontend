@@ -11,6 +11,7 @@ async function getAllActiveMovies() {
     }
 }
 //TODO clean up this mess, so there isn't a fetch in this JS file
+//TODO move other search-based functions here
 
 
 let movieTitles = []
@@ -42,7 +43,7 @@ function display(result){
 
     searchResults.innerHTML = "<ul>" +content.join("") + "</ul>"
 }
-
+//the onclick doesn't work
 function selectInput(list){
     console.log("hit")
     searchInput.value = list.innerHTML
