@@ -1,0 +1,5 @@
+// babel translates ES6 code to ES5 code
+
+{
+    "presets": ["@babel/preset-env"]
+}
