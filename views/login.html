@@ -9,22 +9,22 @@
                 <div id="form-container" class="container">
                     <form>
                         <!-- Username input -->
-                        <div class="mb-4">
+                        <div class="mb-4 form-floating">
+                            <input id="username" type="text" class="form-control short-input" placeholder="Username" required/>
                             <label for="username" class="form-label">Username</label>
-                            <input id="username" type="text" class="form-control" required/>
                         </div>
 
                         <!-- Password input -->
-                        <div class="mb-4">
+                        <div class="mb-4 form-floating">
+                            <input id="password" type="password" class="form-control short-input" placeholder="Password" required/>
                             <label for="password" class="form-label">Password</label>
-                            <input id="password" type="password" class="form-control" required/>
                         </div>
 
                         <!-- 2 column grid layout for inline styling -->
                         <div class="row mb-4">
-                            <div class="col d-flex justify-content-center">
-                                <a style="margin-right: auto" href="#register">Register</a>
-                                <a style="margin-left: auto" href="#adminLogin" onclick="function fuku(){alert('womp womp')} fuku()">Forgot password?</a>
+                            <div class="col d-flex justify-content-start">
+                                <a style="margin-right: 300px;" href="#register">Register</a>
+                                <a href="#login" onclick="function fuku(){alert('womp womp')} fuku()">Forgot password?</a>
                             </div>
                         </div>
 
