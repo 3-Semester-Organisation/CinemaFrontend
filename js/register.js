@@ -54,9 +54,10 @@ async function processRegisterRequest(request) {
         setCostumerNavbar();
         alert("Successfully created a account");
         resetRegisterForm();
+        location.hash = "#home"; //TODO this was a quick fix, since when the register btn was clicked it wouldnt re-direct to home page.
 
     }catch (error) {
-        console.error(error) //TODO should be made more rebost.
+        console.error(error) //TODO should be made more rebost. Check for the response status
         alert("Username already taken find another one.")
     }
 }
@@ -81,6 +82,11 @@ function resetRegisterForm() {
 
 function setCostumerNavbar() {
 
+    //used to set username in navbar when logged in to make it more interactive
+    const token = localStorage.getItem("jwtToken");
+    const decodedToken = jwt_decode(token);
+    const username = decodedToken.sub;
+
     const costumerNavbar = `
     <ul class="navbar-nav">
         <li class="nav-item">
@@ -103,7 +109,7 @@ function setCostumerNavbar() {
     
     <ul class="navbar-nav ml-auto">
         <li class="nav-item">
-            <a class="nav-link view-link text-white hoverbutton me-2" href="">Account</a> <!--           TODO implement feature-->
+            <a class="nav-link view-link text-white hoverbutton me-2" href="">${username} (Account)</a> <!--           TODO implement feature-->
         </li>
         <li class="nav-item">
             <a class="nav-link view-link text-white hoverbutton me-2" href="#logout">logout</a>
