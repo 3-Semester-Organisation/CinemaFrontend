@@ -1,5 +1,6 @@
-import {checkForHttpErrors, makeAuthOption} from "./util.js";
-import {loadViewWithoutScript} from "./router.js";
+import { checkForHttpErrors, makeAuthOption, getDecodedToken } from "./util.js";
+import { loadViewWithoutScript } from "./router.js";
+import { checkIfAdmin } from "./adminLogin.js";
 
 const SHOWINGS_URL = "http://127.0.0.1:8080/api/v1/showings"
 const SHOWING_URL = "http://127.0.0.1:8080/api/v1/showing"
@@ -14,6 +15,7 @@ async function initShowingsView(movieId, movieTitle) {
     // runs this code when you access the showings view
     await displayShowingsBy(movieId, movieTitle);
     console.log("Showings view initialized");
+    showDeleteButton();
 }
 
 async function displayShowingsBy(movieId, movieTitle) {
@@ -22,7 +24,6 @@ async function displayShowingsBy(movieId, movieTitle) {
         const response = await fetch(SHOWINGS_URL + "?movieId=" + movieId);
         checkForHttpErrors(response);
         const showingList = await response.json();
-        console.log("#### SHOWING LIST: ", showingList)
         // Retry mechanism for elements availability
         const movieTitleElement = document.getElementById("movie-title");
         const thumbnail = document.getElementById("movie-thumbnail");
@@ -82,6 +83,16 @@ function pgRatingSelector(ageLimit){
     }
 }
 
+// only shows delete button if admin
+const showDeleteButton = () => {
+    let token = getDecodedToken();
+    const deleteButton = document.getElementById("delete-button");
+    // remove hidden attribute
+    if (checkIfAdmin(token)) {
+        deleteButton.removeAttribute("hidden");
+    }
+    
+}
 
 const deleteMovie = async (movieId) => {
     const url = `${DELETE_MOVIE_URL}?id=${movieId}`;
