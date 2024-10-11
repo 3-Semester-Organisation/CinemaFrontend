@@ -83,7 +83,7 @@ function setAdminNavbar() {
         <form class="d-flex mx-auto position-relative">
             <input class="form-control pe-5 me-5" id="movie-search" type="text" placeholder="Enter name..." size="15" aria-label="Movie search">
             <span id="search-icon">
-                <img class="search-icon" src="/images/search.png" alt="Search">
+                <img class="search-icon" src="./images/search.svg" alt="Search">
             </span>
         </form>
 
