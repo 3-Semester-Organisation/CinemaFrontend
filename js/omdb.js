@@ -50,7 +50,8 @@ const postMovie = async movie => {
         thumbnail: movie.Poster,
         ageLimit: ratingMap[movie.Rated],
         runtime: movie.Runtime,
-        imdbId: movie.imdbID
+        imdbId: movie.imdbID,
+        isActive: false
     }
 
     try {

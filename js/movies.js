@@ -101,6 +101,19 @@ const getFilteredMovies = async () => { ///movies?genre=&age=
     }
 }
 
+const getAllMovies = async () => {
+    try {
+        const res = await fetch(MOVIES_URL + "/all");
+        if (!res.ok) {
+            throw new Error('Network response was not ok');
+        }
+        const movies = await res.json();
+        return movies;
+    } catch (error) {
+        console.error('Problem with fetch operation on getMovies: ', error);
+    }
+}
+
 
 //TODO fix genre/age-search functionality to work alongside name search
 async function getMovieSearchFilter(event) {
@@ -236,4 +249,5 @@ export { initMoviesViewScript,
     updateTable,
     renderPage,
     renderPaginationControls,
-    handleClick };
+    handleClick,
+    getAllMovies };
