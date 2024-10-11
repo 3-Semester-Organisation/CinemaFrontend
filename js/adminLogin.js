@@ -59,6 +59,13 @@ export function checkRole(decodedToken) {
     initializeViewNavigation();
 }
 
+const checkIfAdmin = token => {
+    if (token) {
+        return token.role === "ROLE_ADMIN";
+    }
+    
+}
+
 
 function setAdminNavbar() {
 
@@ -78,12 +85,14 @@ function setAdminNavbar() {
             <li>
                 <a class="nav-link view-link hoverbutton" href="#addShowing">Create Showing</a>
             </li>
+            <li>
+                <a class="nav-link view-link hoverbutton" href="#movies">Movies</a>
         </ul>
 
         <form class="d-flex mx-auto position-relative">
             <input class="form-control pe-5 me-5" id="movie-search" type="text" placeholder="Enter name..." size="15" aria-label="Movie search">
             <span id="search-icon">
-                <img class="search-icon" src="/images/search.png" alt="Search">
+                <img class="search-icon" src="./images/search.svg" alt="Search">
             </span>
         </form>
 
@@ -101,4 +110,4 @@ function setAdminNavbar() {
     navbar.innerHTML = adminNavbarContent;
 }
 
-export {initLoginViewScript, setAdminNavbar}
+export { initLoginViewScript, setAdminNavbar, checkIfAdmin }

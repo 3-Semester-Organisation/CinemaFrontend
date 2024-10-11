@@ -7,6 +7,7 @@ import {initLoginViewScript, setAdminNavbar} from "./adminLogin.js";
 import {initLogoutViewScript} from "./logout.js";
 import {initRegisterViewScript, setCostumerNavbar} from "./register.js";
 import {checkForHttpErrors, getDecodedToken} from "./util.js";
+import { initShowingsView } from "./showings.js";
 
 
 function initializeViewNavigation() {

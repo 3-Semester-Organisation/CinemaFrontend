@@ -29,9 +29,11 @@ const renderPage = (page) => {
 
     let movieContainer = moviesHTMLFormatter(moviesToDisplay);
     let moviesDiv = document.getElementById('movies-div');
-    moviesDiv.innerHTML = ''; // Clear existing content
+    if (moviesDiv) {
+        moviesDiv.innerHTML = ''; // Clear existing content
     moviesDiv.appendChild(movieContainer);
-
+    }
+    
     renderPaginationControls(page);
 }
 
@@ -125,7 +127,6 @@ const getGenres = async () => {
             throw new Error('Network response was not ok');
         }
         const genres = await resp.json();
-        console.log(genres);
         return genres;
     } catch (error) {
         console.error('Problem with fetch operation on getMovies: ', error);
@@ -206,7 +207,7 @@ function handleClick(event) {
     if (target.dataset.movieId && target.dataset.movieTitle) {
         let movieId = target.dataset.movieId;
         let movieTitle = target.dataset.movieTitle;
-        initializeViewNavigation()
+        // initializeViewNavigation() // not needed
         initShowingsView(movieId, movieTitle);
     }
 }
