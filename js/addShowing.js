@@ -1,9 +1,10 @@
-import {checkForHttpErrors, makeAuthOption} from "./util.js";
-import {getAllActiveMovies} from "./movies.js";
-import {getAllTheatres} from "./theatres.js";
-import {getLatestShowingByTheatreId} from "./showings.js";
+import { checkForHttpErrors, makeAuthOption } from "./util.js";
+import { getAllActiveMovies, getAllMovies } from "./movies.js";
+import { getAllTheatres } from "./theatres.js";
+import { getLatestShowingByTheatreId } from "./showings.js";
 
 const SHOWING_URL = "http://127.0.0.1:8080/api/v1/showing"
+const SET_ACTIVE_URL = "http://127.0.0.1:8080/api/v1/movies/setactive"
 
 
 
@@ -44,7 +45,7 @@ async function initTheatreOptions() {
 async function initMovieOptions() {
     const dropDownOptions = document.getElementById("movie-options");
 
-    let allMovies = await getAllActiveMovies()
+    let allMovies = await getAllMovies()
     allMovies.sort((movie1, movie2) => movie1.id - movie2.id);
 
     dropDownOptions.innerHTML += `<option selected></option>`;
@@ -78,14 +79,26 @@ async function createShowing() {
 
         const response = await fetch(SHOWING_URL, postOption);
         checkForHttpErrors(response);
+        await setActive();
         let createdShowing = await response.json();
-        alert("you created the following showing: " + createdShowing);
+        console.log("createdShowing: ", createdShowing);
+        alert("you created the following showing: " + createdShowing.movie.title + " in " + createdShowing.theatre.name);
         resetForm();
 
     } catch (error) {
         console.error("Error details:", error);
         alert("A error occurred while trying to create the showing.")
     }
+}
+
+const setActive = async () => {
+    const movieId = document.getElementById("movie-options").value;
+    const token = localStorage.getItem("jwtToken");
+
+    const putOption = makeAuthOption("PUT", null, token);
+
+    const res = await fetch(`${SET_ACTIVE_URL}?id=${movieId}&isActive=true`, putOption);
+    
 }
 
 
