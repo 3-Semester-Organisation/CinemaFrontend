@@ -137,8 +137,8 @@ const fillTable = async (bookingList, seatBookingList) => {
         const seatBookingList = seatBookingMap.get(booking.id) || [];
         for (let seatBooking of seatBookingList) {
             html += `<tr>
-            <td>${booking.customer.name}</td>
-            <td>${booking.customer.email}</td>
+            <td>${booking.costumer.name}</td>
+            <td>${booking.costumer.email}</td>
             <td>${seatBooking.seatRowNumber}</td>
             <td>${seatBooking.seatNumber}</td>
             </tr>`;
