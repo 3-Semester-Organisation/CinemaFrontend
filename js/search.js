@@ -13,7 +13,7 @@ async function getAllActiveMovies() {
 //TODO clean up this mess, so there isn't a fetch in this JS file
 //TODO move other search-based functions here
 
-
+/*
 let movieTitles = []
 let movies = await getAllActiveMovies()
 
@@ -49,3 +49,4 @@ function selectInput(list){
     searchInput.value = list.innerHTML
     searchResults.innerHTML = ""
 }
+    */

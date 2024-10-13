@@ -9,12 +9,23 @@ function initApp() {
 
     const searchInput = document.getElementById('movie-search');
     const searchButton = document.getElementById('search-icon');
-    const search = document.getElementById("search-icon")
-    search.addEventListener("click", getMovieSearchFilter)
+    searchButton.addEventListener("click", getMovieSearchFilter)
+
+    let debounceTimeout;
+    /*
+    
     searchInput.addEventListener("keypress", (event) => {
         if (event.key === "Enter") {
             event.preventDefault(); // Prevent the default form submission
             searchButton.click();
         }
+    })
+        */
+
+    searchInput.addEventListener("keyup", () => {
+        clearTimeout(debounceTimeout);
+        debounceTimeout = setTimeout(() => {
+            searchButton.click();
+        }, 300); // 0.5 seconds delay
     })
 }
