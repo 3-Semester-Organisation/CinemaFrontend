@@ -55,3 +55,7 @@
   width: 3em;
   height: 2em;
 }
+
+.card-text {
+  margin-bottom: 10px !important;
+}
