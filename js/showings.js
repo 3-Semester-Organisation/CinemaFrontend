@@ -45,6 +45,34 @@ async function displayShowingsBy(movieId, movieTitle) {
         const movieDescription = document.getElementById("movie-description");
         movieDescription.innerText = showingList[0].movie.description;
 
+        const genreList = Array.isArray(showingList[0].movie.genreList) ? showingList[0].movie.genreList.join(',') : showingList[0].movie.genreList;
+
+        const formattedGenreList = genreList
+        .split(',')
+        .map(genre => genre.charAt(0).toUpperCase() + genre.slice(1).toLowerCase())
+        .join(', ');
+
+        const infoCard = document.getElementById("info-card");
+        infoCard.innerHTML = `
+            <div class="card-body border rounded p-2">
+                <div class="row">
+                    <div class="col-md-6">
+                        <p class="card-text"><strong>Runtime:</strong> ${showingList[0].movie.runtime}</p>
+                    </div>
+                    <div class="col-md-6">
+                        <p class="card-text"><strong>Age Limit:</strong> ${showingList[0].movie.ageLimit}</p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <p class="card-text"><strong>Genre:</strong> ${formattedGenreList}</p>
+                    </div>
+                    
+                </div>
+            </div>
+        `;
+
+
         const showingsGrid = document.getElementById("showings-grid");
         const nextSevenDaysFromCurrentDate = getNextSevenDays();
 
