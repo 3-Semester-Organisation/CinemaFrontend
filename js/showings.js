@@ -1,6 +1,7 @@
 import { checkForHttpErrors, makeAuthOption, getDecodedToken } from "./util.js";
 import { loadViewWithoutScript } from "./router.js";
 import { checkIfAdmin } from "./adminLogin.js";
+import {initSeatViewScript} from "./bookSeat.js";
 
 const SHOWINGS_URL = "http://127.0.0.1:8080/api/v1/showings"
 const SHOWING_URL = "http://127.0.0.1:8080/api/v1/showing"
