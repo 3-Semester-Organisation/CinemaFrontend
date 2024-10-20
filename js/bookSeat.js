@@ -1,3 +1,4 @@
+import { makeOption } from "./util.js";
 
 export async function initSeatViewScript(showingId = 1, theatreId = 1) {
     console.log("Init seat view!")
@@ -5,32 +6,37 @@ export async function initSeatViewScript(showingId = 1, theatreId = 1) {
     console.log(seatWidth);
     await createSeatView(showingId, theatreId);
     setUpEvents();
+    showingID = showingId;
+    theatreID = theatreId;
 }
 
 const theatre_url = "http://localhost:8080/api/v1/theatre/"
 const showing_url = "http://localhost:8080/api/v1/showing/"
+const buy_url = "http://localhost:8080/api/v1/seatbooking"
 
 const layoutSpace = 32;
 const seatWidth = 20;
 
+let showingID;
+let theatreID;
 let pickedSeats = []
 
 async function getSeatMap(id) {
     let seatMap
     try {
-        seatMap = await fetch(`${showing_url+id}/seatmap`)
+        seatMap = await fetch(`${showing_url + id}/seatmap`)
     } catch (err) {
         console.error(err)
     }
     let seatMapJson = await seatMap.json()
-    console.log("## SEAT MAP:  ",seatMapJson.seatMap)
+    console.log("## SEAT MAP:  ", seatMapJson.seatMap)
     return seatMapJson.seatMap
 }
 
 
 async function getLayouts(theatreId) {
     try {
-        let layouts = await fetch(`${theatre_url+theatreId}/layouts`)
+        let layouts = await fetch(`${theatre_url + theatreId}/layouts`)
         return await layouts.json()
     } catch (error) {
         console.log(error)
@@ -55,10 +61,10 @@ async function parseLayouts(showingId) {
     return parsedLayouts
 }
 
-function calcSeatViewWidth(seatNumber,spaces) {
+function calcSeatViewWidth(seatNumber, spaces) {
     let margin = 8 // mx-1
     console.log("#### CALCING ON GOING")
-    return (seatWidth+margin) * seatNumber + 90 + (layoutSpace*spaces);
+    return (seatWidth + margin) * seatNumber + 90 + (layoutSpace * spaces);
 }
 
 function createScreen() {
@@ -70,7 +76,7 @@ function createScreen() {
 
 function createRow(rowSpace = false) {
     const row = document.createElement("div");
-    if(rowSpace) {
+    if (rowSpace) {
         row.classList.add("row", "mb-4", "mx-auto", "theatre-row", "d-flex", "justify-content-center");
     } else {
         row.classList.add("row", "mb-2", "mx-auto", "theatre-row", "d-flex", "justify-content-center");
@@ -80,8 +86,8 @@ function createRow(rowSpace = false) {
 
 function createSeat(space = false, type, row, col) {
     const seat = document.createElement("div")
-    if(space) {
-        seat.classList.add("seat","ms-1","me-4")
+    if (space) {
+        seat.classList.add("seat", "ms-1", "me-4")
     } else {
         seat.classList.add("seat", "mx-1")
     }
@@ -98,10 +104,10 @@ function magic(seatMap, layout) {
     let fragment = document.createDocumentFragment()
 
     for (let i = 0; i < numRows; i++) {
-        let row = createRow(layoutRows.includes(i+1))
+        let row = createRow(layoutRows.includes(i + 1))
         let numSeats = seatMap[i].length
-        for (let j = 0; j < numSeats; j++ ) {
-            let seat = createSeat(layoutCols.includes(j+1), seatMap[i][j], i+1, j+1)
+        for (let j = 0; j < numSeats; j++) {
+            let seat = createSeat(layoutCols.includes(j + 1), seatMap[i][j], i + 1, j + 1)
             row.appendChild(seat);
         }
         fragment.appendChild(row)
@@ -117,19 +123,18 @@ async function createSeatView(showingId, theatreId) {
     let seatMap = await getSeatMap(showingId);
 
     fragment.appendChild(createScreen());
-    fragment.appendChild(magic(seatMap,layout));
+    fragment.appendChild(magic(seatMap, layout));
     let spaces = layout.cols.length
     seatView.innerHTML = "";
-    seatView.style.width = `${calcSeatViewWidth(10,spaces)}px`
-    seatGuide.style.width = `${calcSeatViewWidth(10,spaces)}px`
+    seatView.style.width = `${calcSeatViewWidth(10, spaces)}px`
+    seatGuide.style.width = `${calcSeatViewWidth(10, spaces)}px`
     seatView.appendChild(fragment);
 }
 
 function createSeatBooking(row, seat) {
     let seatBooking = {}
-    seatBooking.booking = {"id": 1}
-    seatBooking.seatRowNumber = row
-    seatBooking.seatNumber = seat
+    seatBooking.row = row
+    seatBooking.seat = seat
     return seatBooking
 }
 
@@ -138,7 +143,8 @@ function renderPickedSeats() {
     let count = pickedSeats.length
     seatChoice.innerHTML = '';
     seatChoice.innerHTML = `<p> You've picked ${count} seats!</p>`
-
+    console.log("SEDATS: ", pickedSeats)
+    console.log("showingId: ", showingID)
 }
 
 function handleSeatClick(e) {
@@ -148,7 +154,7 @@ function handleSeatClick(e) {
     let toggle = target.classList.toggle("picked")
     let row = target.dataset.row
     let seat = target.dataset.seat
-    let seatBooking = createSeatBooking(row,seat)
+    let seatBooking = createSeatBooking(row, seat)
     if (toggle) {
         pickedSeats.push(seatBooking)
     } else {
@@ -158,14 +164,35 @@ function handleSeatClick(e) {
     renderPickedSeats()
 }
 
-//
-// function createBookingRequest() {
-//     let email;
-//     let showingId;
-//     pickedSeats
-// }
+
+function createBookingRequest() {
+    let seatBookingRequest = {}
+    seatBookingRequest.showingId = showingID;
+    seatBookingRequest.email = "default@email.dk"
+    seatBookingRequest.bookedSeats = pickedSeats
+    return seatBookingRequest;
+}
+
+async function buyTickets() {
+    if (pickedSeats.length === 0) return;
+    let request = createBookingRequest()
+    let options = makeOption("POST", request)
+    console.log("OPTIONS: ", options)
+    try {
+        await fetch(buy_url, options)
+    } catch (e) {
+        console.error(e)
+    }
+    pickedSeats = []
+    renderPickedSeats()
+    await initSeatViewScript(showingID,theatreID)
+
+}
+
 
 function setUpEvents() {
     const seatView = document.getElementById("seatView");
+    const buyBtn = document.getElementById("BuyBtn");
+    buyBtn.addEventListener("click", buyTickets)
     seatView.addEventListener("click", handleSeatClick)
 }

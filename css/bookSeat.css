@@ -60,7 +60,10 @@
 }
 
 #seatChoice {
-    width: 200px;
+    width: 300px;
+    min-height: 100px;
+    font-size: larger;
+    font-weight: bolder;
 }
 
 .layout-col {

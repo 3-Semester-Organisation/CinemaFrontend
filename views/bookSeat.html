@@ -3,8 +3,8 @@
         <h2>Book</h2>
     </header>
     <p>Choose seat(s), motherfucker</p>
-    <div class="container d-flex">
-        <div style="width: 200px;"></div>
+    <div class="container d-flex justify-content-center">
+        <div style="width: 400px;"></div>
         <div class="d-flex flex-column">
             <div id="seatView" class="">
                 <div id="screen" class="text-center mt-2">
@@ -76,7 +76,13 @@
                 </div>
             </div>
         </div>
-        <div id="seatChoice" class="d-inline">
+        <div style="width: 400px;" class="d-flex justify-content-center align-items-center">
+            <div class="d-flex flex-column">
+                <div id="seatChoice" class="text-center">
+                </div>
+                <button id="BuyBtn" class="btn btn-success btn-lg fw-bold mx-auto mt-4">Buy</button>
+            </div>
+
         </div>
     </div>
     <button onclick="history.back()" class="btn btn-primary">Back</button>
