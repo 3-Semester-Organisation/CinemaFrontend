@@ -49,4 +49,4 @@ function selectInput(list){
     searchInput.value = list.innerHTML
     searchResults.innerHTML = ""
 }
-    */
+ */
